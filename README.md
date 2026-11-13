@@ -1,4 +1,4 @@
-# ANZU: PROMOSSO!
+# ANZU — Scalata al Posto Fisso
 
 Platform arcade 2D ambientato nella sede di Posto Fisso. Scegli il tuo eroe, scala sei piani, sconfiggi sei boss, sopravvivi agli eventi aziendali e fatti promuovere fino ad Amministratore Delegato.
 
