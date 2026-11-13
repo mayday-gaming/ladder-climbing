@@ -1,6 +1,6 @@
 # ANZU — Scalata al Posto Fisso
 
-Platform arcade 2D ambientato nella sede di Posto Fisso. Scegli il tuo eroe, scala sei piani, sconfiggi sei boss, sopravvivi agli eventi aziendali e fatti promuovere fino ad Amministratore Delegato.
+Platform arcade 2D ambientato nella sede di Posto Fisso. Scegli il tuo eroe, attraversa sei piani lunghi e tortuosi, sconfiggi sei boss, sopravvivi alle call improvvise tra un boss e l'altro e fatti promuovere fino ad Amministratore Delegato.
 
 Grafica vettoriale in alta definizione disegnata interamente in codice (nessuna immagine esterna), animazioni con arti articolati, movimento interpolato per schermi a 60/90/120 Hz, musica chiptune generata in tempo reale. Tutto in un solo file HTML, funziona anche offline.
 
@@ -16,7 +16,7 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | ← → / A D | Muovi |
 | Z / Spazio / ↑ | Salta (Anzu: in aria premi ancora per volare, tieni premuto per planare) |
 | X / J | Spara |
-| B / Q | Lancia un ticket SNOW (bomba) |
+| B / Q | Lancia un ticket incident (bomba) |
 | C / K / Shift | Sinergia (quando la barra è piena) |
 | V / T | Chiama l'alleato (10 buoni pasto) |
 | F / E | Team Aureola: cambio Del Tuono ↔ Del Giugno |
@@ -24,16 +24,16 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | M | Musica on/off |
 
 ### Telefono
-Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **SNOW**, **SINERGIA**, **ALLEATO** e, col Team Aureola, **SWAP**. Meglio in orizzontale.
+Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Team Aureola, **SWAP**. Meglio in orizzontale.
 
 ## Gli eroi
 | Eroe | Arma | Abilità | Alleato |
 |---|---|---|---|
-| **Anzu** — uccello mesopotamico con testa pelata e occhiali | **AURA** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
-| **Team Aureola** — **Del Tuono** (polo bianca, occhiali rettangolari) e **Del Giugno** (camicia celeste, occhiali tondi), si cambiano al volo | **KITEVVIV** a forma di saetta / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo; se è in call arriva a sorpresa **Tiberiho** o **Laifo** |
+| **Anzu** — uccello mesopotamico con testa pelata e occhiali | **PAURA** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
+| **Team Aureola** — **Del Tuono** (polo bianca, occhiali rettangolari) e **Del Giugno** (camicia celeste, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo; se è in call arriva a sorpresa **Tiberiho** o **Laifo** |
 | **Big Chapel** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
 
-Tutti hanno i **ticket SNOW**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
+Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
 
 ## Eventi aziendali
 Ogni tanto, all'improvviso:
@@ -47,19 +47,30 @@ Ogni tanto, all'improvviso:
 
 Con le combo partono le buzzword (SINERGICO!, DISRUPTIVE!, KPI SUPERATI!…) e i nemici sconfitti se ne vanno con una scusa ("Vado in ferie!", "Apro un ticket!").
 
+## Il percorso
+Ogni piano è lungo e tortuoso: scale di mensole, buche, un nastro trasportatore di pratiche che va all'indietro, montacarichi orizzontali e verticali, colline di schedari, il trampolino di carriera e una pausa caffè obbligatoria che ridà un cuore e fa da checkpoint. Lungo la strada, cartelli aziendali molto utili ("Ascensore guasto dal 1998", "Si prega di non nutrire i consulenti"…).
+
+## Quadri di sopravvivenza
+Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordine casuale. Bisogna resistere 25 secondi: ogni colpo costa un cuore (mai l'ultimo) e abbassa il bonus.
+- **Call improvvisa** — inviti di calendario e fumetti "Mi senti?" / "Sei in muto!"
+- **Emergenza in sala server** — palle di fuoco e scintille
+- **Tempesta di mail all-hands** — qualcuno ha fatto "Rispondi a tutti"
+- **Deadline anticipata a ieri** — piovono pagine del calendario
+- **Audit a sorpresa** — faldoni e schede di censimento
+
 ## Livelli e boss
 1. **Piano terra · Il Piazzale** — Gigi Martelletto, il Censore della Via Lattea
 2. **Piano 3 · La Sala Server** — Mario Puzzino, il Maestro Zen delle Tastiere
-3. **Piano 7 · L'Open Space** — Francesco Bertozzone, il Guardiano della Tutela Aziendale
-4. **Piano 12 · Le Sale Riunioni** — Mel, Email & Occhiatacce
+3. **Piano 7 · L'Open Space** — Francesco Carrozzone, il Guardiano della Tutela dell'Impresa
+4. **Piano 12 · Le Sale Riunioni** — Melissa, la Regina del CC
 5. **Piano 19 · Il Piano Nobile** — Il Conte delle Marche, Signore delle Marche da Bollo
-6. **Il Tetto · Sotto l'insegna** — Emilio Del Ciocco, la Creatura dedita alle Release
+6. **Il Tetto · Sotto l'insegna** — Geraldo Chops, la Creatura dedita alle Release
 
 ## Potenziamenti
 - **Chip arma**: 1.0 → 2.0 → TRIPLO → MAX (colpi perforanti)
 - **Caffè**: +1 cuore
 - **Buoni pasto**: punti, carica Sinergia, valuta per l'alleato
-- **Ticket SNOW**: +1 bomba
+- **Ticket incident**: +1 bomba
 - **Ferie**: vita extra
 - Ogni promozione dà un benefit: cuori extra, ali potenziate (Anzu) o doppio salto (gli altri), Sinergia più rapida.
 
