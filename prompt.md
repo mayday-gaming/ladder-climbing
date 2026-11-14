@@ -81,3 +81,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 18
 
 > Non c’è una musica al menu iniziale e di scelta personaggio.. non sento musica ed effetti sonori nel primo livello. Poi sarebbe bello avere una schermata presentazione nei vari livelli.. quando si usa sinergia magari si vede il personaggio scelto in qualche posizione (sempre differente)
+
+## 19
+
+> Martelletto censisce sulla piattaforma non su via lattea. Ok? Fai una presentazione iniziale e poi menu principale così parte la musica. Quando ci sono eventi random “disco caffè bug in produzione etc etc” fammi vedere una schermata. Inoltre su angry man più perde cuori più il suo volto é arrabbiato e rosso. Inoltre i consulenti non si vede mai il volto le nuvolette le coprono. Luigi e Tiberio alla fine sono uguali non fanno nulla non devono sparare ma seguono solo il protagonista.

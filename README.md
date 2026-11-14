@@ -33,9 +33,11 @@ Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINE
 | **Halo Team** — **Bolt** (polo bianca, occhiali rettangolari) e **June** (felpa blu scuro col cappuccio, barba folta, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo |
 | **Angry Man** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
 
-Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei due consulenti esterni: **Tiberio** (slide e post-it) o **Luigi** ("facciamo merge?").
+Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei due consulenti esterni: **Tiberio** (slide e post-it) o **Luigi** ("facciamo merge?"). Non sparano e non fanno danni: ti seguono, commentano e alla fine mandano la fattura.
 
 Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito: fanfara se arriva il tuo alleato, trombone triste e "CHIAMATA FALLITA" se arriva un consulente, con l'alleato mancato grigio e sotto la pioggia in un angolo.
+
+All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
 
 Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
 
@@ -65,7 +67,7 @@ Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordin
 - **Audit a sorpresa** — faldoni e schede di censimento
 
 ## Livelli e boss
-1. **Piano terra · Il Piazzale** — Gigi Martelletto, il Censore della Via Lattea
+1. **Piano terra · Il Piazzale** — Gigi Martelletto, il Censore della Piattaforma
 2. **Piano 3 · La Sala Server** — Mario Puzzino, il Maestro Zen delle Tastiere
 3. **Piano 7 · L'Open Space** — Francesco Carrozzone, il Guardiano della Tutela dell'Impresa
 4. **Piano 12 · Le Sale Riunioni** — Melissa, la Regina del CC
