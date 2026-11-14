@@ -65,3 +65,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 14
 
 > Quando però non si sceglie l’arma e quindi c’è Tiberio o Luigi si deve far capire con la musica o magari mettendo anche l arma che non é stata scelta come triste che é una sorta di fallimento di chiamata non so se mi sono soiegato. Perfetto comunque così
+
+## 15
+
+> Perfetto. Non si deve chiamare anzi - scalata al posto fisso ma solamente BIG COMPANY - Scalata Manageriale. posto fisso diventa Big Company.
