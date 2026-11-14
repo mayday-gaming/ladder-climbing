@@ -19,21 +19,23 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | B / Q | Lancia un ticket incident (bomba) |
 | C / K / Shift | Sinergia (quando la barra è piena) |
 | V / T | Chiama l'alleato (10 buoni pasto) |
-| F / E | Team Aureola: cambio Bolt ↔ June |
+| F / E | Halo Team: cambio Bolt ↔ June |
 | P / Esc | Pausa |
 | M | Musica on/off |
 
 ### Telefono
-Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Team Aureola, **SWAP**. Meglio in orizzontale.
+Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Halo Team, **SWAP**. Meglio in orizzontale.
 
 ## Gli eroi
 | Eroe | Arma | Abilità | Alleato |
 |---|---|---|---|
-| **Anzu** — uccello mesopotamico con testa pelata e occhiali | **PAURA** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
-| **Team Aureola** — **Bolt** (polo bianca, occhiali rettangolari) e **June** (felpa blu scuro col cappuccio, barba folta, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo |
+| **Anzu** — uccello mesopotamico con testa pelata e occhiali | **FEAR** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
+| **Halo Team** — **Bolt** (polo bianca, occhiali rettangolari) e **June** (felpa blu scuro col cappuccio, barba folta, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo |
 | **Big Chapel** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
 
 Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei due consulenti esterni: **Tiberio** (slide e post-it) o **Luigi** ("facciamo merge?").
+
+Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito.
 
 Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
 

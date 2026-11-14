@@ -53,3 +53,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 11
 
 > I due consulenti possono capitare a chiunque dei personaggi : rinominarli in Tiberio e Luigi
+
+## 12
+
+> Team aureola diventa Halo Team e l’arma Paura diventa Fear. I consulenti hanno il naso fatto bene? Inoltre quando invochi l’arma speciale ti deve apparire una animazione a sé a tutto schermo che si ferma il gioco per 2 secondi dove compare quello che ti é uscito Tiberio, Luigi o l’arma scelta (Claudio, Anzu bis o mainframe)
