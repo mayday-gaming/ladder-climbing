@@ -1743,7 +1743,7 @@ function draw(){
  ctx.setTransform(K,0,0,K,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
  TT=frame+A;camX=cam._x==null?cam.x:lerp(cam._x,cam.x,A);
  if(state=='boot')drawBoot();else if(state=='present')drawPresent();
- if(state=='title')drawTitle();
+ else if(state=='title')drawTitle();
  else if(state=='select')drawSelect();
  else if(state=='ending')drawEnding();
  else{
