@@ -231,7 +231,7 @@ const CH=[
   tip:'F / SWAP: Bolt ↔ June · 10 buoni = Claudio (o un consulente)',
   F:[{short:'BOLT',wep:'TUONO',wepBtn:'TUONO',chip:'T',spd:2.55,W:['','TUONO 1.0','TUONO 2.0','TUONO TRIPLO','TUONO MAX']},
      {short:'JUNE',wep:'PI GRECO',wepBtn:'π',chip:'π',spd:2.2,W:['','π 1.0','π 2.0','π TRIPLO','π MAX']}]},
- {name:'BIG CHAPEL',short:'BIG CHAPEL',desc:'Pelato, camicia a quadretti',ds:['Pelato fuori, censurato dentro.','Camicia a quadretti, lessico a pallini.','Risolve i bug gridandogli contro.','Le HR lo conoscono per nome.'],wep:'PAROLACCE',wepBtn:'#@*!',chip:'#',ally:'MAINFRAME',allyBtn:'MAIN<br>FRAME',abil:'TURPILOQUIO MOLESTO',ally2:'Insulti in informatichese',spd:2.3,
+ {name:'ANGRY MAN',short:'ANGRY MAN',desc:'Pelato, camicia a quadretti',ds:['Pelato fuori, censurato dentro.','Camicia a quadretti, lessico a pallini.','Risolve i bug gridandogli contro.','Le HR lo conoscono per nome.'],wep:'PAROLACCE',wepBtn:'#@*!',chip:'#',ally:'MAINFRAME',allyBtn:'MAIN<br>FRAME',abil:'TURPILOQUIO MOLESTO',ally2:'Insulti in informatichese',spd:2.3,
   tip:'Le parolacce sono censurate ma fanno malissimo · 10 buoni = il Mainframe (o un consulente)',W:['','#@*! 1.0','#@*! 2.0','#@*! TRIPLO','#@*! MAX']}];
 function cf(p){const c=CH[p.ch];return c.F?Object.assign({},c,c.F[p.form||0]):c;}
 const SWEARS=['#@*%!','$%&#!','@#!!','*%$#!','#!@?!','%&@#!','@*#&!','#$%!!'];
@@ -1584,7 +1584,7 @@ function drawTitle(){scenery0(TT*.25);
  const sw=(TT*3)%600-150;TX('BIG COMPANY',2,4,46,'#0a1436',{w:700});TX('BIG COMPANY',0,0,46,lgr(-150,-24,150,24,'#fff6a0','#ffd500',[clamp((sw+150)/600,0,1),'#ffffff'],[1,'#ff9a00']),{w:700,sk:'#0a1436',sw:6});ctx.restore();
  ctx.save();ctx.translate(W/2,112);rr(-112,-11,224,22,11,lgr(0,-11,0,11,'#3a7bff','#1b3fa0'),OL,1);pth([-112,-6,-124,0,-112,6],'#1b3fa0',OL,.8);pth([112,-6,124,0,112,6],'#1b3fa0',OL,.8);
  TX('SCALATA MANAGERIALE',0,.8,11,'#ffe95c',{w:700,sk:'#0a1436',sw:1.8});ctx.restore();
- TX('Anzu · Halo Team · Big Chapel · sei boss · eventi aziendali folli',W/2,133,6.4,'#e6ecff',{b:1,w:800,sh:true});
+ TX('Anzu · Halo Team · Angry Man · sei boss · eventi aziendali folli',W/2,133,6.4,'#e6ecff',{b:1,w:800,sh:true});
  const pk=1+.06*Math.sin(TT*.12);ctx.save();ctx.translate(W/2,160);ctx.scale(pk,pk);rr(-80,-10,160,20,10,lgr(0,-10,0,10,'#fff27a','#f0b800'),OL,1);TX(touchy()?'TOCCA PER INIZIARE':'PREMI INVIO',0,.8,10,'#0f1a48',{w:700});ctx.restore();glow(W/2,160,80,'#ffe95c',.12+.06*Math.sin(TT*.12));
  rr(W/2-46,180,92,12,6,'rgba(4,10,40,.6)','rgba(255,255,255,.2)',.6);TX('RECORD  '+String(hi).padStart(7,'0'),W/2,186.3,6,'#ffffff',{b:1,w:900});
  TX(touchy()?'Ruota il telefono in orizzontale per giocare al meglio':'← → muovi · Z salta · X spara · B ticket · C Sinergia · V alleato · F cambio',W/2,H-10,5.4,'rgba(220,230,255,.85)',{b:1,w:800,sh:true});}

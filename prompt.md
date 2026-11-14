@@ -69,3 +69,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 15
 
 > Perfetto. Non si deve chiamare anzi - scalata al posto fisso ma solamente BIG COMPANY - Scalata Manageriale. posto fisso diventa Big Company.
+
+## 16
+
+> Big chapel diventa Angry Man
