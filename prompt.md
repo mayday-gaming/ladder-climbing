@@ -61,3 +61,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 13
 
 > Tutto deve far ridere divertente e mai ripetitivo. Nella pagina della scelta degli eroi fai presente, con le loro immagini, dei consulenti. Migliora descrizioni e pannello scelta eroi. Descrizioni minimali ma simpatiche
+
+## 14
+
+> Quando però non si sceglie l’arma e quindi c’è Tiberio o Luigi si deve far capire con la musica o magari mettendo anche l arma che non é stata scelta come triste che é una sorta di fallimento di chiamata non so se mi sono soiegato. Perfetto comunque così
