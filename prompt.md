@@ -45,3 +45,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 9
 
 > Al personaggio di del giugno chiamalo June mettici capelli corti non così come hai fatto mettici una felpa blu scura con cappuccio ed ha una barba folta.. migliora naso e occhiali di June e Del Tuono.
+
+## 10
+
+> Lunghezza dei capelli si sono più corti però pensavo anche che del tuono diventa Bolt. I visi di tutti sono strani quel naso fatto male e disallinearo: possiamo trovare una soluzione migliore? Più armonica?
