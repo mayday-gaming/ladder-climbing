@@ -19,19 +19,21 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | B / Q | Lancia un ticket incident (bomba) |
 | C / K / Shift | Sinergia (quando la barra è piena) |
 | V / T | Chiama l'alleato (10 buoni pasto) |
-| F / E | Halo Team: cambio Bolt ↔ June |
+| F / E | Consulente: cambio Tiberio ↔ Luigi |
 | P / Esc | Pausa |
 | M | Musica on/off |
 
 ### Telefono
-Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Halo Team, **SWAP**. Meglio in orizzontale.
+Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Consulente, **SWAP**. Meglio in orizzontale.
 
 ## Gli eroi
 | Eroe | Arma | Abilità | Alleato |
 |---|---|---|---|
 | **Anzu** — uccello mesopotamico con testa pelata e occhiali | **FEAR** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
-| **Halo Team** — **Bolt** (polo bianca, occhiali rettangolari) e **June** (felpa blu scuro col cappuccio, barba folta, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo |
+| **Bolt** — polo bianca, occhiali rettangolari, il più veloce | **TUONO** (un tuono, punto e basta) | Scatto | **Claudio** — l'IA che gioca per te |
+| **June** — felpa blu scuro col cappuccio, barba folta, occhiali tondi: più cuori perde, più va in ansia | **PI GRECO**, lento ma pesante | Colpi pesanti | **Claudio** |
 | **Angry Man** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
+| **Il Consulente** — **Tiberio** e **Luigi**, si cambiano al volo. Parte da esterno: badge visitatore, un cuore in meno, arma più lenta e niente alleato. Prima deve superare **Il Colloquio** (livello speciale con le domande delle HR), poi diventa stagista, a tempo determinato dopo il primo boss e a tempo indeterminato dopo il secondo, quando recupera il cuore e ottiene Claudio. Al posto dei buoni pasto raccoglie **ore fatturate** | **SLIDE** / **MERGE** | Cambio al volo | Claudio, solo da assunto |
 
 Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei due consulenti esterni: **Tiberio** (slide e post-it) o **Luigi** ("facciamo merge?"). Non sparano e non fanno danni: ti seguono, commentano e alla fine mandano la fattura.
 
@@ -51,6 +53,10 @@ Ogni piano ha i suoi, oltre al Foglio arrabbiato e alla Busta volante che girano
 - **Sale riunioni** — sedia a rotelle, penna stilografica a dardo, proiettore che spara slide
 - **Piano nobile** — ficus permaloso, penna stilografica, timbratrice e proiettore
 - **Tetto** — cono, piccione, antenna che lancia scintille
+
+Quando al posto del tuo alleato arriva un consulente, il tuo eroe **si arrabbia** per tutto il tempo che il consulente resta in campo: faccia rossa, vena sulla fronte, fumo dalle orecchie, parolacce e colpi più rapidi.
+
+I colori della Big Company sono **blu e rosso**.
 
 I **buoni pasto** servono a chiamare l'alleato (ne costano 10), danno 50 punti l'uno e caricano un po' la Sinergia.
 

@@ -93,3 +93,9 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 21
 
 > Ha senso se vogliamo giocare con un consulente? Come vogliamo fare? Tipo in svantaggio perché deve prima farsi assumere dalla big company e poi procedere? Non saprei! Inoltre il conte delle marche da bollo rimane un conte e come é fatto ma qualcosa di informatichese o manageriale. Infine il boss finale non facciamo delle release ma è qualcosa legato sempre al mondo manageriale. Inoltre si chiamerà solo Geraldo. Gigi Martelletto è solo Ubaldo. Mario Puzzino solo Camomillo. Il poliziotto qualche nome che ritrae il ruolo.
+
+## 22
+
+> Si può fare.. però i colori della big company falli blu e rosso. Il resto ok magari metti gli eroi in 4 staccando il team Halo. A June come per Angry man se prendi danno diventa sempre più ansioso. Inoltre se becchi il consulente angry man si incazza per la durata del consulente così anche gli altri giocatori se beccano il consulente
+
+(Chiarimento: 5 eroi, con Bolt e June separati: Anzu · Bolt · June · Angry Man · Consulente.)
