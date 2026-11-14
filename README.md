@@ -1,6 +1,6 @@
 # BIG COMPANY — Scalata Manageriale
 
-Platform arcade 2D ambientato nella sede della Big Company. Scegli il tuo eroe, attraversa sei piani lunghi e tortuosi, sconfiggi sei boss, sopravvivi alle call improvvise tra un boss e l'altro e fatti promuovere fino ad Amministratore Delegato.
+Platform arcade 2D ambientato nella sede della Big Company. Scegli il tuo eroe, attraversa sei piani lunghi e tortuosi, sconfiggi sei boss, sopravvivi alle call improvvise tra un boss e l'altro e sali di livello in livello, dal 6° fino al Livello Super.
 
 Grafica vettoriale in alta definizione disegnata interamente in codice (nessuna immagine esterna), animazioni con arti articolati, movimento interpolato per schermi a 60/90/120 Hz, musica chiptune generata in tempo reale. Tutto in un solo file HTML, funziona anche offline.
 
@@ -54,7 +54,7 @@ Con le combo partono le buzzword (SINERGICO!, DISRUPTIVE!, KPI SUPERATI!…) e i
 ## Il percorso
 Ogni piano è lungo e tortuoso: scale di mensole, buche, un nastro trasportatore di pratiche che va all'indietro, montacarichi orizzontali e verticali, colline di schedari, il trampolino di carriera e una pausa caffè obbligatoria che ridà un cuore e fa da checkpoint. Lungo la strada, cartelli aziendali molto utili ("Ascensore guasto dal 1998", "Si prega di non nutrire i consulenti"…).
 
-## Quadri di sopravvivenza
+## Livelli speciali di sopravvivenza
 Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordine casuale. Bisogna resistere 25 secondi: ogni colpo costa un cuore (mai l'ultimo) e abbassa il bonus.
 - **Call improvvisa** — inviti di calendario e fumetti "Mi senti?" / "Sei in muto!"
 - **Emergenza in sala server** — palle di fuoco e scintille

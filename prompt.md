@@ -73,3 +73,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 16
 
 > Big chapel diventa Angry Man
+
+## 17
+
+> Non é la scalata dei dirigenti ma sono i livelli . I livelli speciali fammi una cornicetta particolare. Quando arriva la sinergia al massimo fammelo capire con una animazione centrale: stessa cosa per l’utilizzo dell’arma speciale
