@@ -77,3 +77,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 17
 
 > Non é la scalata dei dirigenti ma sono i livelli . I livelli speciali fammi una cornicetta particolare. Quando arriva la sinergia al massimo fammelo capire con una animazione centrale: stessa cosa per l’utilizzo dell’arma speciale
+
+## 18
+
+> Non c’è una musica al menu iniziale e di scelta personaggio.. non sento musica ed effetti sonori nel primo livello. Poi sarebbe bello avere una schermata presentazione nei vari livelli.. quando si usa sinergia magari si vede il personaggio scelto in qualche posizione (sempre differente)

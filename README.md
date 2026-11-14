@@ -37,6 +37,8 @@ Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei d
 
 Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito: fanfara se arriva il tuo alleato, trombone triste e "CHIAMATA FALLITA" se arriva un consulente, con l'alleato mancato grigio e sotto la pioggia in un angolo.
 
+Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
+
 Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
 
 ## Eventi aziendali
