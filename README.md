@@ -80,12 +80,12 @@ Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordin
 - **Audit a sorpresa** — faldoni e schede di censimento
 
 ## Livelli e boss
-1. **Piano terra · Il Piazzale** — Gigi Martelletto, il Censore della Piattaforma
-2. **Piano 3 · La Sala Server** — Mario Puzzino, il Maestro Zen delle Tastiere
-3. **Piano 7 · L'Open Space** — Francesco Carrozzone, il Guardiano della Tutela dell'Impresa
+1. **Piano terra · Il Piazzale** — Ubaldo, il Censore della Piattaforma
+2. **Piano 3 · La Sala Server** — Camomillo, il Maestro Zen delle Tastiere
+3. **Piano 7 · L'Open Space** — Tornello, il Guardiano della Tutela dell'Impresa
 4. **Piano 12 · Le Sale Riunioni** — Melissa, la Regina del CC
-5. **Piano 19 · Il Piano Nobile** — Il Conte delle Marche, Signore delle Marche da Bollo
-6. **Il Tetto · Sotto l'insegna** — Geraldo Chops, la Creatura dedita alle Release
+5. **Piano 19 · Il Piano Nobile** — Il Conte del Budget, Signore dei Tagli Lineari
+6. **Il Tetto · Sotto l'insegna** — Geraldo, la Creatura del Top Management
 
 ## Potenziamenti
 - **Chip arma**: 1.0 → 2.0 → TRIPLO → MAX (colpi perforanti)

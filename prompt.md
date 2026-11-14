@@ -89,3 +89,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 20
 
 > Il tonto saltatore non mi piace.. aggiungi nemici differenti coerenti con il livello dove siamo. Inoltre i buoni pasti a che servono?
+
+## 21
+
+> Ha senso se vogliamo giocare con un consulente? Come vogliamo fare? Tipo in svantaggio perché deve prima farsi assumere dalla big company e poi procedere? Non saprei! Inoltre il conte delle marche da bollo rimane un conte e come é fatto ma qualcosa di informatichese o manageriale. Infine il boss finale non facciamo delle release ma è qualcosa legato sempre al mondo manageriale. Inoltre si chiamerà solo Geraldo. Gigi Martelletto è solo Ubaldo. Mario Puzzino solo Camomillo. Il poliziotto qualche nome che ritrae il ruolo.
