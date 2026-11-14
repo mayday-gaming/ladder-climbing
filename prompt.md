@@ -85,3 +85,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 19
 
 > Martelletto censisce sulla piattaforma non su via lattea. Ok? Fai una presentazione iniziale e poi menu principale così parte la musica. Quando ci sono eventi random “disco caffè bug in produzione etc etc” fammi vedere una schermata. Inoltre su angry man più perde cuori più il suo volto é arrabbiato e rosso. Inoltre i consulenti non si vede mai il volto le nuvolette le coprono. Luigi e Tiberio alla fine sono uguali non fanno nulla non devono sparare ma seguono solo il protagonista.
+
+## 20
+
+> Il tonto saltatore non mi piace.. aggiungi nemici differenti coerenti con il livello dove siamo. Inoltre i buoni pasti a che servono?

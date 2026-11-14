@@ -41,6 +41,19 @@ All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi i
 
 Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
 
+## Nemici
+
+Ogni piano ha i suoi, oltre al Foglio arrabbiato e alla Busta volante che girano ovunque:
+
+- **Piazzale** — cono stradale con le gambe, piccione bombardiere
+- **Sala server** — bug verde velocissimo, ventola impazzita, router che lancia scintille
+- **Open space** — sedia a rotelle che ti carica, timbratrice lanciafogli
+- **Sale riunioni** — sedia a rotelle, penna stilografica a dardo, proiettore che spara slide
+- **Piano nobile** — ficus permaloso, penna stilografica, timbratrice e proiettore
+- **Tetto** — cono, piccione, antenna che lancia scintille
+
+I **buoni pasto** servono a chiamare l'alleato (ne costano 10), danno 50 punti l'uno e caricano un po' la Sinergia.
+
 Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
 
 ## Eventi aziendali
