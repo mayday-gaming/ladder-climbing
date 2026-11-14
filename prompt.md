@@ -41,3 +41,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 8. Nomi, quadri di sopravvivenza e percorsi più lunghi
 
 > togli i riferimenti a SNOW ma sono dei ticket con incident va benissimo. Emilio Del Ciocco diventa Geraldo Chops. Bertozzone diventa Carrozzone e non è tutela aziendale ma tutela dell'impresa una cosa del genere. Non mettere AURA come arma all'anzu ma PAURA. Del Tuono non ha kitevviv ma è un tuono punto e basta. Ci sono dei quadri random di inframezzo tra i boss che sono di sopravvivenza ad una call improvvisa o emergenza improvvisa. Inventa tu. Più lunga la strada prima di arrivare al boss, molto più tortuosa e simpatica. Mel diventa MELISSA e togli la parte che hai scritto occhiatacce ma il suo potere rimane lo stesso.
+
+## 9
+
+> Al personaggio di del giugno chiamalo June mettici capelli corti non così come hai fatto mettici una felpa blu scura con cappuccio ed ha una barba folta.. migliora naso e occhiali di June e Del Tuono.

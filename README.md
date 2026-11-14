@@ -19,7 +19,7 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | B / Q | Lancia un ticket incident (bomba) |
 | C / K / Shift | Sinergia (quando la barra è piena) |
 | V / T | Chiama l'alleato (10 buoni pasto) |
-| F / E | Team Aureola: cambio Del Tuono ↔ Del Giugno |
+| F / E | Team Aureola: cambio Del Tuono ↔ June |
 | P / Esc | Pausa |
 | M | Musica on/off |
 
@@ -30,7 +30,7 @@ Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINE
 | Eroe | Arma | Abilità | Alleato |
 |---|---|---|---|
 | **Anzu** — uccello mesopotamico con testa pelata e occhiali | **PAURA** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
-| **Team Aureola** — **Del Tuono** (polo bianca, occhiali rettangolari) e **Del Giugno** (camicia celeste, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo; se è in call arriva a sorpresa **Tiberiho** o **Laifo** |
+| **Team Aureola** — **Del Tuono** (polo bianca, occhiali rettangolari) e **June** (felpa blu scuro col cappuccio, barba folta, occhiali tondi), si cambiano al volo | **TUONO** (un tuono, punto e basta) / **PI GRECO** che sfrecciano a zig-zag come saette | Cambio al volo | **CLAUDIO** — un'IA che gioca al posto tuo; se è in call arriva a sorpresa **Tiberiho** o **Laifo** |
 | **Big Chapel** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
 
 Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
