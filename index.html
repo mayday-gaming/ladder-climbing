@@ -226,13 +226,13 @@ const PERK=['+1 CUORE · scrivania più grande','ALI POTENZIATE · voli più a l
 function perkTxt(i){return i==1&&P.ch!=0?'DOPPIO SALTO · agilità manageriale':PERK[i];}
 const CH=[
  {name:'ANZU',short:'ANZU',desc:'Uccello mesopotamico, testa pelata',wep:'PAURA',wepBtn:'PAURA',chip:'P',ally:'ANZU-BIS',allyBtn:'ANZU<br>BIS',abil:'VOLA',ally2:'Un altro Anzu: lui basta a sé stesso',spd:2.25,
-  tip:'SALTA in aria per volare · TICKET = bomba · 10 buoni = un altro Anzu',W:['','PAURA 1.0','PAURA 2.0','PAURA 3.0 TRIPLA','PAURA MAX']},
- {name:'TEAM AUREOLA',short:'TEAM AUREOLA',desc:'Bolt e June, a turno',wep:'TUONO / PI GRECO',ally:'CLAUDIO',allyBtn:'CLAU<br>DIO',abil:'CAMBIO AL VOLO (tasto F)',ally2:'IA che gioca per te (o chi capita)',
-  tip:'F / SWAP: Bolt ↔ June · 10 buoni = Claudio (o chi capita)',
+  tip:'SALTA in aria per volare · TICKET = bomba · 10 buoni = un altro Anzu (o un consulente)',W:['','PAURA 1.0','PAURA 2.0','PAURA 3.0 TRIPLA','PAURA MAX']},
+ {name:'TEAM AUREOLA',short:'TEAM AUREOLA',desc:'Bolt e June, a turno',wep:'TUONO / PI GRECO',ally:'CLAUDIO',allyBtn:'CLAU<br>DIO',abil:'CAMBIO AL VOLO (tasto F)',ally2:'IA che gioca per te',
+  tip:'F / SWAP: Bolt ↔ June · 10 buoni = Claudio (o un consulente)',
   F:[{short:'BOLT',wep:'TUONO',wepBtn:'TUONO',chip:'T',spd:2.55,W:['','TUONO 1.0','TUONO 2.0','TUONO TRIPLO','TUONO MAX']},
      {short:'JUNE',wep:'PI GRECO',wepBtn:'π',chip:'π',spd:2.2,W:['','π 1.0','π 2.0','π TRIPLO','π MAX']}]},
  {name:'BIG CHAPEL',short:'BIG CHAPEL',desc:'Pelato, camicia a quadretti',wep:'PAROLACCE',wepBtn:'#@*!',chip:'#',ally:'MAINFRAME',allyBtn:'MAIN<br>FRAME',abil:'TURPILOQUIO MOLESTO',ally2:'Insulti in informatichese',spd:2.3,
-  tip:'Le parolacce sono censurate ma fanno malissimo · 10 buoni = il Mainframe',W:['','#@*! 1.0','#@*! 2.0','#@*! TRIPLO','#@*! MAX']}];
+  tip:'Le parolacce sono censurate ma fanno malissimo · 10 buoni = il Mainframe (o un consulente)',W:['','#@*! 1.0','#@*! 2.0','#@*! TRIPLO','#@*! MAX']}];
 function cf(p){const c=CH[p.ch];return c.F?Object.assign({},c,c.F[p.form||0]):c;}
 const SWEARS=['#@*%!','$%&#!','@#!!','*%$#!','#!@?!','%&@#!','@*#&!','#$%!!'];
 const TCOST=10,TSAY=['Ho preparato 80 slide.','Mettiamoci un post-it!','Facciamo una call di allineamento?','Dipende.','Serve un workshop.','Vi giro il verbale.','Io un caffè lo prenderei.','Lo mettiamo a piano?','Sinergia! ...ah no, quella è tua.'];
@@ -485,23 +485,23 @@ function updPlayer(ctrl){
 
 /* ================= ALLIES ================= */
 const ALLY=[
- {type:'tib',life:1500,every:170,hi:'Buongiorno! Tiberiho, consulente esterno.',bye:'Ottimo lavoro, team. Vi mando la fattura!',say:TSAY},
+ {type:'tib',life:1500,every:170,hi:'Buongiorno! Tiberio, consulente esterno.',bye:'Ottimo lavoro, team. Vi mando la fattura!',say:TSAY},
  {type:'claudio',life:1200,every:150,hi:'Ciao! Sono CLAUDIO. Continuo io per un po\'.',bye:'Sessione in chiusura: ti ridò i comandi.',say:['Ci penso io.','Procedo in autonomia.','Ottima domanda!','Hai ragione, correggo.','Ecco un piano in 3 punti.','Sto ragionando...','Fatto! Serve altro?']},
- {type:'laifo',life:1500,every:120,hi:'Ciao! Sono Laifo. Facciamo merge?',bye:'Ultimo merge e vado. Approvami la PR!',say:['Facciamo merge?','Mi approvi la PR?','MERGE!','Rebase o merge?','Ho risolto i conflitti!','Merge su main?','Squash and merge!','Faccio merge, ok?']},
+ {type:'laifo',life:1500,every:120,hi:'Ciao! Sono Luigi. Facciamo merge?',bye:'Ultimo merge e vado. Approvami la PR!',say:['Facciamo merge?','Mi approvi la PR?','MERGE!','Rebase o merge?','Ho risolto i conflitti!','Merge su main?','Squash and merge!','Faccio merge, ok?']},
  {type:'clone',life:1500,every:150,hi:'Ciao me! Sono io. Mi basto.',bye:'Torno in me stesso. Ciao me!',say:['Io basto a me stesso.','Anzu approva Anzu.','Riunione con me stesso: approvata.','Mi delego.','Mi metto in CC da solo.','Due Anzu: sinergia perfetta.','Mi autovaluto: eccellente.','Chi meglio di me? Io.']},
  {type:'mainframe',life:1500,every:150,hi:'IPL COMPLETATO. MAINFRAME ONLINE.',bye:'Batch terminato. RC=0. Standby.',say:['Sono in esercizio dal 1974.','COBOL è eterno.','Tu non hai i permessi di root.','Il cloud? Una moda.','Ho più uptime di te.','JCL sottomesso.','Batch notturno in corso...','Vi formatto tutti.']}];
-const ANAME={tib:'TIBERIHO',claudio:'CLAUDIO',laifo:'LAIFO',clone:'ANZU-BIS',mainframe:'IL MAINFRAME'},ALLY_OF=['clone','claudio','mainframe'],FLOAT={claudio:1,clone:1};
+const ANAME={tib:'TIBERIO',claudio:'CLAUDIO',laifo:'LUIGI',clone:'ANZU-BIS',mainframe:'IL MAINFRAME'},ALLY_OF=['clone','claudio','mainframe'],FLOAT={claudio:1,clone:1};
 const JARG=['SEGFAULT!','ABEND S0C7!','NULL POINTER!','STACK OVERFLOW!','KERNEL PANIC!','DEADLOCK!','404!','OOM KILLED!','CORE DUMP!','RTFM!','JCL ERROR!','BUFFER OVERFLOW!','SYNTAX ERROR!','ROOT DENIED!','BSOD!','CHMOD 000!'];
 function nearT(x,range){if(boss&&bossOn&&!boss.dead&&boss.alpha>.6)return boss;let e=null,bd=1e9;for(const q of ens){const d=Math.abs(q.x+q.w/2-x);if(q.act&&!q.gone&&!q.flee&&d<bd&&d<range){bd=d;e=q;}}return e;}
 function buyTib(){
  if(tib){pops.push({x:P.x-24,y:P.y-14,txt:ANAME[tib.type]+' è già qui!',life:50,c:C.pale});Snd.sfx('blip');return;}
  if(P.coins<TCOST){pops.push({x:P.x-34,y:P.y-14,txt:'Servono '+TCOST+' buoni pasto',life:60,c:C.pale});Snd.sfx('blip');return;}
- let type=ALLY_OF[P.ch];if(P.ch==1){const r=Math.random();type=r<.6?'claudio':r<.8?'tib':'laifo';}
+ const own=ALLY_OF[P.ch],r=Math.random(),type=r<.6?own:r<.8?'tib':'laifo';
  const A=ALLY.find(a=>a.type==type);
  P.coins-=TCOST;tib={type,x:FLOAT[type]?P.x+6:cam.x-20,gy:P.y+P.h,fy:P.y-20,vx:0,t:0,life:A.life,face:1,act:-1,txt:A.hi,st:120,k:0,jh:0};
  if(FLOAT[type])puff(P.x+6,P.y-16,14,type=='clone'?[C.bright,C.yel]:[C.cyan,C.white],2,22);
  Snd.sfx('1up');
- if(P.ch==1&&type!='claudio'){say('CLAUDIO È IN CALL! ARRIVA '+ANAME[type]+'!');tib.txt=type=='tib'?'Mi manda Claudio. Fattura a parte.':'Claudio è in call, faccio io! Merge?';}
+ if(type!=own){const nm=['Anzu-bis','Claudio','Il Mainframe'][P.ch];say(ANAME[own]+' È IN CALL! ARRIVA '+ANAME[type]+'!');tib.txt=type=='tib'?'Sono Tiberio: '+nm+' è in call. Fattura a parte.':'Sono Luigi: '+nm+' è in call. Merge?';}
  else say(ANAME[type]+(type=='claudio'?' AL COMANDO!':' IN CAMPO!'));
 }
 function updTib(){

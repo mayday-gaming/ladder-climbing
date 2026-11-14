@@ -49,3 +49,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 10
 
 > Lunghezza dei capelli si sono più corti però pensavo anche che del tuono diventa Bolt. I visi di tutti sono strani quel naso fatto male e disallinearo: possiamo trovare una soluzione migliore? Più armonica?
+
+## 11
+
+> I due consulenti possono capitare a chiunque dei personaggi : rinominarli in Tiberio e Luigi
