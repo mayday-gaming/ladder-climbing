@@ -57,3 +57,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 12
 
 > Team aureola diventa Halo Team e l’arma Paura diventa Fear. I consulenti hanno il naso fatto bene? Inoltre quando invochi l’arma speciale ti deve apparire una animazione a sé a tutto schermo che si ferma il gioco per 2 secondi dove compare quello che ti é uscito Tiberio, Luigi o l’arma scelta (Claudio, Anzu bis o mainframe)
+
+## 13
+
+> Tutto deve far ridere divertente e mai ripetitivo. Nella pagina della scelta degli eroi fai presente, con le loro immagini, dei consulenti. Migliora descrizioni e pannello scelta eroi. Descrizioni minimali ma simpatiche
