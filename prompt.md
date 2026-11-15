@@ -107,3 +107,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 24
 
 > Quello di asdrubale deve essere un livello completo. Poi se seleziono l alleato di June esce ancora Claudio quello é Penguin. Il pinguino I muove un po a scatti e male. Inoltre fai che per tutti il malus dell alleato é il loro capo che li segue arrabbiato o gentile e gli dice della reperibilità di rimanere ancora a lavoro della mezza giornata e ste cose così. I consulenti per tutti non appaiono più come bonus o malus alleato ma random nei livelli a supporto.
+
+## 25
+
+> Si può uccidere i villain anche saltando su

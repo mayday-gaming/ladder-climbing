@@ -635,6 +635,10 @@ function updEvt(){
  if(evt.t>=evt.dur)endEvt(true);
 }
 /* ================= ENEMIES ================= */
+const STOMPW=['SBAM!','PESTATO!','SCHIACCIATO!','BOING!','ARCHIVIATO!','TIMBRATO!'];
+function stomp(o){const p=P;if(p.dead||p.vy<=.4)return false;const fb=p.y+p.h-p.vy;if(fb>o.y+6)return false;
+ p.vy=(inp.jump?-6.4:-4.6);p.y=o.y-p.h;p.dj=true;p.inv=Math.max(p.inv,10);shake=Math.max(shake,3);Snd.sfx('jump');
+ puff(p.x+p.w/2,o.y,8,[C.white,C.yel],2,18,.05);pops.push({x:o.x-6,y:o.y-14,txt:STOMPW[(Math.random()*STOMPW.length)|0],life:40,c:C.yel2});return true;}
 function dmgEnemy(e,d){
  e.hp-=d;e.flash=5;P.sp=Math.min(100,P.sp+3*P.spRate);
  if(e.hp<=0){e.gone=true;if(Math.random()<.35)pops.push({x:e.x-10,y:e.y-18,txt:QUIPS[(Math.random()*QUIPS.length)|0],life:55,c:C.white});comboUp();addScore(e.pts,e.x,e.y-6);Snd.sfx('kill');puff(e.x+e.w/2,e.y+e.h/2,12,[C.white,C.yel,C.bright],2.6,26,.05);P.sp=Math.min(100,P.sp+6*P.spRate);
@@ -671,7 +675,7 @@ function updEnemies(){
    else e.ang=null;}
   else if(e.type=='router'){e.face=sgn(p.x-e.x)||1;const dx=Math.abs(p.x-e.x);if(e.t%105==60&&dx<300){ebul.push({x:e.x+5,y:e.y-6,w:6,h:6,vx:e.face*(1+dx/85),vy:-4.2,g:.15,kind:'spark',life:220});Snd.sfx('throw');}}
   else if(e.type=='proiettore'){e.face=sgn(p.x-e.x)||1;if(e.t%125==70&&Math.abs(p.x-e.x)<320){const sx=e.x+(e.face>0?e.w:-8),sy=e.y+3,a=Math.atan2(p.y+10-sy,p.x+6-sx);ebul.push({x:sx,y:sy,w:9,h:7,vx:Math.cos(a)*2.3*sp,vy:Math.sin(a)*2.3*sp,g:0,kind:'slide',life:220});Snd.sfx('throw');}}
-  if(!p.dead&&ov(p,e))hurt();
+  if(!p.dead&&ov(p,e)){if(stomp(e)){dmgEnemy(e,Math.max(4,e.hp));e.sq=10;}else hurt();}
  }
  ens=ens.filter(e=>!e.gone);
 }
@@ -753,7 +757,7 @@ function updBoss(){
   else if(b.st=='laser'){if(!p.dead&&p.y<b.y+17&&p.y+p.h>b.y+9)hurt();if(b.t>48){b.st='walk';b.t=0;}}
  }
  if(frame%190==0&&b.alpha>.6){const sh=BOSS[b.i].sh;pops.push({x:b.x-12,y:b.y-14,txt:sh[(Math.random()*sh.length)|0],life:75,c:C.white});}
- if(!p.dead&&b.alpha>.6&&ov(p,b))hurt();
+ if(!p.dead&&b.alpha>.6&&ov(p,b)){if(stomp(b))dmgBoss(6);else hurt();}
 }
 
 /* ================= UPDATE ================= */

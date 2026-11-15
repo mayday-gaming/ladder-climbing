@@ -51,6 +51,8 @@ Il quarto livello è **Piano 9 · L'Archivio Storico**, un livello completo tra 
 
 ## Nemici
 
+I nemici si possono anche **pestare saltandoci sopra**: muoiono subito e tu rimbalzi (tieni premuto salto per rimbalzare più in alto, e ti ritorna anche il doppio salto). Saltare in testa a un boss gli toglie un bel pezzo di vita. Se li tocchi di lato, invece, ti fanno male.
+
 Ogni piano ha i suoi, oltre al Foglio arrabbiato e alla Busta volante che girano ovunque:
 
 - **Piazzale** — cono stradale con le gambe, piccione bombardiere
