@@ -115,3 +115,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 26
 
 > I consulenti sono a forma di uccellino con la testa disegnata da te.
+
+## 27
+
+> I consulenti essendo uccellini volano. Poi June non può prendere troppi caffè altrimenti va in panico e scoppia il panico e fa cose random per un tot di secondi. Però può prendere l orzo preso in giro.
