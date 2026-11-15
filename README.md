@@ -1,4 +1,4 @@
-# BIG COMPANY — Scalata Manageriale
+# BIG COMPANY — Ladder Climbing
 
 Platform arcade 2D ambientato nella sede della Big Company. Scegli il tuo eroe, attraversa sei piani lunghi e tortuosi, sconfiggi sei boss, sopravvivi alle call improvvise tra un boss e l'altro e sali di livello in livello, dal 6° fino al Livello Super.
 
@@ -19,21 +19,21 @@ Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessun
 | B / Q | Lancia un ticket incident (bomba) |
 | C / K / Shift | Sinergia (quando la barra è piena) |
 | V / T | Chiama l'alleato (10 buoni pasto) |
-| F / E | Consulente: cambio Tiberio ↔ Luigi |
+| F / E | Stagisti: cambio Gian Daniele ↔ Giammario |
 | P / Esc | Pausa |
 | M | Musica on/off |
 
 ### Telefono
-Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, col Consulente, **SWAP**. Meglio in orizzontale.
+Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, con gli Stagisti, **SWAP**. Meglio in orizzontale.
 
 ## Gli eroi
 | Eroe | Arma | Abilità | Alleato |
 |---|---|---|---|
 | **Anzu** — uccello mesopotamico con testa pelata e occhiali | **FEAR** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
 | **Bolt** — polo bianca, occhiali rettangolari, il più veloce | **TUONO** (un tuono, punto e basta) | Scatto | **Claudio** — l'IA che gioca per te |
-| **June** — felpa blu scuro col cappuccio, barba folta, occhiali tondi: più cuori perde, più va in ansia | **PI GRECO**, lento ma pesante | Colpi pesanti | **Claudio** |
+| **June** — felpa blu scuro col cappuccio, barba folta, occhiali tondi: più cuori perde, più va in ansia | **PI GRECO**, lento ma pesante | Colpi pesanti | **Tux** — il pinguino di Linux: lancia comandi da terminale e ogni tanto esegue `sudo rm -rf /nemici` |
 | **Angry Man** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
-| **Il Consulente** — **Tiberio** e **Luigi**, si cambiano al volo. Parte da esterno: badge visitatore, un cuore in meno, arma più lenta e niente alleato. Prima deve superare **Il Colloquio** (livello speciale con le domande delle HR), poi diventa stagista, a tempo determinato dopo il primo boss e a tempo indeterminato dopo il secondo, quando recupera il cuore e ottiene Claudio. Al posto dei buoni pasto raccoglie **ore fatturate** | **SLIDE** / **MERGE** | Cambio al volo | Claudio, solo da assunto |
+| **Gli Stagisti** — **Gian Daniele** (alto, ciuffo impomatato, giacca beige troppo grande, cravattino rosso) e **Giammario** (basso, ricci neri, lentiggini, cuffie al collo, penne nel taschino), si cambiano al volo. Prima della scalata affrontano **Primo giorno** (trova la porta delle Risorse Umane) e **Il Colloquio** con la Dott.ssa Assunta Talenti; poi salgono da stagisti a tempo determinato e indeterminato, migliorando a ogni passo | **ESPRESSO** (tazzine bollenti in parabola) / **AEREOPLANINI** (aerei di carta che puntano i nemici); Sinergia: pioggia di tazzine o stormo di carta a 360° | Cambio al volo | **La Fotocopiatrice** — spara fogli, ogni tanto s'inceppa e poi riparte in fronte-retro |
 
 Per tutti gli eroi, ogni tanto al posto dell'alleato arriva a sorpresa uno dei due consulenti esterni: **Tiberio** (slide e post-it) o **Luigi** ("facciamo merge?"). Non sparano e non fanno danni: ti seguono, commentano e alla fine mandano la fattura.
 
@@ -42,6 +42,10 @@ Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione 
 All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
 
 Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
+
+## Asdrubale
+
+Dopo il terzo boss, per tutti, c'è un livello speciale con **Asdrubale**, il manager più anziano della Big Company: si lamenta di tutto (dei sistemi, dei giovani, della vita), ogni tanto si ferma e piange (e lì prende danno doppio), poi si arrabbia, carica e lancia mainframe in miniatura.
 
 ## Nemici
 
@@ -54,9 +58,9 @@ Ogni piano ha i suoi, oltre al Foglio arrabbiato e alla Busta volante che girano
 - **Piano nobile** — ficus permaloso, penna stilografica, timbratrice e proiettore
 - **Tetto** — cono, piccione, antenna che lancia scintille
 
-Quando al posto del tuo alleato arriva un consulente, il tuo eroe **si arrabbia** per tutto il tempo che il consulente resta in campo: faccia rossa, vena sulla fronte, fumo dalle orecchie, parolacce e colpi più rapidi.
+Per gli stagisti invece il consulente è un regalo: per 15 secondi **giochi tu** come Tiberio o Luigi, con slide e merge potenziati.
 
-I colori della Big Company sono **blu e rosso**.
+Quando al posto del tuo alleato arriva un consulente, il tuo eroe **si arrabbia** per tutto il tempo che il consulente resta in campo: faccia rossa, vena sulla fronte, fumo dalle orecchie, parolacce e colpi più rapidi.
 
 I **buoni pasto** servono a chiamare l'alleato (ne costano 10), danno 50 punti l'uno e caricano un po' la Sinergia.
 
