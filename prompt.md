@@ -111,3 +111,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 25
 
 > Si può uccidere i villain anche saltando su
+
+## 26
+
+> I consulenti sono a forma di uccellino con la testa disegnata da te.

@@ -37,7 +37,7 @@ Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINE
 
 Quando chiami l'alleato, **2 volte su 5 arriva invece il tuo capo**: ti segue, a volte gentile e a volte arrabbiato, e ti parla di reperibilità, straordinari, mezza giornata non approvata e ferie a settembre; ogni tanto ti blocca per "una cosa veloce" e ti rallenta. Intanto il tuo eroe si arrabbia: faccia rossa, vena sulla fronte, fumo, parolacce e colpi più rapidi.
 
-I consulenti esterni **Tiberio** e **Luigi** invece compaiono a caso nei livelli, di passaggio, e ti danno una mano: Tiberio lancia slide, Luigi lancia merge. Poi se ne vanno mandando la fattura.
+I consulenti esterni **Tiberio** e **Luigi**, due uccellini con la testa da consulente (Tiberio verde acqua con la cravatta gialla, Luigi verde col portatile), invece compaiono a caso nei livelli, di passaggio, e ti danno una mano volandoti accanto: Tiberio lancia slide, Luigi lancia merge. Poi se ne vanno mandando la fattura.
 
 Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito: fanfara se arriva il tuo alleato, trombone triste e "CHIAMATA FALLITA" se arriva il capo, con l'alleato mancato grigio e sotto la pioggia in un angolo.
 
