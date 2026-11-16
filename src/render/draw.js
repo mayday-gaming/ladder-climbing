@@ -11,13 +11,17 @@ import { drawEnding } from './screens/ending.js';
 import { drawBossIntro, drawIntro } from './screens/intro.js';
 import { drawBoot, drawGameOver, drawPause, drawPresent, drawSelect, drawTitle } from './screens/menus.js';
 import { drawBan, drawCut, drawEvc, drawTally } from './screens/overlays.js';
+import { drawControls } from './screens/controls.js';
 import { drawQuadro } from './screens/quadro.js';
 import { drawEvtFx, drawWorld } from './world.js';
 
 let transF = -999;
 function drawTrans() {
   if (G.state !== V.lastState) {
-    if (['select', 'intro', 'ending', 'title', 'gameover', 'quadro'].includes(G.state) && V.lastState !== '')
+    if (
+      ['select', 'howto', 'intro', 'ending', 'title', 'gameover', 'quadro'].includes(G.state) &&
+      V.lastState !== ''
+    )
       transF = V.TT;
     V.lastState = G.state;
   }
@@ -47,6 +51,7 @@ export function draw() {
   else if (G.state == 'present') drawPresent();
   else if (G.state == 'title') drawTitle();
   else if (G.state == 'select') drawSelect();
+  else if (G.state == 'howto') drawControls();
   else if (G.state == 'ending') drawEnding();
   else {
     if (G.evt && G.evt.id == 'flip' && G.state == 'play') {

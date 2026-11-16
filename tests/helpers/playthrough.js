@@ -44,6 +44,10 @@ export function playthrough(g, hero) {
   g.pick(hero);
   g.inp.tap();
   update();
+  report.howto = g.s.state === 'howto';
+  for (let i = 0; i < 40 && g.s.state === 'howto'; i++) update();
+  g.inp.tap();
+  update();
   report.pre.push(g.s.state);
   clearQuadro(report.pre);
 

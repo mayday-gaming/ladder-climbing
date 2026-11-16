@@ -11,6 +11,9 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 - Test unitari, di integrità dati, playthrough headless per tutti e 5 gli eroi ed e2e in Chromium.
 - ESLint, Prettier, EditorConfig, workflow CI su GitHub Actions.
 
+- Schermata animata **Come si gioca** dopo la scelta dell'eroe (tastiera o touch).
+- HUD legato alla scena: tinta del piano, ritratto vivo dell'eroe, dissolvenza quando il giocatore o il boss ci passano sotto.
+
 ### Modificato
 
 - Il gioco è diviso in 44 moduli ES (engine / data / game / render) invece di un unico script.

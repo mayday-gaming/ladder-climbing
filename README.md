@@ -44,7 +44,7 @@ I consulenti esterni **Tiberio** e **Luigi**, due uccellini con la testa da cons
 
 Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito: fanfara se arriva il tuo alleato, trombone triste e "CHIAMATA FALLITA" se arriva il capo, con l'alleato mancato grigio e sotto la pioggia in un angolo.
 
-All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
+All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Dopo aver scelto l'eroe compare **Come si gioca**: una schermata animata con i comandi (tastiera o touch, in base al dispositivo) in cui l'eroe scelto mostra a turno ogni mossa. L'HUD prende il colore del piano in cui ti trovi, mostra il ritratto dell'eroe (che si agita, si arrabbia o lampeggia di rosso quando è all'ultimo cuore) e si fa trasparente quando ci passi sotto tu o il boss. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
 
 Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
 

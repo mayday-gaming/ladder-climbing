@@ -23,6 +23,7 @@ for (const [h, name] of Object.entries(HEROES)) {
     assert.equal(r.crash, undefined, r.crash);
     assert.deepEqual(r.canvasErrors, []);
     assert.equal(r.nan, null, 'non-finite entity position: ' + r.nan);
+    assert.ok(r.howto, 'controls screen should follow hero selection');
     assert.equal(r.levels.length, 7);
     r.levels.forEach((l, i) => assert.equal(l.states[0], 'tally', `level ${i} did not end in tally`));
     assert.equal(r.end.state, 'ending');

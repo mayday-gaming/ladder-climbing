@@ -138,6 +138,13 @@ function step() {
         if (edges.tap && edges.tap.y > 26 && edges.tap.y < 190)
           G.selCh = HORD[clamp(Math.floor((edges.tap.x - 6) / 93.6), 0, 4)];
         Snd.sfx('power');
+        setState('howto');
+      }
+      break;
+    case 'howto':
+      Snd.play('title', { tr: 3, bpm: S_SEL });
+      if (G.st > 30 && edges.press) {
+        Snd.sfx('power');
         newGame();
       }
       break;
