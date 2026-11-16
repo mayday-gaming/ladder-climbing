@@ -11,7 +11,7 @@ export const PAL_T = {
   sole: '#2f6bff',
 };
 export const PAL_G = {
-  skin: '#f4c8a4',
+  skin: '#f0842e',
   shirt: '#2c3d80',
   shirt2: '#18224f',
   sleeve: '#283873',

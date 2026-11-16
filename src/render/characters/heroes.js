@@ -1,4 +1,4 @@
-/** @file Hero renderers (Anzu, Bolt, June + fox tail, Angry Man, interns). */
+/** @file Hero renderers (Anzu, Bolt, August the fox, Angry Man, interns). */
 import { PAL_C, PAL_G, PAL_GD, PAL_GM, PAL_T } from '../../data/palettes.js';
 import {
   TX,
@@ -210,6 +210,36 @@ function foxTail(x, y, face, run, air, vy, k) {
   ctx.lineWidth = 0.8 * k;
   ctx.stroke();
 }
+/** Pointed fox ears with dark tips and pale inner fur; they droop with anxiety. */
+function foxEars(hx, hy, anx, ang) {
+  const droop = anx * 0.5 - (ang ? 0.25 : 0),
+    tw = Math.sin(V.TT * 0.09) * 0.08;
+  const ear = (bx, by, a, h) => {
+    ctx.save();
+    ctx.translate(bx, by);
+    ctx.rotate(a);
+    pth([-2.3, 0, -0.3, -h, 2.3, 0], lgr(0, -h, 0, 0, '#c9540f', '#f0842e'), OL, 0.7);
+    pth([-1.2, -0.4, -0.3, -h + 2.2, 1.2, -0.4], '#ffe1c4');
+    pth([-0.95, -h + 2.1, -0.3, -h, 0.55, -h + 2.1], '#2a1408');
+    ctx.restore();
+  };
+  ear(hx - 3, hy - 4.4, -0.42 - droop + tw, 6.6);
+  ear(hx + 2.2, hy - 5.3, 0.3 + droop * 0.8 - tw, 6.2);
+}
+/** Fox muzzle: cream snout, glossy black nose, whiskers. */
+function foxSnout(hx, hy) {
+  pth(
+    [hx + 1.6, hy + 0.2, hx + 5.4, hy + 0.9, hx + 8.6, hy + 2.6, hx + 6.2, hy + 4.2, hx + 2.4, hy + 4.4],
+    lgr(hx + 1, hy, hx + 8, hy + 4, '#fff6ea', '#f0d8bf'),
+    OL,
+    0.6,
+  );
+  ln(hx + 2.2, hy + 0.5, hx + 6, hy + 1.3, 'rgba(240,132,46,.55)', 0.9);
+  el(hx + 8.3, hy + 2.5, 1.05, 0.85, '#1a0e08', OL, 0.3);
+  el(hx + 8.5, hy + 2.15, 0.38, 0.22, 'rgba(255,255,255,.7)');
+  for (let i = -1; i <= 1; i++)
+    ln(hx + 6.4, hy + 3 + i * 0.5, hx + 10.4, hy + 2.6 + i * 1.3, 'rgba(255,255,255,.75)', 0.25);
+}
 export function drawGiugno(x, y, p, r, sc) {
   foxTail(
     x,
@@ -270,6 +300,7 @@ export function drawGiugno(x, y, p, r, sc) {
         0.8,
       );
       crv([hx - 6, hy + 6.8, hx - 6.5, hy + 3, hx - 5, hy + 1.8, hx - 3, hy + 4], null, '#4a62b0', 0.5);
+      foxEars(hx, hy, anx, ang);
       headBase(hx, hy, PAL_G.skin);
       if (anx > 0 && !ang) {
         ctx.save();
@@ -308,11 +339,11 @@ export function drawGiugno(x, y, p, r, sc) {
           hx - 3.9,
           hy + 0.6,
         ],
-        lgr(0, hy - 7, 0, hy, '#3a2818', '#24170e'),
+        lgr(0, hy - 7, 0, hy, '#e06a1e', '#b8500f'),
         OL,
         0.7,
       );
-      ln(hx - 2, hy - 6.1, hx + 2.4, hy - 6.2, 'rgba(255,255,255,.18)', 0.7);
+      ln(hx - 2, hy - 6.1, hx + 2.4, hy - 6.2, 'rgba(255,220,170,.45)', 0.7);
       crv(
         [
           hx - 3.9,
@@ -340,14 +371,14 @@ export function drawGiugno(x, y, p, r, sc) {
           hx - 2.6,
           hy + 0.3,
         ],
-        lgr(0, hy, 0, hy + 7.3, '#4a3020', '#2a190f'),
+        lgr(0, hy, 0, hy + 7.3, '#fffaf2', '#ecd6bd'),
         OL,
         0.7,
       );
       for (let i = 0; i < 5; i++) {
         const bx = hx - 2.4 + i * 1.6,
           by = hy + 3.6 + Math.sin(i * 1.7) * 0.9;
-        ln(bx, by, bx + 0.35, by + 0.9, 'rgba(255,220,180,.2)', 0.35);
+        ln(bx, by, bx + 0.35, by + 0.9, 'rgba(190,130,80,.35)', 0.35);
       }
       if (p.shootT > 0) el(hx + 3.6, hy + 4.3, 1.15, 0.9, '#6a1f22', OL, 0.4);
       else if (ang) {
@@ -361,25 +392,7 @@ export function drawGiugno(x, y, p, r, sc) {
         ctx.lineWidth = 0.6;
         ctx.stroke();
       } else ln(hx + 2.6, hy + 4.2, hx + 4.5, hy + 4.1, '#7a2f22', 0.65);
-      crv(
-        [
-          hx + 1.6,
-          hy + 3.5,
-          hx + 3.2,
-          hy + 2.5,
-          hx + 5.2,
-          hy + 2.6,
-          hx + 6.6,
-          hy + 3.6,
-          hx + 4.4,
-          hy + 3.5,
-          hx + 3,
-          hy + 3.8,
-        ],
-        '#5a3a24',
-        OL,
-        0.45,
-      );
+      foxSnout(hx, hy);
       const bl = blinkOn(2);
       if (anx > 0.3 && !ang) {
         const dx = Math.sin(V.TT * 0.35) * 0.35 * anx;
@@ -397,7 +410,6 @@ export function drawGiugno(x, y, p, r, sc) {
         ln(hx - 0.3, hy - 3 + dn, hx + 2.5, hy - 3.3 - u, '#2a1a10', 0.85);
         ln(hx + 3.8, hy - 3.3 - u, hx + 5.4, hy - 3 + dn, '#2a1a10', 0.85);
       }
-      noseP(hx, hy, PAL_G.skin);
       specs(hx, hy, true);
       if (ang) angerFx(hx, hy, 5.2, 5.6);
       else if (anx > 0) {

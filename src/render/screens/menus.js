@@ -287,11 +287,18 @@ export function drawTitle() {
   pth([112, -6, 124, 0, 112, 6], '#1b3fa0', OL, 0.8);
   TX('LADDER CLIMBING', 0, 0.8, 11, '#ffe95c', { w: 700, sk: '#0a1436', sw: 1.8 });
   ctx.restore();
-  TX('Anzu · Bolt · June · Angry Man · gli Stagisti · sei boss · eventi folli', W / 2, 133, 6.4, '#e6ecff', {
-    b: 1,
-    w: 800,
-    sh: true,
-  });
+  TX(
+    'Anzu · Bolt · August · Angry Man · gli Stagisti · sei boss · eventi folli',
+    W / 2,
+    133,
+    6.4,
+    '#e6ecff',
+    {
+      b: 1,
+      w: 800,
+      sh: true,
+    },
+  );
   const pk = 1 + 0.06 * Math.sin(V.TT * 0.12);
   ctx.save();
   ctx.translate(W / 2, 160);

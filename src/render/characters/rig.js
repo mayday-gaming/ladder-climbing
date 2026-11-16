@@ -108,6 +108,7 @@ function lightC(c) {
     {
       '#f2c39b': '#ffe0c4',
       '#f4c8a4': '#ffe4cc',
+      '#f0842e': '#ffb46a',
       '#efbd96': '#ffdcc0',
       '#7a4a2a': '#9a6a48',
       '#f1e6ff': '#ffffff',
