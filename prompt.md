@@ -135,3 +135,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 31
 
 > L’HUD miglioralo rispetto alla scena. Inoltre dopo che si sceglie il personaggio fammi apparire una schermata con i comandi fatta bene animata bella carina
+
+## 32
+
+> Quando mi fai vedere sinergia alleato etc fammele vedere delle animazioni carine.. alleato anche legato ovviamente a quello del personaggio
