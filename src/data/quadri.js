@@ -1,7 +1,7 @@
 /** @file Interstitial "quadri" scenes: PRIMO, COLLOQUIO, ASDRUBALE and friends. */
 export const ORZOQ = [
-  'Orzo? Seriamente, June?',
-  'Un orzo in tazza grande per June!',
+  'Orzo? Seriamente, August?',
+  'Un orzo in tazza grande per August!',
   'Il decaffeinato dei campioni.',
   'Orzo… quello della nonna?',
   'Bolt ride ancora.',

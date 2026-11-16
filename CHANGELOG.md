@@ -6,7 +6,7 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 
 ### Aggiunto
 
-- June ha una lunga coda di volpe animata (segue corsa, salto e caduta).
+- June diventa **August**, una volpe: orecchie a punta, muso, guance bianche e lunga coda animata.
 - Pipeline di build con esbuild: sorgenti in `src/`, `index.html` generato come file unico.
 - Test unitari, di integrità dati, playthrough headless per tutti e 5 gli eroi ed e2e in Chromium.
 - ESLint, Prettier, EditorConfig, workflow CI su GitHub Actions.

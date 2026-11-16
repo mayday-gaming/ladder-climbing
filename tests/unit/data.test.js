@@ -24,8 +24,8 @@ test('every hero ally type exists with name, behaviour and cut-in', () => {
   }
 });
 
-test("June's ally is the Penguin, not Claudio", () => {
-  const june = CH.findIndex(c => c.name === 'JUNE');
+test("August's ally is the Penguin, not Claudio", () => {
+  const june = CH.findIndex(c => c.name === 'AUGUST');
   assert.equal(CH[june].ally, 'PENGUIN');
   assert.equal(ALLY_OF[june], 'tux');
 });

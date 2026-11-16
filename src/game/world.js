@@ -211,7 +211,7 @@ export function updPickups() {
             k: 0,
             t: 0,
             txt: 'PANICO DA CAFFÈ!',
-            sub: 'Troppi caffè: June fa cose a caso per 6 secondi',
+            sub: 'Troppi caffè: August fa cose a caso per 6 secondi',
           };
         } else
           G.pops.push({

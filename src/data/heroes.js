@@ -66,14 +66,14 @@ export const CH = [
 ];
 CH.push(
   {
-    name: 'JUNE',
-    short: 'JUNE',
-    desc: 'Felpa, barba e un pi greco',
+    name: 'AUGUST',
+    short: 'AUGUST',
+    desc: 'Volpe in felpa con pi greco',
     ds: [
       "Calcola tutto. Anche l'ansia.",
       'Felpa col cappuccio: zona concentrazione.',
       '3,14 problemi al secondo.',
-      'Barba folta, nervi meno.',
+      'Furbo come una volpe, ansioso come un umano.',
     ],
     wep: 'PI GRECO',
     wepBtn: 'π',
@@ -83,7 +83,7 @@ CH.push(
     abil: 'COLPI PESANTI',
     ally2: 'Il pinguino di Linux',
     spd: 2.2,
-    tip: 'Il π fa più male ma è più lento · più cuori perde, più June va in ansia · 10 buoni = Penguin (o il capo…)',
+    tip: 'Il π fa più male ma è più lento · più cuori perde, più August va in ansia · 10 buoni = Penguin (o il capo…)',
     W: ['', 'π 1.0', 'π 2.0', 'π TRIPLO', 'π MAX'],
   },
   {
