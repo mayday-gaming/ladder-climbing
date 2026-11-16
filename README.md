@@ -8,32 +8,35 @@ Grafica vettoriale in alta definizione disegnata interamente in codice (nessuna 
 
 ## Come giocare
 
-Apri `index.html` in un browser (desktop o telefono). Nessuna dipendenza, nessuna build.
+Apri `index.html` in un browser (desktop o telefono). Il file è già compilato e autosufficiente: per giocare non serve installare nulla.
 
 ### Comandi tastiera
-| Tasto | Azione |
-|---|---|
-| ← → / A D | Muovi |
+
+| Tasto          | Azione                                                                   |
+| -------------- | ------------------------------------------------------------------------ |
+| ← → / A D      | Muovi                                                                    |
 | Z / Spazio / ↑ | Salta (Anzu: in aria premi ancora per volare, tieni premuto per planare) |
-| X / J | Spara |
-| B / Q | Lancia un ticket incident (bomba) |
-| C / K / Shift | Sinergia (quando la barra è piena) |
-| V / T | Chiama l'alleato (10 buoni pasto) |
-| F / E | Stagisti: cambio Gian Daniele ↔ Giammario |
-| P / Esc | Pausa |
-| M | Musica on/off |
+| X / J          | Spara                                                                    |
+| B / Q          | Lancia un ticket incident (bomba)                                        |
+| C / K / Shift  | Sinergia (quando la barra è piena)                                       |
+| V / T          | Chiama l'alleato (10 buoni pasto)                                        |
+| F / E          | Stagisti: cambio Gian Daniele ↔ Giammario                                |
+| P / Esc        | Pausa                                                                    |
+| M              | Musica on/off                                                            |
 
 ### Telefono
+
 Comandi touch a schermo: croce ◀ ▶, **SALTA**, **SPARA**, **TICKET**, **SINERGIA**, **ALLEATO** e, con gli Stagisti, **SWAP**. Meglio in orizzontale.
 
 ## Gli eroi
-| Eroe | Arma | Abilità | Alleato |
-|---|---|---|---|
-| **Anzu** — uccello mesopotamico con testa pelata e occhiali | **FEAR** | Vola | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso |
-| **Bolt** — polo bianca, occhiali rettangolari, il più veloce | **TUONO** (un tuono, punto e basta) | Scatto | **Claudio** — l'IA che gioca per te |
-| **June** — felpa blu scuro col cappuccio, barba folta, occhiali tondi: più cuori perde, più va in ansia. Non deve esagerare col caffè: al terzo caffè va nel **panico** e per 6 secondi corre, salta e spara a caso; l'**orzo** invece cura senza caffeina (ma tutti la prendono in giro) | **PI GRECO**, lento ma pesante | Colpi pesanti | **Penguin** — il pinguino di Linux: la segue sgambettando (e scivolando sulla pancia), lancia comandi da terminale e ogni tanto esegue `sudo rm -rf /nemici` |
-| **Angry Man** — pelato, camicia a quadretti | **PAROLACCE** (censurate, ma fanno malissimo) | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo |
-| **Gli Stagisti** — **Gian Daniele** (alto, ciuffo impomatato, giacca beige troppo grande, cravattino rosso) e **Giammario** (basso, ricci neri, lentiggini, cuffie al collo, penne nel taschino), si cambiano al volo. Prima della scalata affrontano **Primo giorno** (trova la porta delle Risorse Umane) e **Il Colloquio** con la Dott.ssa Assunta Talenti; poi salgono da stagisti a tempo determinato e indeterminato, migliorando a ogni passo | **ESPRESSO** (tazzine bollenti in parabola) / **AEREOPLANINI** (aerei di carta che puntano i nemici); Sinergia: pioggia di tazzine o stormo di carta a 360° | Cambio al volo | **La Fotocopiatrice** — spara fogli, ogni tanto s'inceppa e poi riparte in fronte-retro |
+
+| Eroe                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Arma                                                                                                                                                        | Abilità             | Alleato                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Anzu** — uccello mesopotamico con testa pelata e occhiali                                                                                                                                                                                                                                                                                                                                                                                                  | **FEAR**                                                                                                                                                    | Vola                | **Anzu-bis** — un altro Anzu che vola e spara con lui, perché Anzu basta a sé stesso                                                                         |
+| **Bolt** — polo bianca, occhiali rettangolari, il più veloce                                                                                                                                                                                                                                                                                                                                                                                                 | **TUONO** (un tuono, punto e basta)                                                                                                                         | Scatto              | **Claudio** — l'IA che gioca per te                                                                                                                          |
+| **August** (ex June) — una volpe in felpa blu col cappuccio e occhiali tondi: orecchie a punta che si abbassano quando è in ansia, muso affusolato con baffi e una lunga, bellissima **coda di volpe** che ondeggia mentre corre e salta: più cuori perde, più va in ansia. Non deve esagerare col caffè: al terzo caffè va nel **panico** e per 6 secondi corre, salta e spara a caso; l'**orzo** invece cura senza caffeina (ma tutti lo prendono in giro) | **PI GRECO**, lento ma pesante                                                                                                                              | Colpi pesanti       | **Penguin** — il pinguino di Linux: lo segue sgambettando (e scivolando sulla pancia), lancia comandi da terminale e ogni tanto esegue `sudo rm -rf /nemici` |
+| **Angry Man** — pelato, camicia a quadretti                                                                                                                                                                                                                                                                                                                                                                                                                  | **PAROLACCE** (censurate, ma fanno malissimo)                                                                                                               | Turpiloquio molesto | **Il Mainframe** — insulta i nemici in informatichese (SEGFAULT!, ABEND S0C7!) e ogni tanto va in KERNEL PANIC colpendo tutto lo schermo                     |
+| **Gli Stagisti** — **Gian Daniele** (alto, ciuffo impomatato, giacca beige troppo grande, cravattino rosso) e **Giammario** (basso, ricci neri, lentiggini, cuffie al collo, penne nel taschino), si cambiano al volo. Prima della scalata affrontano **Primo giorno** (trova la porta delle Risorse Umane) e **Il Colloquio** con la Dott.ssa Assunta Talenti; poi salgono da stagisti a tempo determinato e indeterminato, migliorando a ogni passo        | **ESPRESSO** (tazzine bollenti in parabola) / **AEREOPLANINI** (aerei di carta che puntano i nemici); Sinergia: pioggia di tazzine o stormo di carta a 360° | Cambio al volo      | **La Fotocopiatrice** — spara fogli, ogni tanto s'inceppa e poi riparte in fronte-retro                                                                      |
 
 Quando chiami l'alleato, **2 volte su 5 arriva invece il tuo capo**: ti segue, a volte gentile e a volte arrabbiato, e ti parla di reperibilità, straordinari, mezza giornata non approvata e ferie a settembre; ogni tanto ti blocca per "una cosa veloce" e ti rallenta. Intanto il tuo eroe si arrabbia: faccia rossa, vena sulla fronte, fumo, parolacce e colpi più rapidi.
 
@@ -41,7 +44,7 @@ I consulenti esterni **Tiberio** e **Luigi**, due uccellini con la testa da cons
 
 Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione a tutto schermo che ti presenta chi è uscito: fanfara se arriva il tuo alleato, trombone triste e "CHIAMATA FALLITA" se arriva il capo, con l'alleato mancato grigio e sotto la pioggia in un angolo.
 
-All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
+All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Dopo aver scelto l'eroe compare **Come si gioca**: una schermata animata con i comandi (tastiera o touch, in base al dispositivo) in cui l'eroe scelto mostra a turno ogni mossa con una mini-animazione: corsa con scie, salto che schiaccia un nemico, il colpo della sua arma, la Sinergia che si carica ed esplode, la telefonata che fa arrivare il **suo** alleato, il ticket che fa saltare tutto, il cambio degli stagisti e la pausa caffè. L'HUD prende il colore del piano in cui ti trovi, mostra il ritratto dell'eroe (che si agita, si arrabbia o lampeggia di rosso quando è all'ultimo cuore) e si fa trasparente quando ci passi sotto tu o il boss. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
 
 Ogni livello si apre con una schermata di presentazione "eroe VS boss". Quando la Sinergia è al massimo te lo dice una scritta al centro; quando la scateni compare il tuo eroe in grande, ogni volta in una posa diversa.
 
@@ -62,14 +65,14 @@ Ogni piano ha i suoi, oltre al Foglio arrabbiato e alla Busta volante che girano
 - **Piano nobile** — ficus permaloso, penna stilografica, timbratrice e proiettore
 - **Tetto** — cono, piccione, antenna che lancia scintille
 
-
-
 I **buoni pasto** servono a chiamare l'alleato (ne costano 10), danno 50 punti l'uno e caricano un po' la Sinergia.
 
 Tutti hanno i **ticket incident**: bombe ad area che fanno molto male a nemici e boss. Si parte con 3, se ne trovano lungo i piani.
 
 ## Eventi aziendali
+
 Ogni tanto, all'improvviso:
+
 - **Pioggia di buoni pasto** — piovono buoni, caffè e ticket
 - **Prova di evacuazione** — i nemici scappano urlando
 - **Riunione fiume** — tutto al rallentatore
@@ -81,10 +84,13 @@ Ogni tanto, all'improvviso:
 Con le combo partono le buzzword (SINERGICO!, DISRUPTIVE!, KPI SUPERATI!…) e i nemici sconfitti se ne vanno con una scusa ("Vado in ferie!", "Apro un ticket!").
 
 ## Il percorso
+
 Ogni piano è lungo e tortuoso: scale di mensole, buche, un nastro trasportatore di pratiche che va all'indietro, montacarichi orizzontali e verticali, colline di schedari, il trampolino di carriera e una pausa caffè obbligatoria che ridà un cuore e fa da checkpoint. Lungo la strada, cartelli aziendali molto utili ("Ascensore guasto dal 1998", "Si prega di non nutrire i consulenti"…).
 
 ## Livelli speciali di sopravvivenza
+
 Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordine casuale. Bisogna resistere 25 secondi: ogni colpo costa un cuore (mai l'ultimo) e abbassa il bonus.
+
 - **Call improvvisa** — inviti di calendario e fumetti "Mi senti?" / "Sei in muto!"
 - **Emergenza in sala server** — palle di fuoco e scintille
 - **Tempesta di mail all-hands** — qualcuno ha fatto "Rispondi a tutti"
@@ -92,6 +98,7 @@ Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordin
 - **Audit a sorpresa** — faldoni e schede di censimento
 
 ## Livelli e boss
+
 1. **Piano terra · Il Piazzale** — Ubaldo, il Censore della Piattaforma
 2. **Piano 3 · La Sala Server** — Camomillo, il Maestro Zen delle Tastiere
 3. **Piano 7 · L'Open Space** — Tornello, il Guardiano della Tutela dell'Impresa
@@ -101,6 +108,7 @@ Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordin
 7. **Il Tetto · Sotto l'insegna** — Geraldo, la Creatura del Top Management
 
 ## Potenziamenti
+
 - **Chip arma**: 1.0 → 2.0 → TRIPLO → MAX (colpi perforanti)
 - **Caffè**: +1 cuore
 - **Buoni pasto**: punti, carica Sinergia, valuta per l'alleato
@@ -108,13 +116,62 @@ Tra un boss e l'altro scatta un'emergenza a sorpresa, una per partita e in ordin
 - **Ferie**: vita extra
 - Ogni promozione dà un benefit: cuori extra, ali potenziate (Anzu) o doppio salto (gli altri), Sinergia più rapida.
 
+## Sviluppo
+
+Il codice sorgente vive in `src/` come moduli ES; `index.html` nella root è l'**artefatto di build** (un solo file con JS e font incorporati), così il gioco resta giocabile aprendolo direttamente o da GitHub Pages.
+
+```bash
+npm ci             # dipendenze di sviluppo (esbuild, eslint, prettier, playwright-core)
+npm run dev        # rebuild automatico a ogni modifica
+npm run build      # src/ → dist/index.html + index.html
+npm run lint       # ESLint (no-undef, no-unused-vars…)
+npm run format     # Prettier
+npm test           # unit + playthrough headless dei 5 eroi
+npm run test:e2e   # playthrough nel vero Chromium (CHROME_PATH se serve)
+npm run check      # tutto quanto, come in CI
+```
+
+### Architettura
+
+```
+src/
+  main.js            entry point: input, record, canvas, loop
+  debug.js           hook window.__g usato dai test
+  engine/            config, math, canvas (primitive vettoriali), audio, input
+  data/              contenuti puri: eroi, alleati, livelli, boss, eventi, quadri, palette
+  game/              logica: stato condiviso G, player, nemici, boss, alleati, eventi, loop 60 Hz
+  render/            disegno: scenari, personaggi (rig, eroi, alleati, png), HUD, schermate
+  index.html         template (CSS, pad touch, segnaposto per JS e font)
+assets/fonts/        woff2 incorporati in build
+scripts/build.mjs    esbuild → bundle IIFE minificato → HTML unico
+tests/
+  unit/              funzioni pure e integrità dei dati
+  integration/       il gioco gira in Node con un DOM/canvas finto e viene finito con ogni eroe
+  e2e/               stesso playthrough in Chromium sul file compilato
+```
+
+Regole:
+
+- `data/` non importa nulla da `game/` o `render/`; `render/` legge lo stato, non lo modifica.
+- Lo stato mutabile condiviso sta in tre oggetti espliciti: `G` (partita, `game/state.js`), `V` (vista/interpolazione, `render/interp.js`), `edges` (input a fronte, `engine/input.js`).
+- Il canvas finto dei test lancia errori dove li lancerebbe Chrome (gradienti non finiti, raggi negativi), così i NaN emergono in CI.
+- Commit in [Conventional Commits](https://www.conventionalcommits.org/); `main` = rilasci, `develop` = integrazione.
+- La CI (GitHub Actions) esegue lint, formattazione, test, build e verifica che `index.html` sia aggiornato rispetto a `src/`.
+
+### Perché non Ebitengine (per ora)
+
+Ebitengine (Go) darebbe tipi forti, binari nativi e store mobili, ma qui costerebbe più di quanto rende: circa il 60% del codice è grafica vettoriale Canvas 2D (curve, gradienti, clip) che andrebbe riscritta a mano o rasterizzata in sprite; la build WebAssembly pesa diversi MB e parte più lenta sul telefono; si perderebbe il file HTML unico. Ha senso se in futuro servono app native o multiplayer: l'architettura a moduli (dati / logica / render separati) rende quel porting molto più semplice.
+
 ## Punteggio
+
 Combo fino a x8, bonus tempo / cuori / combo a fine piano, vita extra ogni 40.000 punti, record salvato nel browser.
 
 ## Crediti
+
 - Concept, personaggi e direzione: Luca — vedi i prompt originali in [`prompt.md`](prompt.md)
 - Codice, grafica e musica: generati con Claude
 - Font: Fredoka e Nunito (SIL Open Font License 1.1), incorporati nel file
 
 ## Licenza
+
 [MIT](LICENSE)

@@ -119,3 +119,23 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 27
 
 > I consulenti essendo uccellini volano. Poi June non può prendere troppi caffè altrimenti va in panico e scoppia il panico e fa cose random per un tot di secondi. Però può prendere l orzo preso in giro.
+
+## 28
+
+> ha senso utilizzare questo Ebitengine migliorando il gioco? se lo fai riorganizza tutto in maniera perfetto e precisa nel branch develop. inoltre unica accortezza a June mettigli una lunga e bellissima coda di volpe! Inoltre riorganizza il codice testandolo etc. etc. rispetto a tutte le buone pratiche di ingegneria del software
+
+## 29
+
+> June fallo con fattezze da volpe
+
+## 30
+
+> June diventa August
+
+## 31
+
+> L’HUD miglioralo rispetto alla scena. Inoltre dopo che si sceglie il personaggio fammi apparire una schermata con i comandi fatta bene animata bella carina
+
+## 32
+
+> Quando mi fai vedere sinergia alleato etc fammele vedere delle animazioni carine.. alleato anche legato ovviamente a quello del personaggio

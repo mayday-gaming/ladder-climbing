@@ -1,0 +1,28 @@
+{
+  "name": "big-company-ladder-climbing",
+  "version": "1.1.0",
+  "description": "BIG COMPANY — Ladder Climbing: arcade platformer in a single HTML file (canvas 2D, zero runtime deps).",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test \"tests/unit/**/*.test.js\" \"tests/integration/**/*.test.js\"",
+    "test:e2e": "node --test \"tests/e2e/**/*.test.js\"",
+    "check": "npm run lint && npm run format:check && npm test && npm run build && git diff --exit-code index.html"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "playwright-core": "^1.48.0",
+    "prettier": "^3.3.0"
+  }
+}
