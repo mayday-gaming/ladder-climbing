@@ -1,14 +1,93 @@
 /** @file HUD: score, lives, synergy and status bars. */
 import { ANAME } from '../data/allies.js';
 import { TCOST } from '../data/heroes.js';
-import { TX, ci, ctx, el, fs, glass, glow, lgr, rect, rr, rrPath, tw } from '../engine/canvas.js';
+import { TX, ci, ctx, el, fs, glow, lgr, rect, rr, rrPath, tw } from '../engine/canvas.js';
 import { H, OL, W } from '../engine/config.js';
 import { touchy } from '../engine/input.js';
 import { E, clamp } from '../engine/math.js';
 import { allyOf, cf, rankOf } from '../game/progression.js';
 import { mult } from '../game/session.js';
+import { ORD } from '../data/levels.js';
 import { G } from '../game/state.js';
 import { V } from './interp.js';
+import { heroAt } from './screens/menus.js';
+
+/** Per-theme HUD tint (dark glass) and accent, so the HUD belongs to each floor. */
+const THEME = [
+  { g: '10,22,64', a: '#ffd500' }, // piazzale, night
+  { g: '8,40,64', a: '#5fe6d6' }, // open space
+  { g: '52,16,34', a: '#ffcf6a' }, // piano nobile
+  { g: '24,14,56', a: '#c9a2ff' }, // tetto
+  { g: '4,34,34', a: '#66ffb0' }, // sala server
+  { g: '30,22,62', a: '#ffd500' }, // sale riunioni
+  { g: '50,34,16', a: '#ffcf8a' }, // archivio
+];
+const fade = { l: 1, c: 1, r: 1 };
+function theme() {
+  const th = G.LV && G.LV.th != null ? G.LV.th : ORD[G.lvl] || 0;
+  return THEME[th] || THEME[0];
+}
+/** Fades a HUD block when the player or the boss is underneath it. */
+function fadeFor(key, x0, x1) {
+  const p = G.P,
+    under = (sx, sy, w) => sx + w > x0 && sx < x1 && sy < 58;
+  let hit = p && under(p.x - V.camX, p.y, p.w || 12);
+  if (!hit && G.boss && G.bossOn) hit = under(G.boss.x - V.camX, G.boss.y, G.boss.w);
+  fade[key] += ((hit ? 0.32 : 1) - fade[key]) * 0.12;
+  return fade[key];
+}
+function hudGlass(x, y, w, h, r, T) {
+  rr(x, y + 1.5, w, h, r, 'rgba(0,0,0,.25)');
+  rr(
+    x,
+    y,
+    w,
+    h,
+    r,
+    lgr(0, y, 0, y + h, 'rgba(' + T.g + ',.72)', 'rgba(' + T.g + ',.5)'),
+    'rgba(255,255,255,.16)',
+    0.7,
+  );
+  ctx.save();
+  ctx.beginPath();
+  rrPath(x, y, w, h, r);
+  ctx.clip();
+  rect(x, y, w, h * 0.45, lgr(0, y, 0, y + h * 0.45, 'rgba(255,255,255,.12)', 'rgba(255,255,255,0)'));
+  rect(x, y + h - 1, w, 1, T.a);
+  ctx.restore();
+}
+/** Round live portrait of the hero: mood follows hearts, anger and panic. */
+function portrait(cx, cy, r, p, T) {
+  const low = p.hp <= 1 && !p.dead;
+  ci(cx, cy + 1.2, r, 'rgba(0,0,0,.3)');
+  ci(cx, cy, r, lgr(0, cy - r, 0, cy + r, 'rgba(' + T.g + ',1)', '#050a24'));
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r - 0.6, 0, Math.PI * 2);
+  ctx.clip();
+  heroAt(p.ch, p.form || 0, cx - 1, cy + (p.ch === 0 ? 30 : 34), 1.25, {
+    hp: p.hp,
+    maxHp: p.maxHp,
+    angry: p.angry,
+    panicT: p.panicT,
+    caf: p.caf,
+    face: 1,
+    sp: p.sp,
+    aura: p.aura,
+  });
+  if (low) rect(cx - r, cy - r, r * 2, r * 2, 'rgba(255,40,60,' + (0.18 + 0.12 * Math.sin(V.TT * 0.2)) + ')');
+  ctx.restore();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = low ? '#ff4d5e' : T.a;
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r + 1.2, 0, Math.PI * 2);
+  ctx.strokeStyle = OL;
+  ctx.lineWidth = 0.6;
+  ctx.stroke();
+}
 
 function heartV(x, y, s, on, pulse) {
   ctx.save();
@@ -42,40 +121,54 @@ export function drawHUD() {
     tch2 = touchy();
   V.dispScore += (G.score - V.dispScore) * 0.18;
   if (Math.abs(G.score - V.dispScore) < 1) V.dispScore = G.score;
-  glass(4, 4, 128, 27, 7, 0.55);
+  const T = theme();
+  rect(0, 0, W, 40, lgr(0, 0, 0, 40, 'rgba(' + T.g + ',.55)', 'rgba(' + T.g + ',0)'));
+  ctx.globalAlpha = fadeFor('l', 0, 136);
+  hudGlass(18, 5, 112, 25, 8, T);
+  portrait(18, 17.5, 13.5, p, T);
   for (let i = 0; i < p.maxHp; i++) {
     const on = i < p.hp,
       pl = on && p.hp == 1 ? Math.abs(Math.sin(V.TT * 0.15)) * 0.15 : 0;
-    heartV(13 + i * 10, 12, 1, on, pl);
+    heartV(39 + i * 9, 12, 0.92, on, pl);
   }
   const hn = p.consT > 0 ? ANAME[p.consType] : cf(p).short;
-  TX(hn, 10, 24, 5.4, p.consT > 0 ? '#5fe6d6' : '#cfe0ff', { a: 'left', b: 1, w: 900 });
-  const nw = tw(hn, 5.4, { b: 1, w: 900 });
-  TX('×' + G.lives, 12 + nw, 24, 5.4, '#ffe95c', { a: 'left', b: 1, w: 900 });
-  coinIcon(74, 24);
-  TX('' + p.coins, 80, 24.3, 5.8, '#ffe95c', { a: 'left', b: 1, w: 900 });
-  ticketIcon(100, 24);
-  TX('' + p.bombs, 106, 24.3, 5.8, '#ffb0b8', { a: 'left', b: 1, w: 900 });
+  TX(hn, 35, 24.2, 5.2, p.consT > 0 ? '#5fe6d6' : '#ffffff', { a: 'left', b: 1, w: 900 });
+  const nw = tw(hn, 5.2, { b: 1, w: 900 });
+  TX('×' + G.lives, 37 + nw, 24.2, 5.2, T.a, { a: 'left', b: 1, w: 900 });
+  coinIcon(91, 24);
+  TX('' + p.coins, 96.5, 24.4, 5.4, '#ffe95c', { a: 'left', b: 1, w: 900 });
+  ticketIcon(113, 24);
+  TX('' + p.bombs, 118.5, 24.4, 5.4, '#ffb0b8', { a: 'left', b: 1, w: 900 });
   if (p.ch == 3 && (p.caf > 0 || p.panicT > 0)) {
     const pn = p.panicT > 0,
       lb = pn ? 'PANICO ' + Math.ceil(p.panicT / 60) + 's' : 'CAFFEINA ' + p.caf + '/3';
-    rr(4, 45, 58, 8, 4, pn ? 'rgba(255,77,94,.9)' : 'rgba(3,8,34,.8)', 'rgba(255,176,32,.7)', 0.5);
+    rr(34, 45, 58, 8, 4, pn ? 'rgba(255,77,94,.9)' : 'rgba(3,8,34,.8)', 'rgba(255,176,32,.7)', 0.5);
     if (!pn)
-      for (let i = 0; i < 3; i++) ci(46 + i * 5, 49, 1.6, i < p.caf ? '#ffb020' : 'rgba(255,255,255,.2)');
-    TX(lb, pn ? 33 : 24, 49.3, 4, '#ffffff', { b: 1, w: 900 });
+      for (let i = 0; i < 3; i++) ci(76 + i * 5, 49, 1.6, i < p.caf ? '#ffb020' : 'rgba(255,255,255,.2)');
+    TX(lb, pn ? 63 : 54, 49.3, 4, '#ffffff', { b: 1, w: 900 });
   }
   if (p.consT > 0) {
     const k = p.consT / 900;
-    rr(4, 45, 70, 8, 4, 'rgba(3,8,34,.8)', 'rgba(95,230,214,.5)', 0.5);
-    rr(4.8, 45.8, 68.4 * k, 6.4, 3.2, lgr(4, 0, 74, 0, '#5fe6d6', '#14a898'));
-    TX('CONSULENZA ' + Math.ceil(p.consT / 60) + 's', 39, 49.3, 4, '#03302a', { b: 1, w: 900 });
+    rr(34, 45, 70, 8, 4, 'rgba(3,8,34,.8)', 'rgba(95,230,214,.5)', 0.5);
+    rr(34.8, 45.8, 68.4 * k, 6.4, 3.2, lgr(4, 0, 74, 0, '#5fe6d6', '#14a898'));
+    TX('CONSULENZA ' + Math.ceil(p.consT / 60) + 's', 69, 49.3, 4, '#03302a', { b: 1, w: 900 });
   }
   const rl = rankOf(G.lvl),
     rw = tw(rl, 5, { b: 1, w: 800 }) + 12;
-  rr(4, 34, rw, 9, 4.5, G.P.ch == 4 && !G.P.hired ? 'rgba(255,255,255,.92)' : 'rgba(255,213,0,.92)', OL, 0.5);
-  TX(rl, 4 + rw / 2, 38.7, 5, G.P.ch == 4 && !G.P.hired ? '#1b3fa0' : '#0f1a48', { b: 1, w: 800 });
+  rr(
+    34,
+    33,
+    rw,
+    9,
+    4.5,
+    G.P.ch == 4 && !G.P.hired ? 'rgba(255,255,255,.92)' : 'rgba(255,213,0,.92)',
+    OL,
+    0.5,
+  );
+  TX(rl, 34 + rw / 2, 37.7, 5, G.P.ch == 4 && !G.P.hired ? '#1b3fa0' : '#0f1a48', { b: 1, w: 800 });
+  ctx.globalAlpha = fadeFor('c', W / 2 - 40, W / 2 + 40);
   const sc = String(Math.round(V.dispScore)).padStart(7, '0');
-  glass(W / 2 - 38, 4, 76, 19, 7, 0.5);
+  hudGlass(W / 2 - 38, 4, 76, 19, 7, T);
   TX(sc, W / 2, 13.6, 11, '#ffffff', { w: 700, sk: '#0a1436', sw: 1.8 });
   const m = mult();
   if (m > 1) {
@@ -95,7 +188,8 @@ export function drawHUD() {
       'rgba(200,215,255,.75)',
       { b: 1, w: 800 },
     );
-  glass(W - 122, 4, 118, 27, 7, 0.55);
+  ctx.globalAlpha = fadeFor('r', W - 124, W);
+  hudGlass(W - 122, 4, 118, 27, 7, T);
   const wn = p.consT > 0 ? (p.consType == 'tib' ? 'SLIDE PRO' : 'MERGE PRO') : cf(p).W[p.aura];
   TX(wn, W - 116, 11.6, 6.2, '#9ff6ff', { a: 'left', w: 600 });
   for (let i = 0; i < 4; i++)
@@ -140,6 +234,7 @@ export function drawHUD() {
   }
   if (p.ch == 4 && !tch2)
     TX('[F] cambio', W - 6, 46.5, 4.4, 'rgba(255,154,166,.9)', { a: 'right', b: 1, w: 800 });
+  ctx.globalAlpha = 1;
   if (G.boss && G.bossOn && G.state != 'bossintro' && !G.boss.dead) {
     const b = G.boss,
       k = b.hp / b.max;

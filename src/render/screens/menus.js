@@ -86,7 +86,7 @@ export function drawPause() {
   });
   TX('V alleato · F cambio (Stagisti) · M musica · P riprendi', W / 2, 162, 5.8, '#dfe7ff', { b: 1, w: 800 });
 }
-function scenery0(drift) {
+export function scenery0(drift) {
   const sv = G.LV;
   G.LV = null;
   V.camX = drift;
