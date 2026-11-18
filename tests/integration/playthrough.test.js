@@ -6,7 +6,15 @@ import { fileURLToPath } from 'node:url';
 
 const run = promisify(execFile);
 const runner = fileURLToPath(new URL('../helpers/run-hero.js', import.meta.url));
-const HEROES = { 1: 'Bolt', 2: 'Angry Man', 3: 'August', 4: 'Stagisti' };
+const HEROES = {
+  1: 'Bolt',
+  2: 'Angry Man',
+  3: 'August',
+  4: 'Stagisti',
+  5: 'Martina',
+  6: 'Ops',
+  7: 'Sora Rita',
+};
 
 // Each hero runs in its own process: modules hold game state, so isolation
 // matters, and parallel processes keep the suite fast.
