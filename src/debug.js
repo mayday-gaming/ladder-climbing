@@ -1,5 +1,5 @@
 /** @file window.__g test/debug hook used by the integration and e2e suites. */
-import { ASDRU, COLLOQUIO, PRIMO } from './data/quadri.js';
+import { ASDRU, COLLOQUIO, CONTRATTO, PRIMO } from './data/quadri.js';
 import { ctx } from './engine/canvas.js';
 import { GY, W } from './engine/config.js';
 import { edges, key } from './engine/input.js';
@@ -19,7 +19,7 @@ export function installDebugHook() {
     update,
     draw,
     sq(id) {
-      startQuadro({ primo: PRIMO, colloquio: COLLOQUIO, asdrubale: ASDRU }[id]);
+      startQuadro({ primo: PRIMO, colloquio: COLLOQUIO, contratto: CONTRATTO, asdrubale: ASDRU }[id]);
     },
     get Q() {
       return G.Q;

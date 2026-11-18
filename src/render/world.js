@@ -50,6 +50,8 @@ export function drawWorld() {
       G.P.fly < 16 ? '#ff4d5e' : lgr(fx - 8, 0, fx + 8, 0, '#66f0ff', '#2f6bff'),
     );
   }
+  for (const e of G.ens) if (e.act && !e.gone && e.slowT > 0) slowTag(e);
+  if (G.freezeT > 0) holdMarks();
   for (const b of G.bul) drawBul(b);
   drawBombs();
   for (const b of G.ebul) drawEBul(b);
@@ -69,6 +71,8 @@ export function drawWorld() {
   ctx.restore();
   drawFG(th);
   bl(vignette(), 0, 0);
+  if (G.freezeT > 0 && G.state == 'play') freezeOverlay();
+  if (G.rewT > 0) rewindOverlay();
   if (G.flash > 0) {
     ctx.globalAlpha = G.flash / 18;
     rect(0, 0, W, H, '#ffffff');
@@ -170,4 +174,52 @@ export function drawEvtFx() {
   TX('⚡', -w / 2 + 7, 0.3, 6, '#1b2a78');
   TX(lbl, 7, 0.4, 6, '#0f1a48', { b: 1, w: 900 });
   ctx.restore();
+}
+
+/** A post-it stuck on a slowed enemy. */
+function slowTag(e) {
+  const x = ix(e) + e.w / 2,
+    y = iy(e) - 3,
+    a = Math.min(1, e.slowT / 30);
+  ctx.globalAlpha = a;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(-0.2 + Math.sin(V.TT * 0.1) * 0.08);
+  rr(-3, -3, 6, 6, 0.3, '#ffe95c', OL, 0.4);
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+/** "On hold": note bubbles or a meeting clock over every enemy while time is frozen. */
+function holdMarks() {
+  const hold = G.freezeKind == 'hold',
+    mark = (x, y, i) => {
+      const k = ((V.TT * 0.03 + i * 0.37) % 1) * 8;
+      ctx.globalAlpha = 1 - k / 8;
+      if (hold) TX(i % 2 ? '♪' : '♫', x + k * 0.6, y - k, 6, '#c9a2ff', { w: 700, sk: OL, sw: 0.8 });
+      else TX('zZ', x + k * 0.6, y - k, 5, '#ffd500', { w: 700, sk: OL, sw: 0.8 });
+      ctx.globalAlpha = 1;
+    };
+  G.ens.forEach((e, i) => e.act && !e.gone && mark(ix(e) + e.w / 2, iy(e) - 6, i));
+  if (G.boss && G.bossOn && !G.boss.dead) mark(G.boss.x + G.boss.w / 2, G.boss.y - 10, 9);
+}
+function freezeOverlay() {
+  const hold = G.freezeKind == 'hold',
+    k = Math.min(1, G.freezeT / 20);
+  ctx.globalAlpha = 0.18 * k;
+  rect(0, 0, W, H, hold ? '#8a4fb0' : '#2f6bff');
+  ctx.globalAlpha = k;
+  const lb = hold ? '♪ IN ATTESA… RESTI IN LINEA ♪' : '⏱ RIUNIONE LAMPO IN CORSO',
+    w = tw(lb, 6, { b: 1, w: 900 }) + 20;
+  rr(W / 2 - w / 2, 46, w, 13, 6.5, hold ? 'rgba(90,40,120,.9)' : 'rgba(10,30,90,.9)', '#ffffff', 0.6);
+  TX(lb, W / 2, 52.8, 6, '#ffffff', { b: 1, w: 900 });
+  ctx.globalAlpha = 1;
+}
+function rewindOverlay() {
+  const k = G.rewT / 50;
+  ctx.globalAlpha = 0.35 * k;
+  for (let y = 0; y < H; y += 3) rect(0, y, W, 1, '#000000');
+  rect(0, ((V.TT * 7) % (H + 40)) - 20, W, 14, 'rgba(255,255,255,.25)');
+  ctx.globalAlpha = k;
+  TX('◀◀ ROLLBACK', 16, 64, 10, '#3cff7a', { a: 'left', w: 700, sk: '#000000', sw: 2 });
+  ctx.globalAlpha = 1;
 }

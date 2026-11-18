@@ -37,6 +37,7 @@ export const CH = [
     ally: 'CLAUDIO',
     allyBtn: 'CLAU<br>DIO',
     abil: 'SCATTO',
+    dif: 'NESSUNO (dice lui)',
     ally2: 'IA che gioca per te',
     spd: 2.55,
     tip: 'Il più veloce del palazzo · 10 buoni = Claudio (o il capo…)',
@@ -58,6 +59,7 @@ export const CH = [
     ally: 'MAINFRAME',
     allyBtn: 'MAIN<br>FRAME',
     abil: 'TURPILOQUIO MOLESTO',
+    dif: 'SI ARRABBIA',
     ally2: 'Insulti in informatichese',
     spd: 2.3,
     tip: 'Le parolacce sono censurate ma fanno malissimo · 10 buoni = il Mainframe (o il capo…)',
@@ -81,6 +83,7 @@ CH.push(
     ally: 'PENGUIN',
     allyBtn: 'PEN<br>GUIN',
     abil: 'COLPI PESANTI',
+    dif: 'ANSIA DA CAFFÈ',
     ally2: 'Il pinguino di Linux',
     spd: 2.2,
     tip: 'Il π fa più male ma è più lento · più cuori perde, più August va in ansia · 10 buoni = Penguin (o il capo…)',
@@ -92,7 +95,7 @@ CH.push(
     desc: 'Gian Daniele e Giammario',
     ds: [
       'Due stagisti, zero ferie, mille sogni.',
-      'Prima il colloquio, poi la scalata.',
+      'Colloquio, contratto, poi la scalata.',
       'Portano il caffè. Anche in faccia ai boss.',
       "Il badge è giallo. L'entusiasmo pure.",
     ],
@@ -100,6 +103,7 @@ CH.push(
     ally: 'FOTOCOPIATRICE',
     allyBtn: 'FOTO<br>COPIE',
     abil: 'CAMBIO AL VOLO (F)',
+    dif: 'CONTRATTO DA FIRMARE',
     ally2: "Stampa, fascicola, s'inceppa",
     spd: 2.4,
     tip: 'F / SWAP: Gian Daniele ↔ Giammario · 10 buoni = la Fotocopiatrice (o il capo…)',
@@ -123,7 +127,104 @@ CH.push(
     ],
   },
 );
-export const HORD = [0, 1, 3, 2, 4];
+
+/* ---- new heroes: indices 5 (Martina), 6 (Ops), 7 (Sora Rita) ---- */
+CH.push(
+  {
+    name: 'MARTINA',
+    short: 'MARTINA',
+    desc: 'Project Manager con auricolare',
+    ds: [
+      'Ha un Gantt anche per le ferie.',
+      'Ti fissa una call per fissare una call.',
+      '«Facciamo un punto veloce?» (2 ore)',
+      'Post-it ovunque. Anche sui nemici.',
+    ],
+    wep: 'POST-IT',
+    wepBtn: 'POST<br>IT',
+    chip: 'P',
+    ally: 'LAVAGNA KANBAN',
+    allyBtn: 'KAN<br>BAN',
+    abil: 'RIUNIONE LAMPO (F)',
+    dif: 'OVERBOOKING',
+    ally2: 'Sposta i nemici in FATTO',
+    spd: 2.45,
+    tip: 'I post-it rallentano i nemici · F = Riunione lampo: il tempo si ferma · troppe uccisioni di fila = OVERBOOKING',
+    fKey: {
+      n: 'RIUNIONE LAMPO',
+      s: 'Ferma il tempo per un attimo',
+      btn: 'RIU<br>NIONE',
+      act: 'freeze',
+      cd: 600,
+    },
+    W: ['', 'POST-IT', 'POST-IT XL', 'BLOCCHETTO', 'POST-IT MAX'],
+  },
+  {
+    name: 'OPS',
+    short: 'OPS',
+    desc: 'Sistemista sempre reperibile',
+    ds: [
+      'Dorme col cercapersone sul cuscino.',
+      'In produzione si testa meglio.',
+      '«Da me funziona.»',
+      'Venerdì alle 18: deploy.',
+    ],
+    wep: 'CONTAINER',
+    wepBtn: 'CONT<br>AINER',
+    chip: 'C',
+    ally: 'IL RACK',
+    allyBtn: 'RACK',
+    abil: 'ROLLBACK',
+    dif: 'REPERIBILITÀ',
+    ally2: 'Pacchetti di rete e firewall',
+    spd: 2.4,
+    tip: 'I container rimbalzano · ROLLBACK: una volta per livello torni indietro invece di morire · il cercapersone ti teletrasporta',
+    W: ['', 'CONTAINER', 'POD', 'DEPLOYMENT', 'CLUSTER MAX'],
+  },
+  {
+    name: 'SORA RITA',
+    short: 'RITA',
+    desc: 'Centralinista storica',
+    ds: [
+      'Trent’anni al centralino. Sa tutto.',
+      '«Glielo passo subito.» (mai)',
+      'Ti mette in attesa con la musichetta.',
+      'Conosce ogni scorciatoia del palazzo.',
+    ],
+    wep: 'CORNETTA',
+    wepBtn: 'CORN<br>ETTA',
+    chip: 'R',
+    ally: 'IL CENTRALINO',
+    allyBtn: 'CENT<br>RALINO',
+    abil: 'SCORCIATOIA (F)',
+    dif: 'SI OFFENDE',
+    ally2: 'Tutte le linee occupate',
+    spd: 2.25,
+    tip: 'La cornetta torna indietro col filo · F = Scorciatoia: salto lungo · se la colpisci due volte di fila si offende',
+    fKey: {
+      n: 'SCORCIATOIA',
+      s: 'Un salto lunghissimo in avanti',
+      btn: 'SCOR<br>CIAT.',
+      act: 'leap',
+      cd: 90,
+    },
+    W: ['', 'CORNETTA', 'CORNETTA PESANTE', 'DUE LINEE', 'CENTRALINO MAX'],
+  },
+);
+/**
+ * Playable roster, in select-screen order. Anzu (index 0) stays in CH because
+ * its art is reused (Anzu-bis ally, debug), but it is no longer selectable.
+ */
+export const HORD = [1, 3, 2, 5, 6, 7, 4];
+/** Select-screen card geometry shared by the renderer and tap hit-testing. */
+export const SEL = {
+  w: 60,
+  h: 96,
+  y: 26,
+  pitch: 65,
+  x: n => 240 + (n - (HORD.length - 1) / 2) * SEL.pitch,
+  at: x => Math.max(0, Math.min(HORD.length - 1, Math.round((x - SEL.x(0)) / SEL.pitch))),
+};
 export const SWEARS = ['#@*%!', '$%&#!', '@#!!', '*%$#!', '#!@?!', '%&@#!', '@*#&!', '#$%!!'];
 export const TCOST = 10,
   TSAY = [

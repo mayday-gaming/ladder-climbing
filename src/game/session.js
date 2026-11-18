@@ -4,7 +4,7 @@ import { CH } from '../data/heroes.js';
 import { PRIMO } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { C } from '../engine/config.js';
-import { bB, bT } from '../engine/input.js';
+import { bB, bT, bW } from '../engine/input.js';
 import { startLevel } from './level.js';
 import { mkPlayer } from './player.js';
 import { cf } from './progression.js';
@@ -25,7 +25,8 @@ export function newGame() {
   G.P = mkPlayer(G.selCh);
   bT.innerHTML = CH[G.selCh].allyBtn;
   bB.innerHTML = cf(G.P).wepBtn;
-  document.body.classList.toggle('aureola', G.selCh == 4);
+  document.body.classList.toggle('aureola', G.selCh == 4 || !!CH[G.selCh].fKey);
+  bW.innerHTML = CH[G.selCh].fKey ? CH[G.selCh].fKey.btn : 'SWAP<br>⇄';
   if (G.selCh == 4) startQuadro(PRIMO);
   else startLevel();
 }
@@ -48,6 +49,17 @@ export function comboUp() {
   G.P.combo++;
   G.P.comboT = 170;
   if (G.P.combo > G.maxCombo) G.maxCombo = G.P.combo;
+  if (G.P.ch == 5 && G.P.combo % 8 == 0 && !(G.P.overT > 0)) {
+    G.P.overT = 180;
+    Snd.sfx('panic');
+    G.pops.push({
+      x: G.P.x - 30,
+      y: G.P.y - 22,
+      txt: 'OVERBOOKING! Comandi invertiti!',
+      life: 90,
+      c: '#ff8090',
+    });
+  }
   if (G.P.combo % 5 == 0) {
     G.buzz = { t: BUZZ[(Math.random() * BUZZ.length) | 0], life: 70 };
     Snd.sfx('buzz');

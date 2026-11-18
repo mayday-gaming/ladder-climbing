@@ -1,5 +1,5 @@
 /** @file Interstitial scene logic (minigames between levels). */
-import { ASDQ, BUBS, DOORS, HRQ, QUADRI } from '../data/quadri.js';
+import { ASDQ, BUBS, CAVQ, CLAUSOLE, DOORS, HRQ, QUADRI, STOMPW } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { C, GY } from '../engine/config.js';
 import { clamp, rnd, sgn } from '../engine/math.js';
@@ -14,7 +14,7 @@ export function startQuadro(dd) {
     t: 0,
     ph: 0,
     hits: 0,
-    dur: { colloquio: 1200, primo: 3600, asdrubale: 3000 }[d.id] || 1500,
+    dur: { colloquio: 1200, primo: 3600, asdrubale: 3000, contratto: 3600 }[d.id] || 1500,
     bonus: 0,
   });
   if (d.id == 'primo') {
@@ -32,6 +32,25 @@ export function startQuadro(dd) {
       return { x: ps[0], y: ps[1], lbl: lb[0], line: lb[1], hr: i == hr, tch: 0, no: 0, sh: 0 };
     });
   }
+  if (d.id == 'contratto')
+    G.Q.cav = {
+      x: 400,
+      y: GY,
+      vy: 0,
+      vx: 0,
+      hp: 120,
+      max: 120,
+      st: 'cavilla',
+      t: 0,
+      face: -1,
+      line: 0,
+      say: 'Lei vorrebbe… FIRMARE? Ah ah ah.',
+      sayT: 130,
+      flash: 0,
+      jumps: 0,
+      dash: 0,
+      land: 0,
+    };
   if (d.id == 'asdrubale')
     G.Q.asd = {
       x: 400,
@@ -98,6 +117,169 @@ export function startQuadro(dd) {
   setState('quadro');
   Snd.play('stage', { tr: 7, bpm: 158 });
 }
+/**
+ * Dott. Cavillo, intern prologue boss. Cycle:
+ *  cavilla  – walks and throws clause sheets (more when raging),
+ *  timbro   – three stamp leaps aimed at the player, each landing sends shockwaves,
+ *  stordito – dizzy after the third landing: double damage, stomp him!,
+ *  penna    – dashes across the room with a giant fountain pen.
+ */
+function updCavillo(q, k, eb) {
+  const a = q.cav,
+    p = G.P,
+    rage = a.hp < a.max / 2,
+    talk = (s, n) => ((a.say = s), (a.sayT = n || 90)),
+    to = st => ((a.st = st), (a.t = 0));
+  a.t++;
+  if (a.flash > 0) a.flash--;
+  if (a.sayT > 0) a.sayT--;
+  if (a.land > 0) a.land--;
+  const mult = a.st == 'stordito' ? 2 : 1,
+    dmg = n => {
+      a.hp -= n * mult;
+      a.flash = 6;
+      G.score += n * mult * 10;
+    };
+  for (const b of G.bul) {
+    if (b.life <= 0 || b.hit.includes(a)) continue;
+    if (b.x > a.x - 10 && b.x < a.x + 10 && b.y > a.y - 40 && b.y < a.y) {
+      dmg(b.dmg);
+      b.hit.push(a);
+      if (!b.pierce) b.life = 0;
+      puff(b.x, b.y, 4, mult > 1 ? ['#ffe95c', C.white] : [C.white, '#c9d2f0'], 1.5, 12);
+      if (mult > 1 && G.frame % 3 == 0)
+        G.pops.push({ x: a.x - 10, y: a.y - 48, txt: '×2', life: 30, c: '#ffe95c' });
+    }
+  }
+  // stomp on his head
+  if (
+    !p.dead &&
+    p.vy > 0 &&
+    p.x + p.w > a.x - 10 &&
+    p.x < a.x + 10 &&
+    p.y + p.h > a.y - 46 &&
+    p.y + p.h < a.y - 28 &&
+    a.st != 'timbro'
+  ) {
+    dmg(18);
+    p.vy = -5.4;
+    Snd.sfx('stomp');
+    puff(a.x, a.y - 44, 8, [C.yel, C.white], 2.2, 18);
+    G.pops.push({
+      x: a.x - 18,
+      y: a.y - 60,
+      txt: STOMPW[(Math.random() * STOMPW.length) | 0],
+      life: 40,
+      c: C.yel2,
+    });
+    if (a.st == 'stordito') a.t = Math.max(a.t, 70);
+  }
+  if (a.hp <= 0 && !q.won) {
+    q.won = 1;
+    q.t = q.dur;
+    a.hp = 0;
+    talk('Va bene, va bene… FIRMI QUI.', 220);
+    a.st = 'arreso';
+    Snd.sfx('boom');
+    for (let i = 0; i < 4; i++) puff(a.x, a.y - 20, 14, [C.yel, C.white, '#c9d2f0'], 3, 30);
+    return;
+  }
+  if (a.st == 'cavilla') {
+    a.face = sgn(p.x - a.x) || a.face;
+    if (Math.abs(p.x - a.x) > 60) a.x += a.face * (rage ? 0.7 : 0.45);
+    if (a.t % 90 == 30) talk(CAVQ[a.line++ % CAVQ.length], 80);
+    if (a.t % (rage ? 30 : 46) == 12) {
+      const tx = CLAUSOLE[(Math.random() * CLAUSOLE.length) | 0];
+      eb({
+        x: a.x - 6,
+        y: a.y - 40,
+        w: 12,
+        h: 14,
+        vx: a.face * rnd(1.5, 2.6),
+        vy: -rnd(2.8, 4.6),
+        g: 0.12,
+        kind: 'clausola',
+        txt: tx,
+        bounce: 1,
+      });
+      Snd.sfx('throw');
+    }
+    if (a.t > (rage ? 170 : 220)) {
+      to('timbro');
+      a.jumps = 0;
+      talk('TIMBRO! TIMBRO! TIMBRO!', 70);
+    }
+  } else if (a.st == 'timbro') {
+    const air = a.y < GY || a.vy < 0;
+    if (!air && a.t > 18 && a.land == 0) {
+      // leap toward the player
+      a.face = sgn(p.x - a.x) || a.face;
+      a.vy = -6.4;
+      a.vx = clamp((p.x - a.x) / 62, -3.4, 3.4);
+      a.y -= 1;
+      Snd.sfx('jump');
+    }
+    if (a.y < GY || a.vy < 0) {
+      a.vy += 0.2;
+      a.y += a.vy;
+      a.x += a.vx;
+      if (a.y >= GY) {
+        a.y = GY;
+        a.vy = 0;
+        a.vx = 0;
+        a.land = 26;
+        a.jumps++;
+        a.t = 0;
+        G.shake = 7;
+        Snd.sfx('boom');
+        puff(a.x, GY - 2, 10, ['#c9d2f0', C.white], 2.4, 22);
+        for (const d of [-1, 1])
+          eb({ x: a.x - 7 + d * 10, y: GY - 10, w: 14, h: 10, vx: d * (2.2 + k), vy: 0, g: 0, kind: 'wave' });
+        if (a.jumps >= 3) {
+          to('stordito');
+          talk('Mi gira la testa… dov’è il timbro?', 110);
+        }
+      }
+    }
+    if (
+      a.y < GY - 4 &&
+      !p.dead &&
+      p.x + p.w > a.x - 10 &&
+      p.x < a.x + 10 &&
+      p.y + p.h > a.y - 34 &&
+      p.y < a.y
+    )
+      hurt();
+  } else if (a.st == 'stordito') {
+    if (a.t % 12 == 0) puff(a.x, a.y - 50, 1, [C.yel], 0.8, 14, 0.02);
+    if (a.t > 150) {
+      to('penna');
+      a.dash = 0;
+      talk('FIRMI QUI! E QUI! E QUI!', 80);
+      Snd.sfx('panic');
+    }
+  } else if (a.st == 'penna') {
+    const sp = (rage ? 3.4 : 2.8) + k;
+    if (a.t < 24) a.vx = 0;
+    else {
+      if (!a.vx) a.vx = (sgn(p.x - a.x) || 1) * sp;
+      a.x += a.vx;
+      a.face = sgn(a.vx);
+      if (a.t % 9 == 0) eb({ x: a.x - 2, y: a.y - 22, w: 4, h: 4, vx: 0, vy: 0.4, g: 0.08, kind: 'ink' });
+      if ((a.x < 22 && a.vx < 0) || (a.x > 458 && a.vx > 0)) {
+        a.vx = -a.vx;
+        a.dash++;
+        G.shake = 3;
+      }
+      if (!p.dead && p.x + p.w > a.x - 12 && p.x < a.x + 12 && p.y + p.h > a.y - 36 && p.y < a.y) hurt();
+    }
+    if (a.dash >= (rage ? 3 : 2)) {
+      to('cavilla');
+      a.vx = 0;
+    }
+  }
+  a.x = clamp(a.x, 20, 460);
+}
 export function quadroSpawn(q) {
   const t = q.t,
     f = n => t % Math.max(8, Math.round(n)) == 0,
@@ -149,6 +331,8 @@ export function quadroSpawn(q) {
     if (t % 300 == 150)
       for (const dd of [-1, 1])
         eb({ x: dd < 0 ? 466 : 0, y: GY - 10, w: 14, h: 10, vx: -dd * 2.2, vy: 0, g: 0, kind: 'wave' });
+  } else if (q.id == 'contratto') {
+    updCavillo(q, k, eb);
   } else if (q.id == 'asdrubale') {
     const a = q.asd,
       p = G.P;

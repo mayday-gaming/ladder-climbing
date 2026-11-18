@@ -272,6 +272,7 @@ export function updTib() {
           if (G.boss && G.bossOn && !G.boss.dead && G.state == 'play') dmgBoss(9, true);
         }
       }
+      if (b.type == 'kanban' || b.type == 'rack' || b.type == 'centralino') allyNew(b);
       if (b.type == 'copier') {
         if (b.jam > 0) {
           b.jam--;
@@ -445,4 +446,70 @@ export function consSupport() {
   };
   say('CONSULENTE DI PASSAGGIO: ' + ANAME[type] + '!');
   Snd.jingle('ally');
+}
+
+/** Shooting and signature moves of the Kanban board, the Rack and the switchboard. */
+function allyNew(b) {
+  const shootAt = (every, k, spd, o) => {
+    if (b.t % every != every >> 1) return;
+    const e = nearT(b.x, 280);
+    if (!e) return;
+    const sx = b.x + b.face * 6,
+      sy = b.gy - 18,
+      a = Math.atan2(e.y + e.h / 2 - sy, e.x + e.w / 2 - sx);
+    G.bul.push(
+      Object.assign(
+        {
+          x: sx,
+          y: sy,
+          vx: Math.cos(a) * spd,
+          vy: Math.sin(a) * spd,
+          r: 5,
+          dmg: 2,
+          pierce: false,
+          hit: [],
+          life: 100,
+          k,
+          t: 0,
+        },
+        o,
+      ),
+    );
+    b.face = sgn(e.x - b.x) || 1;
+  };
+  const sig = (txt, fx) => {
+    b.txt = txt;
+    b.st = 70;
+    b.act = -2;
+    G.shake = 6;
+    G.flash = 6;
+    Snd.sfx('special');
+    G.pops.push({ x: b.x - 40, y: b.gy - 50, txt, life: 90, c: CUT[b.type].c });
+    fx();
+  };
+  const onScreen = e => e.act && !e.gone && e.x > G.cam.x - 20 && e.x < G.cam.x + W + 20;
+  if (b.type == 'kanban') {
+    shootAt(36, 'kcard', 4.2, { slow: 1 });
+    if (b.t % 400 == 320)
+      sig('SPOSTATO IN «FATTO»!', () => {
+        for (const e of G.ens) if (onScreen(e) && e.hp <= 4) dmgEnemy(e, 6);
+        if (G.boss && G.bossOn && !G.boss.dead && G.state == 'play') dmgBoss(8, true);
+      });
+  } else if (b.type == 'rack') {
+    shootAt(30, 'pkt', 5);
+    if (b.t % 360 == 280)
+      sig('FIREWALL ATTIVO!', () => {
+        const p = G.P;
+        G.ebul = G.ebul.filter(e => Math.hypot(e.x - p.x, e.y - p.y) > 160);
+        p.inv = Math.max(p.inv, 90);
+      });
+  } else {
+    shootAt(42, 'ring', 3.6, { pierce: true, r: 7 });
+    if (b.t % 380 == 300)
+      sig('TUTTE LE LINEE OCCUPATE!', () => {
+        for (const e of G.ens) if (onScreen(e)) e.slowT = Math.max(e.slowT || 0, 200);
+        G.freezeT = Math.max(G.freezeT, 50);
+        G.freezeKind = 'hold';
+      });
+  }
 }

@@ -1,6 +1,6 @@
 /** @file Ally renderers (Penguin, Mainframe, copier, consultant birds…). */
 import { PAL_LF, PAL_TIB } from '../../data/palettes.js';
-import { TX, ci, ctx, el, fs, glow, lgr, ln, pth, rect, rr, shadow } from '../../engine/canvas.js';
+import { TX, ci, crv, ctx, el, fs, glow, lgr, ln, pth, rect, rr, shadow } from '../../engine/canvas.js';
 import { FB, GY, OL, P2, W } from '../../engine/config.js';
 import { E, clamp, lerp } from '../../engine/math.js';
 import { G } from '../../game/state.js';
@@ -218,6 +218,10 @@ export function drawAllyBody(type, x, y, face, t, act, st, mv, ph) {
         }
       },
     });
+    return;
+  }
+  if (type == 'kanban' || type == 'rack' || type == 'centralino') {
+    drawOfficeAlly(type, x, y, face, t, mv, st);
     return;
   }
   if (type == 'copier') {
@@ -539,5 +543,113 @@ export function bubble(txt, x, y, bg, st) {
   ln(clamp(x - 2, bx + 3, bx + w - 7), y + h, x, y + h + 3.4, OL, 0.7);
   ln(clamp(x + 2, bx + 7, bx + w - 3), y + h, x, y + h + 3.4, OL, 0.7);
   TX(txt, bx + w / 2, y + h / 2 + 0.3, 6, '#0f1a48', { b: 1, w: 800 });
+  ctx.restore();
+}
+
+/** Kanban board, server Rack and switchboard: wheeled office allies with little faces. */
+function drawOfficeAlly(type, x, y, face, t, mv, st) {
+  const busy = st > 0 && G.tib && G.tib.act == -2,
+    rollF = mv ? t * 0.4 : 0,
+    bl = t % 140 < 5;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(type == 'kanban' ? 1 : face, 1);
+  const wheels = xs =>
+    xs.forEach(wx => {
+      ci(wx, -1.8, 1.8, '#2a2e40', OL, 0.6);
+      ln(wx, -1.8, wx + Math.cos(rollF) * 1.4, -1.8 + Math.sin(rollF) * 1.4, '#8a96c0', 0.4);
+    });
+  const face2 = (fx, fy, col) => {
+    if (bl) {
+      ln(fx - 2.6, fy, fx - 1, fy, col, 0.6);
+      ln(fx + 1, fy, fx + 2.6, fy, col, 0.6);
+    } else {
+      rr(fx - 2.6, fy - 1.2, 1.6, 2.4, 0.6, col);
+      rr(fx + 1, fy - 1.2, 1.6, 2.4, 0.6, col);
+    }
+    ctx.beginPath();
+    ctx.arc(fx, fy + 2, busy ? 1.6 : 1.2, 0.15, Math.PI - 0.15);
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  };
+  if (type == 'kanban') {
+    ln(-8, -4, -8, -10, '#8a96c0', 1);
+    ln(8, -4, 8, -10, '#8a96c0', 1);
+    rect(-9, -4.6, 18, 1.2, '#5a6386');
+    wheels([-8, 8]);
+    rr(-13, -31, 26, 21, 1.4, '#ffffff', OL, 0.9);
+    rr(-13, -31, 26, 21, 1.4, null, '#c9cfdf', 0.5);
+    ['DA FARE', 'IN CORSO', 'FATTO'].forEach((h, i) => {
+      const cx = -8.6 + i * 8.6;
+      TX(h, cx, -28.6, 1.7, '#1b2350', { b: 1, w: 900 });
+      if (i) ln(cx - 4.3, -29.8, cx - 4.3, -11, '#c9cfdf', 0.4);
+    });
+    const cols = ['#ffe95c', '#ff8a96', '#7fd6ff', '#9ff6a0'],
+      move = busy ? ((t % 30) / 30) * 8.6 : 0;
+    for (let i = 0; i < 5; i++) {
+      const c = i % 3,
+        r = (i / 3) | 0,
+        dx = c == 1 && r == 0 ? move : 0;
+      rr(-11.6 + c * 8.6 + dx, -26 + r * 5.4, 5.2, 4.2, 0.3, cols[i % 4], OL, 0.3);
+    }
+    face2(0, -15, '#1b2350');
+  } else if (type == 'rack') {
+    wheels([-6, 6]);
+    rr(-9, -34, 18, 31, 1.6, lgr(-9, 0, 9, 0, '#2a2f44', '#14182a'), OL, 0.9);
+    for (let i = 0; i < 6; i++) {
+      const yy = -31 + i * 4.4;
+      rr(-7.4, yy, 14.8, 3.4, 0.5, '#0b0f1a', '#3a4060', 0.3);
+      for (let k = 0; k < 4; k++) {
+        const on = (t * 0.3 + i * 3 + k * 5) % 7 < 4;
+        ci(-5.6 + k * 1.6, yy + 1.7, 0.45, on ? (k == 3 && busy ? '#ff3b4a' : '#3cff7a') : '#1a3a24');
+      }
+      rect(1, yy + 1.2, 5.2, 1, '#22283c');
+    }
+    rr(-6, -21.6, 12, 7, 1, '#0b0f1a', '#3cff7a', 0.4);
+    face2(0, -18.6, '#3cff7a');
+    if (busy) glow(0, -18, 16, '#3cff7a', 0.35);
+    // fan swirl on top
+    ctx.save();
+    ctx.translate(0, -36);
+    ctx.rotate(t * 0.5);
+    for (let i = 0; i < 3; i++) {
+      ctx.rotate(P2 / 3);
+      el(1.4, 0, 1.6, 0.6, '#8a96c0');
+    }
+    ctx.restore();
+  } else {
+    wheels([-7, 7]);
+    rr(-12, -22, 24, 19, 1.6, lgr(0, -22, 0, -3, '#8a5a32', '#5a3a20'), OL, 0.9);
+    rr(-10.4, -20.4, 20.8, 9, 1, '#2a1a10', OL, 0.4);
+    for (let r = 0; r < 2; r++)
+      for (let k = 0; k < 6; k++) {
+        const on = (t * 0.2 + r * 4 + k * 3) % 9 < (busy ? 7 : 3);
+        ci(-8 + k * 3.2, -18 + r * 4, 0.8, on ? '#ffd500' : '#5a4020', OL, 0.2);
+      }
+    // patch cords
+    for (let i = 0; i < 3; i++) {
+      const sx = -7 + i * 6,
+        sw = Math.sin(t * 0.1 + i) * 1.4;
+      crv([sx, -14, sx + 2 + sw, -6, sx + 5, -14], null, ['#ff3b4a', '#3a7bff', '#3cff7a'][i], 0.6);
+    }
+    rr(-6, -10.6, 12, 6, 1, '#f4ead8', OL, 0.4);
+    face2(0, -8, '#5a3216');
+    // big operator headset on top
+    ctx.beginPath();
+    ctx.arc(0, -22, 7, Math.PI, 0);
+    ctx.strokeStyle = '#1a1a22';
+    ctx.lineWidth = 1.1;
+    ctx.stroke();
+    el(-7, -22, 1.8, 2.4, '#1a1a22', OL, 0.4);
+    el(7, -22, 1.8, 2.4, '#1a1a22', OL, 0.4);
+    if (busy)
+      for (let i = 0; i < 2; i++) {
+        const k = ((t * 0.04 + i * 0.5) % 1) * 10;
+        ctx.globalAlpha = 1 - k / 10;
+        TX('♪', 10 + k, -26 - k, 5, '#c9a2ff', { w: 700 });
+        ctx.globalAlpha = 1;
+      }
+  }
   ctx.restore();
 }

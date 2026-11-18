@@ -1,6 +1,8 @@
 /** @file Boot, title and hero-select screens. */
-import { ALLY_OF, CONS, FLOAT } from '../../data/allies.js';
-import { CH, HORD } from '../../data/heroes.js';
+import { ALLY_OF, FLOAT } from '../../data/allies.js';
+import { CH, HORD, SEL } from '../../data/heroes.js';
+import { LNAME, ORD } from '../../data/levels.js';
+import { GO_MENU, PAUSE_ITEMS, pauseItemRect } from '../../data/pause.js';
 import {
   TX,
   bl,
@@ -19,11 +21,12 @@ import {
   shadow,
   tw,
 } from '../../engine/canvas.js';
-import { GY, H, OL, P2, W } from '../../engine/config.js';
+import { GY, H, OL, W } from '../../engine/config.js';
+import { Snd } from '../../engine/audio.js';
 import { touchy } from '../../engine/input.js';
 import { E, clamp } from '../../engine/math.js';
 import { G } from '../../game/state.js';
-import { drawAllyBody } from '../characters/allies.js';
+import { bubble, drawAllyBody } from '../characters/allies.js';
 import { drawAnzuV, heroDraw } from '../characters/heroes.js';
 import { bars, stamp } from '../hud.js';
 import { V } from '../interp.js';
@@ -47,44 +50,172 @@ export function drawGameOver() {
       '#9ff6ff',
       { b: 1, w: 900 },
     );
+  if (G.st > 60) {
+    const r = GO_MENU;
+    rr(r.x, r.y, r.w, r.h, r.h / 2, 'rgba(20,32,90,.85)', 'rgba(255,255,255,.4)', 0.7);
+    TX(
+      touchy() ? '⌂ MENU PRINCIPALE' : '⌂ MENU PRINCIPALE (ESC)',
+      r.x + r.w / 2,
+      r.y + r.h / 2 + 0.3,
+      5.4,
+      '#ffffff',
+      {
+        b: 1,
+        w: 900,
+      },
+    );
+  }
   ctx.globalAlpha = 1;
 }
 export function drawPause() {
-  rect(0, 0, W, H, 'rgba(2,6,30,.72)');
-  glass(W / 2 - 130, 60, 260, 130, 12, 0.85);
-  const cx = W / 2,
-    cy = 96;
-  el(cx, cy + 8, 14, 3, '#e6ebf6', OL, 0.6);
+  const t = V.TT,
+    tch = touchy();
+  rect(0, 0, W, H, 'rgba(2,6,30,.78)');
+  ctx.save();
+  ctx.globalAlpha = 0.05;
+  const o = (t * 0.3) % 40;
+  for (let x = -H; x < W + 40; x += 40)
+    pth([x + o, 0, x + o + 14, 0, x + o + 14 - H, H, x + o - H, H], '#ffd500');
+  ctx.restore();
+  // title
+  coffeeCup(W / 2 - 92, 30, 0.9);
+  TX('PAUSA CAFFÈ', W / 2 + 8, 30, 17, lgr(0, 20, 0, 40, '#fff6a0', '#ffc400'), {
+    w: 700,
+    sk: '#0a1436',
+    sw: 3,
+    sh: true,
+  });
+  // left card: the hero on a coffee break + run stats
+  glass(24, 66, 176, 168, 12, 0.7);
+  rr(24, 66, 176, 168, 12, null, 'rgba(255,213,0,.35)', 0.8);
+  const p = G.P;
+  if (p) {
+    glow(80, 150, 46, '#ffd500', 0.1);
+    el(80, 170, 22, 3.5, 'rgba(0,0,0,.4)');
+    heroAt(p.ch, p.form || 0, 78, 170, 2.2, { face: 1, hp: p.hp, maxHp: p.maxHp, caf: p.caf });
+    coffeeCup(112, 118, 0.55);
+    const lines = [
+      'Il capo non ti vede.',
+      'Macchinetta: 0,60 €.',
+      'Hai 5 minuti. Forse 4.',
+      'Il ticket può aspettare.',
+      'Zucchero? No, grazie.',
+      'Si parla del fantacalcio.',
+    ];
+    bubble(lines[((t / 240) | 0) % lines.length], 120, 96, '#fff7cf', 92);
+    const stat = (lb, v, y) => {
+      TX(lb, 38, y, 4.4, '#8fa3dc', { a: 'left', b: 1, w: 900 });
+      TX(v, 186, y, 5.6, '#ffffff', { a: 'right', b: 1, w: 900 });
+    };
+    rr(34, 182, 156, 44, 7, 'rgba(255,255,255,.06)');
+    stat('LIVELLO', LNAME[ORD[G.lvl]] ? LNAME[ORD[G.lvl]].split('·')[1].trim() : '—', 190);
+    stat('PUNTEGGIO', String(G.score).padStart(7, '0'), 201);
+    stat('VITE · BUONI · TICKET', G.lives + ' · ' + p.coins + ' · ' + p.bombs, 212);
+    stat('EROE', CH[p.ch].name, 223);
+  }
+  // menu entries
+  PAUSE_ITEMS.forEach((it, k) => {
+    const r = pauseItemRect(k),
+      sel = k == G.pSel,
+      conf = sel && G.pConfirm > 0 && (it.id == 'menu' || it.id == 'restart'),
+      sc = sel ? 1.04 + 0.01 * Math.sin(t * 0.2) : 1;
+    ctx.save();
+    ctx.translate(r.x + r.w / 2, r.y + r.h / 2);
+    ctx.scale(sc, sc);
+    ctx.translate(-r.w / 2, -r.h / 2);
+    if (sel) glow(r.w / 2, r.h / 2, 90, conf ? '#ff3b4a' : '#ffd500', 0.14);
+    rr(0, 1.6, r.w, r.h, r.h / 2, 'rgba(0,0,0,.35)');
+    rr(
+      0,
+      0,
+      r.w,
+      r.h,
+      r.h / 2,
+      sel
+        ? conf
+          ? lgr(0, 0, 0, r.h, '#ff6a7a', '#c0102a')
+          : lgr(0, 0, 0, r.h, '#fff07a', '#ffc400')
+        : 'rgba(20,32,90,.78)',
+      sel ? OL : 'rgba(255,255,255,.18)',
+      0.8,
+    );
+    const ink = sel ? (conf ? '#ffffff' : '#2a1600') : '#ffffff';
+    ci(r.h / 2 + 1, r.h / 2, r.h / 2 - 3.6, sel ? 'rgba(255,255,255,.45)' : 'rgba(255,255,255,.1)');
+    TX(it.icon, r.h / 2 + 1, r.h / 2 + 0.4, 8, ink, { w: 700 });
+    const label = conf
+      ? it.id == 'menu'
+        ? 'SICURO? CONFERMA DI NUOVO'
+        : 'SICURO? CONFERMA DI NUOVO'
+      : it.label;
+    TX(label, r.h + 4, r.h / 2 - 3.2, 6.4, ink, { a: 'left', w: 700 });
+    TX(
+      conf ? it.sub + '!' : it.sub,
+      r.h + 4,
+      r.h / 2 + 5,
+      4.2,
+      sel ? (conf ? '#ffe0e4' : '#5a3a00') : '#9fb4ff',
+      {
+        a: 'left',
+        b: 1,
+        w: 800,
+      },
+    );
+    if (it.id == 'music') {
+      const on = !Snd.muted;
+      rr(r.w - 34, r.h / 2 - 5, 26, 10, 5, on ? '#3cc46a' : '#5a6386', OL, 0.5);
+      ci(on ? r.w - 13 : r.w - 29, r.h / 2, 3.6, '#ffffff', OL, 0.4);
+      TX(on ? 'ON' : 'OFF', on ? r.w - 25 : r.w - 17, r.h / 2 + 0.3, 3.8, '#ffffff', { b: 1, w: 900 });
+    }
+    if (sel && !tch) {
+      const bx = -8 - Math.abs(Math.sin(t * 0.15)) * 3;
+      pth([bx, r.h / 2 - 4, bx + 6, r.h / 2, bx, r.h / 2 + 4], '#ffd500', OL, 0.6);
+    }
+    ctx.restore();
+  });
+  if ((G.frame >> 5) % 2 || tch)
+    TX(
+      tch
+        ? 'Tocca una voce · ❚❚ per riprendere'
+        : '↑ ↓ scegli · INVIO conferma · P / ESC riprendi · M musica',
+      W / 2 + 100,
+      H - 14,
+      5.2,
+      '#cfe0ff',
+      { b: 1, w: 800 },
+    );
+}
+function coffeeCup(cx, cy, k) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(k, k);
+  el(0, 12, 16, 3.4, '#e6ebf6', OL, 0.8);
   ctx.beginPath();
-  ctx.moveTo(cx - 10, cy - 6);
-  ctx.lineTo(cx + 10, cy - 6);
-  ctx.lineTo(cx + 8, cy + 6);
-  ctx.quadraticCurveTo(cx, cy + 9, cx - 8, cy + 6);
+  ctx.moveTo(-11, -6);
+  ctx.lineTo(11, -6);
+  ctx.lineTo(9, 7);
+  ctx.quadraticCurveTo(0, 11, -9, 7);
   ctx.closePath();
-  fs('#ffffff', OL, 0.8);
-  el(cx, cy - 6, 9.4, 2, '#6a3418');
+  fs(lgr(0, -6, 0, 10, '#ffffff', '#d4dbef'), OL, 0.9);
+  rect(-10, -1, 20, 2.4, '#ffd500');
+  el(0, -6, 10.4, 2.2, '#6a3418');
+  el(-2, -6.6, 4, 0.8, 'rgba(255,220,180,.5)');
   ctx.beginPath();
-  ctx.arc(cx + 11, cy - 1, 3.6, -1.3, 1.3);
+  ctx.arc(12, 0, 4, -1.3, 1.3);
   ctx.strokeStyle = OL;
-  ctx.lineWidth = 1.6;
+  ctx.lineWidth = 1.8;
   ctx.stroke();
   for (let i = 0; i < 3; i++) {
-    const q = (V.TT * 0.01 + i / 3) % 1;
-    ctx.globalAlpha = 0.7 * (1 - q);
+    const q = (V.TT * 0.012 + i / 3) % 1;
+    ctx.globalAlpha = 0.75 * (1 - q);
     ctx.beginPath();
-    ctx.moveTo(cx - 5 + i * 5, cy - 9 - q * 14);
-    ctx.quadraticCurveTo(cx - 2 + i * 5, cy - 13 - q * 14, cx - 5 + i * 5, cy - 17 - q * 14);
+    ctx.moveTo(-5 + i * 5, -9 - q * 16);
+    ctx.quadraticCurveTo(-1 + i * 5, -14 - q * 16, -5 + i * 5, -19 - q * 16);
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
   }
   ctx.globalAlpha = 1;
-  TX('PAUSA CAFFÈ', W / 2, 126, 18, '#ffe95c', { w: 700, sk: '#0a1436', sw: 3 });
-  TX('← → muovi · Z salta · X spara · B ticket incident · C Sinergia', W / 2, 150, 5.8, '#dfe7ff', {
-    b: 1,
-    w: 800,
-  });
-  TX('V alleato · F cambio (Stagisti) · M musica · P riprendi', W / 2, 162, 5.8, '#dfe7ff', { b: 1, w: 800 });
+  ctx.restore();
 }
 export function scenery0(drift) {
   const sv = G.LV;
@@ -230,10 +361,9 @@ export function drawPresent() {
   heroAt(1, 0, rx + 50, GY, 1.45, { run: 1, ph: ph + 2.6, vx: 2 });
   shadow(rx - 26, GY, 7, 0.3);
   heroAt(4, 0, rx - 26, GY, 1.4, { run: 1, ph: ph + 0.7, vx: 2 });
-  heroAt(0, 0, rx + 82, GY - 22 + Math.sin(V.TT * 0.1) * 4, 1.5, {
-    onGround: false,
-    vy: -1,
-    flap: G.frame % 16 < 8 ? 6 : 0,
+  [5, 6, 7].forEach((c, i) => {
+    shadow(rx - 52 - i * 26, GY, 7, 0.3);
+    heroAt(c, 0, rx - 52 - i * 26, GY, 1.42, { run: 1, ph: ph + 1.1 + i * 0.9, vx: 2 });
   });
   if ((G.frame >> 4) % 2 && u > 20)
     TX(touchy() ? 'TOCCA PER SALTARE' : 'INVIO PER SALTARE', W - 8, H - 9, 4.8, '#ffe95c', {
@@ -248,21 +378,11 @@ export function drawTitle() {
   drawPlat({ x: 250, y: GY - 18, w: 62, h: 18, k: 'car' }, 0);
   drawPlat({ x: 330, y: GY - 18, w: 54, h: 18, k: 'car' }, 0);
   const sh = i => ((V.TT + i * 60) % 180 < 10 ? 9 : 0);
-  shadow(104, GY, 7, 0.3);
-  heroAt(0, 0, 104, GY - 4 - Math.abs(Math.sin(V.TT * 0.08)) * 3, 1.2, {
-    onGround: false,
-    vy: -1,
-    flap: G.frame % 20 < 10 ? 6 : 0,
-    shootT: sh(0),
+  HORD.forEach((c, i) => {
+    const hx = 52 + i * 28;
+    shadow(hx, GY, 7, 0.3);
+    heroAt(c, c == 4 ? (G.frame >> 8) % 2 : 0, hx, GY, 1.2, { shootT: sh(c) });
   });
-  shadow(138, GY, 7, 0.3);
-  heroAt(1, 0, 138, GY, 1.2, { shootT: sh(1) });
-  shadow(166, GY, 7, 0.3);
-  heroAt(3, 0, 166, GY, 1.2, { shootT: sh(3) });
-  shadow(198, GY, 8, 0.3);
-  heroAt(2, 0, 198, GY, 1.2, { shootT: sh(2) });
-  shadow(228, GY, 7, 0.3);
-  heroAt(4, (G.frame >> 8) % 2, 228, GY, 1.2, { shootT: sh(4) });
   bl(vignette(), 0, 0);
   const bob = Math.sin(V.TT * 0.04) * 2.5,
     rk = Math.sin(V.TT * 0.025) * 0.03;
@@ -287,18 +407,11 @@ export function drawTitle() {
   pth([112, -6, 124, 0, 112, 6], '#1b3fa0', OL, 0.8);
   TX('LADDER CLIMBING', 0, 0.8, 11, '#ffe95c', { w: 700, sk: '#0a1436', sw: 1.8 });
   ctx.restore();
-  TX(
-    'Anzu · Bolt · August · Angry Man · gli Stagisti · sei boss · eventi folli',
-    W / 2,
-    133,
-    6.4,
-    '#e6ecff',
-    {
-      b: 1,
-      w: 800,
-      sh: true,
-    },
-  );
+  TX('Sette eroi · otto boss · eventi aziendali folli', W / 2, 133, 6.4, '#e6ecff', {
+    b: 1,
+    w: 800,
+    sh: true,
+  });
   const pk = 1 + 0.06 * Math.sin(V.TT * 0.12);
   ctx.save();
   ctx.translate(W / 2, 160);
@@ -320,198 +433,170 @@ export function drawTitle() {
     { b: 1, w: 800, sh: true },
   );
 }
-const selA = [0, 0, 0, 0, 0];
-function rotTxt(arr, k, x, y, size, col, o) {
-  const per = 260,
-    t = V.TT + k * 87,
-    n = Math.floor(t / per),
-    f = t - n * per,
-    a = Math.min(1, f / 14, (per - f) / 14);
-  ctx.globalAlpha *= clamp(a, 0, 1);
-  TX(arr[(n + k) % arr.length], x, y + (1 - E.out(f / 14)) * 2, size, col, o);
-  ctx.globalAlpha = 1;
-}
+const selA = [];
 function fitTX(t, x, y, size, maxW, col, o) {
   const w = tw(t, size, o || {});
   TX(t, x, y, w > maxW ? (size * maxW) / w : size, col, o);
 }
-function wrap2(t, size, maxW, o) {
-  const w = t.split(' ');
-  let a = '',
-    b = '';
-  for (const x of w) {
-    const c = (a ? a + ' ' : '') + x;
-    if (!b && tw(c, size, o) <= maxW) a = c;
-    else b = (b ? b + ' ' : '') + x;
-  }
-  return [a, b];
-}
 export function drawSelect() {
   scenery0(V.TT * 0.15);
-  rect(0, 0, W, H, lgr(0, 0, 0, H, 'rgba(4,10,40,.7)', 'rgba(2,6,30,.85)'));
-  TX('SCEGLI IL TUO EROE', W / 2, 14, 14, lgr(0, 6, 0, 24, '#fff6a0', '#ffc400'), {
+  rect(0, 0, W, H, lgr(0, 0, 0, H, 'rgba(4,10,40,.7)', 'rgba(2,6,30,.88)'));
+  TX('SCEGLI IL TUO EROE', W / 2, 13, 13, lgr(0, 6, 0, 22, '#fff6a0', '#ffc400'), {
     w: 700,
     sk: '#0a1436',
     sw: 3,
     sh: true,
   });
-  const CW = 88,
-    CHH = 162;
-  for (let n = 0; n < 5; n++) {
+  const CW = SEL.w,
+    CH2 = SEL.h,
+    y0 = SEL.y;
+  // portrait strip
+  for (let n = 0; n < HORD.length; n++) {
     const i = HORD[n],
       c = CH[i],
       sel = i == G.selCh;
-    selA[i] += ((sel ? 1 : 0) - selA[i]) * 0.18;
+    selA[i] = (selA[i] || 0) + ((sel ? 1 : 0) - (selA[i] || 0)) * 0.2;
     const q = selA[i],
-      cx = 50 + n * 95,
-      y0 = 26,
-      s2 = 0.97 + q * 0.04;
+      cx = SEL.x(n),
+      lift = q * 3;
     ctx.save();
-    ctx.translate(cx, y0 + 80);
-    ctx.scale(s2, s2);
-    ctx.translate(-cx, -(y0 + 80));
-    if (q > 0.05) glow(cx, y0 + 70, 80, '#ffd500', 0.14 * q);
-    glass(cx - CW / 2, y0, CW, CHH, 9, 0.6 + q * 0.2);
-    if (q > 0.02) {
-      ctx.globalAlpha = q;
-      rr(cx - CW / 2, y0, CW, CHH, 9, null, '#ffd500', 1.5);
-      ctx.globalAlpha = 1;
-    }
-    if (i == 4) {
-      rr(cx - CW / 2 + 4, y0 + 4, 30, 8, 4, '#ffffff', OL, 0.4);
-      TX('NUOVI', cx - CW / 2 + 19, y0 + 8.3, 3.8, '#c81a2c', { b: 1, w: 900 });
-    }
+    ctx.translate(0, -lift);
+    if (q > 0.05) glow(cx, y0 + 50, 46, '#ffd500', 0.16 * q);
+    glass(cx - CW / 2, y0, CW, CH2, 8, 0.55 + q * 0.25);
     ctx.save();
     ctx.beginPath();
-    rrPath(cx - CW / 2, y0, CW, CHH, 9);
+    rrPath(cx - CW / 2, y0, CW, CH2, 8);
     ctx.clip();
     ctx.fillStyle = rgr(
       cx,
-      y0 + 52,
+      y0 + 46,
       4,
-      64,
-      'rgba(80,130,255,' + (0.25 + q * 0.25) + ')',
+      46,
+      'rgba(80,130,255,' + (0.22 + q * 0.3) + ')',
       'rgba(80,130,255,0)',
     );
-    ctx.fillRect(cx - CW / 2, y0, CW, 96);
-    ctx.save();
-    ctx.translate(cx, y0 + 48);
-    ctx.rotate(V.TT * 0.006);
-    ctx.globalAlpha = 0.05 + q * 0.07;
-    for (let k = 0; k < 10; k++) {
-      ctx.rotate(P2 / 10);
-      pth([0, 0, 90, -10, 90, 10], '#ffffff');
-    }
-    ctx.restore();
-    ctx.restore();
-    el(cx, y0 + 84, 30, 4.5, 'rgba(0,0,0,.35)');
+    ctx.fillRect(cx - CW / 2, y0, CW, CH2);
+    el(cx, y0 + 76, 18, 3, 'rgba(0,0,0,.35)');
     const run = sel ? 1 : 0,
       ph = sel ? V.TT * 0.15 : 0,
-      shoot = sel && G.frame % 70 < 9 ? 9 : 0,
-      fy = y0 + 82,
-      sc = 2.05;
+      fy = y0 + 76,
+      sc = 1.55;
     if (i == 4) {
-      heroAt(4, 0, cx - 15, fy, sc * 0.95, { run, ph, shootT: shoot, vx: run, hired: false });
-      heroAt(4, 1, cx + 14, fy, sc * 0.95, { run, ph: ph + 1.5, shootT: shoot, vx: run, hired: false });
-      TX('⇄', cx, y0 + 16, 8, '#fff07a', { w: 700, sk: '#0a1436', sw: 2 });
-    } else if (i == 0)
-      heroAt(0, 0, cx - 4, fy - (sel ? Math.abs(Math.sin(V.TT * 0.08)) * 3 : 0), sc * 1.05, {
-        onGround: !sel,
-        vy: -1,
-        flap: sel && G.frame % 20 < 10 ? 6 : 0,
-        run: 0,
-        shootT: shoot,
-        sp: sel ? 100 : 0,
-      });
-    else heroAt(i, 0, cx - 4, fy, sc, { run, ph, shootT: shoot, vx: run });
-    if (i != 4) {
-      ctx.save();
-      ctx.translate(cx + 30, fy);
-      ctx.scale(0.85, 0.85);
-      drawAllyBody(ALLY_OF[i], 0, FLOAT[ALLY_OF[i]] ? -14 : 0, -1, G.frame, -1, 0, false);
-      ctx.restore();
-    }
-    fitTX(c.name, cx, y0 + 95, 10.5, CW - 8, sel ? '#ffe95c' : '#ffffff', { w: 700, sk: '#0a1436', sw: 2 });
-    {
-      const per = 260,
-        tt = V.TT + n * 87,
-        k = Math.floor(tt / per),
-        f = tt - k * per,
-        al = clamp(Math.min(1, f / 14, (per - f) / 14), 0, 1),
-        L2 = wrap2(c.ds[(k + n) % c.ds.length], 4.5, CW - 10, { b: 1, w: 800 });
-      ctx.globalAlpha = al;
-      TX(L2[0], cx, y0 + 105, 4.5, sel ? '#ffffff' : '#b9c8f0', { b: 1, w: 800 });
-      if (L2[1]) TX(L2[1], cx, y0 + 111.5, 4.5, sel ? '#ffffff' : '#b9c8f0', { b: 1, w: 800 });
+      heroAt(4, 0, cx - 9, fy, sc * 0.92, { run, ph, vx: run, hired: false });
+      heroAt(4, 1, cx + 10, fy, sc * 0.92, { run, ph: ph + 1.5, vx: run, hired: false });
+    } else heroAt(i, 0, cx - 1, fy, sc, { run, ph, vx: run, shootT: sel && G.frame % 70 < 9 ? 9 : 0 });
+    ctx.restore();
+    if (q > 0.02) {
+      ctx.globalAlpha = q;
+      rr(cx - CW / 2, y0, CW, CH2, 8, null, '#ffd500', 1.5);
       ctx.globalAlpha = 1;
     }
-    const pill = (lbl, val, yy, col) => {
-      rr(cx - CW / 2 + 4, yy - 5, CW - 8, 10, 5, 'rgba(255,255,255,.075)');
-      TX(lbl, cx - CW / 2 + 8, yy + 0.3, 3.4, '#8fa3dc', { a: 'left', b: 1, w: 900 });
-      const lw = tw(lbl, 3.4, { b: 1, w: 900 }),
-        mw = CW - 18 - lw,
-        vw = tw(val, 4.4, { b: 1, w: 900 });
-      TX(val, cx + CW / 2 - 7, yy + 0.3, vw > mw ? (4.4 * mw) / vw : 4.4, col, { a: 'right', b: 1, w: 900 });
-    };
-    pill('ARMA', c.wep, y0 + 124, '#9ff6ff');
-    pill('ABILITÀ', c.abil, y0 + 137, '#ff8a96');
-    pill('ALLEATO', c.ally, y0 + 150, i == 4 ? '#ffb0b8' : '#7ff0e0');
+    if (n >= HORD.length - 4 && i != 4 && i >= 5) {
+      rr(cx - CW / 2 + 3, y0 + 3, 22, 7, 3.5, '#ffffff', OL, 0.4);
+      TX('NUOVO', cx - CW / 2 + 14, y0 + 6.6, 3.4, '#c81a2c', { b: 1, w: 900 });
+    }
+    fitTX(
+      c.short == 'STAGISTI' ? 'STAGISTI' : c.name,
+      cx,
+      y0 + 87,
+      6.6,
+      CW - 6,
+      sel ? '#ffe95c' : '#ffffff',
+      {
+        w: 700,
+        sk: '#0a1436',
+        sw: 1.6,
+      },
+    );
     ctx.restore();
   }
-  const sy = 194,
-    sh = 40;
-  glass(10, sy, W - 20, sh, 9, 0.62);
-  rr(10, sy, W - 20, sh, 9, null, 'rgba(255,213,0,.4)', 0.8);
+  // detail panel for the selected hero
+  const i = G.selCh,
+    c = CH[i],
+    py = 132,
+    ph2 = 98,
+    k = selFade(i);
+  glass(10, py, W - 20, ph2, 10, 0.68);
+  rr(10, py, W - 20, ph2, 10, null, 'rgba(255,213,0,.45)', 0.8);
+  ctx.save();
+  ctx.beginPath();
+  rrPath(10, py, W - 20, ph2, 10);
+  ctx.clip();
+  ctx.globalAlpha = k;
+  glow(68, py + 62, 60, '#ffd500', 0.12);
+  ctx.save();
+  ctx.translate((1 - k) * -20, 0);
+  el(64, py + 88, 30, 4, 'rgba(0,0,0,.4)');
+  if (i == 4) {
+    heroAt(4, 0, 48, py + 88, 2.2, { run: 1, ph: V.TT * 0.15, vx: 1, hired: false });
+    heroAt(4, 1, 80, py + 88, 2.2, { run: 1, ph: V.TT * 0.15 + 1.5, vx: 1, hired: false });
+  } else {
+    heroAt(i, 0, 56, py + 88, 2.3, { run: 1, ph: V.TT * 0.15, vx: 1, shootT: G.frame % 80 < 9 ? 9 : 0 });
+    const at = ALLY_OF[i];
+    ctx.save();
+    ctx.translate(96, py + 88);
+    ctx.scale(0.95, 0.95);
+    drawAllyBody(at, 0, FLOAT[at] ? -14 : 0, -1, G.frame, -1, 0, true, V.TT * 0.2);
+    ctx.restore();
+  }
+  ctx.restore();
+  const tx0 = 132;
+  TX(c.name, tx0, py + 13, 12, '#ffe95c', { a: 'left', w: 700, sk: '#0a1436', sw: 2.2 });
+  TX(c.desc, tx0 + tw(c.name, 12, { w: 700 }) + 8, py + 14, 5.2, '#9fb4ff', { a: 'left', b: 1, w: 800 });
   {
-    const x = 38;
-    el(x, sy + 36.5, 9, 1.6, 'rgba(0,0,0,.4)');
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x - 22, sy - 12, 44, sh + 10.5);
-    ctx.clip();
-    ctx.translate(x, sy + 36.5);
-    ctx.scale(1.2, 1.2);
-    drawAllyBody('capo', 0, 0, 1, G.frame, -1, 0, false, 0);
-    ctx.restore();
-    rr(60, sy + 5.5, 96, 9.5, 4.75, lgr(0, sy + 5, 0, sy + 15, '#ff6a7a', '#d0102a'));
-    TX('OCCHIO AL CAPO', 108, sy + 10.5, 5, '#ffffff', { b: 1, w: 900 });
-    TX("Chiami l'alleato? 2 volte su 5", 108, sy + 22, 4.8, '#e6ecff', { b: 1, w: 800 });
-    TX('arriva lui: reperibilità e straordinari.', 108, sy + 30, 4.5, '#b9c8f0', { b: 1, w: 800 });
+    const per = 220,
+      kk = Math.floor(V.TT / per),
+      f = V.TT - kk * per,
+      al = clamp(Math.min(1, f / 14, (per - f) / 14), 0, 1);
+    ctx.globalAlpha = al * k;
+    TX(quoteIt(c.ds[kk % c.ds.length]), tx0, py + 27, 5.6, '#ffffff', { a: 'left', b: 1, w: 800 });
+    ctx.globalAlpha = k;
   }
-  for (let k = 0; k < 2; k++) {
-    const C = CONS[k],
-      x = 196 + k * 30;
-    el(x, sy + 36.5, 8, 1.5, 'rgba(0,0,0,.4)');
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x - 16, sy - 12, 32, sh + 10.5);
-    ctx.clip();
-    ctx.translate(x, sy + 36.5);
-    ctx.scale(C.sc * 0.92, C.sc * 0.92);
-    drawAllyBody(C.t, 0, 0, 1, G.frame, -1, 0, false, 0);
-    ctx.restore();
-  }
-  rr(236, sy + 5.5, 128, 9.5, 4.75, lgr(0, sy + 5, 0, sy + 15, '#5ff0de', '#14a898'));
-  TX('CONSULENTI DI PASSAGGIO', 300, sy + 10.5, 5, '#03302a', { b: 1, w: 900 });
-  TX('Tiberio e Luigi compaiono a caso', 300, sy + 22, 4.8, '#e6ecff', { b: 1, w: 800 });
-  TX('nei livelli e ti danno una mano.', 300, sy + 30, 4.5, '#b9c8f0', { b: 1, w: 800 });
-  rotTxt(CONS[((V.TT / 520) | 0) % 2].l, 3, 422, sy + 22, 4.4, '#7ff0e0', { b: 1, w: 800 });
+  const pill = (lbl, val, x, yy, w, col) => {
+    rr(x, yy - 6, w, 12, 6, 'rgba(255,255,255,.08)');
+    TX(lbl, x + 6, yy + 0.3, 3.6, '#8fa3dc', { a: 'left', b: 1, w: 900 });
+    const lw = tw(lbl, 3.6, { b: 1, w: 900 }),
+      mw = w - 16 - lw,
+      vw = tw(val, 5, { b: 1, w: 900 });
+    TX(val, x + w - 6, yy + 0.3, vw > mw ? (5 * mw) / vw : 5, col, { a: 'right', b: 1, w: 900 });
+  };
+  const pw = 158;
+  pill('ARMA', c.wep, tx0, py + 44, pw, '#9ff6ff');
+  pill('ABILITÀ', c.abil, tx0 + pw + 6, py + 44, pw, '#ff8a96');
+  pill('ALLEATO', c.ally, tx0, py + 60, pw, '#7ff0e0');
+  pill('DIFETTO', c.dif || '—', tx0 + pw + 6, py + 60, pw, '#ffb020');
+  // rotating footer tip inside the panel: the boss malus and the consultants
+  const tips = [
+    ['OCCHIO AL CAPO', "Chiami l'alleato? 2 volte su 5 arriva lui.", '#ff6a7a'],
+    ['CONSULENTI', 'Tiberio e Luigi passano a caso e ti aiutano.', '#5ff0de'],
+    ['TICKET', 'Bombe che puliscono lo schermo (tasto B).', '#ffb0b8'],
+  ];
+  const tp = tips[((V.TT / 300) | 0) % tips.length];
+  rr(tx0, py + 74, 70, 10, 5, tp[2], OL, 0.4);
+  TX(tp[0], tx0 + 35, py + 79.3, 4.4, '#0a1436', { b: 1, w: 900 });
+  TX(tp[1], tx0 + 76, py + 79.3, 4.8, '#dfe7ff', { a: 'left', b: 1, w: 800 });
+  ctx.globalAlpha = 1;
+  ctx.restore();
   if ((G.frame >> 4) % 2)
     TX(
-      touchy() ? 'TOCCA UN PERSONAGGIO PER INIZIARE' : '← → SCEGLI · INVIO PER INIZIARE',
+      touchy() ? 'TOCCA UN EROE · TOCCALO DI NUOVO PER INIZIARE' : '← → SCEGLI · INVIO PER INIZIARE',
       W / 2,
-      H - 23,
-      7.4,
+      H - 12,
+      6.8,
       '#ffe95c',
       { w: 700, sk: '#0a1436', sw: 1.6 },
     );
-  TX(
-    'Ticket incident = bombe devastanti (' +
-      (touchy() ? 'pulsante TICKET' : 'tasto B') +
-      ') · occhio agli eventi aziendali!',
-    W / 2,
-    H - 10,
-    5,
-    '#cfe0ff',
-    { b: 1, w: 800 },
-  );
 }
+let selLast = -1,
+  selT = 0;
+/** 0→1 fade-in of the detail panel each time the selection changes. */
+function selFade(i) {
+  if (i != selLast) {
+    selLast = i;
+    selT = 0;
+  }
+  selT = Math.min(1, selT + 0.08);
+  return E.out(selT);
+}
+
+const quoteIt = t => (t.includes('«') ? t : '«' + t + '»');

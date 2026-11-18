@@ -1,6 +1,11 @@
 /** @file Shared mutable game state (G), state machine and high-score persistence. */
 /** Mutable game state shared across modules. */
 export const G = {
+  pSel: 0,
+  pConfirm: 0,
+  freezeT: 0,
+  freezeKind: null,
+  rewT: 0,
   cut: null,
   ban: null,
   lastPose: -1,
@@ -28,7 +33,7 @@ export const G = {
   tposts: [],
   bombs: [],
   snowFx: [],
-  selCh: 0,
+  selCh: 1,
   aiFace: 0,
   evt: null,
   evtCD: 900,

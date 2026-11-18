@@ -46,12 +46,17 @@ const WALK = { cono: 0.42, ficus: 0.34, bug: 1.25 };
 export function updEnemies() {
   const sp = 1 + G.lvl * 0.07,
     p = G.P;
+  if (G.freezeT > 0) return;
   for (const e of G.ens) {
     if (!e.act) {
       if (e.x < G.cam.x + W + 30 && e.x > G.cam.x - 60) {
         e.act = true;
         e.dir = sgn(p.x - e.x);
       } else continue;
+    }
+    if (e.slowT > 0) {
+      e.slowT--;
+      if (G.frame % 2) continue;
     }
     e.t++;
     if (e.flash > 0) e.flash--;

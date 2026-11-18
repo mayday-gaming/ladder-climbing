@@ -39,6 +39,36 @@ export const PRIMO = {
   sub: "Trova l'ufficio delle Risorse Umane",
   th: 1,
 };
+export const CONTRATTO = {
+  id: 'contratto',
+  name: 'IL DOTT. CAVILLO!',
+  sub: "Capo dell'Ufficio Contratti: non vuole farti firmare",
+  th: 2,
+};
+export const CAVQ = [
+  'Manca una firma. Anzi, tre.',
+  "Ha letto l'allegato C?",
+  'Il modulo è quello vecchio.',
+  'Questo timbro è scaduto.',
+  'Ripassi martedì. Del 2031.',
+  'Serve la marca da bollo.',
+  'Firmi qui. No, NON qui!',
+  'Il contratto è in revisione.',
+  'Salvo intese, ovviamente.',
+  "C'è un refuso al comma 4.",
+];
+export const CLAUSOLE = [
+  'Art. 7 bis',
+  'Periodo di prova',
+  'Salvo intese',
+  'Comma 22',
+  'Allegato C',
+  'Non concorrenza',
+  'Rinnovo tacito',
+  'In triplice copia',
+  'Clausola vessatoria',
+  'Visto, si stampi',
+];
 export const ASDRU = {
   id: 'asdrubale',
   name: 'ASDRUBALE!',

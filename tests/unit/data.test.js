@@ -1,14 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CH } from '../../src/data/heroes.js';
+import { CH, HORD, SEL } from '../../src/data/heroes.js';
 import { ALLY, ANAME, ALLY_OF, CUT, CONS, FLOAT } from '../../src/data/allies.js';
 import { ORD, LNAME, LTAG, BOSS, PERK, ROLES } from '../../src/data/levels.js';
-import { ORZOQ } from '../../src/data/quadri.js';
+import { CAVQ, CLAUSOLE, CONTRATTO, ORZOQ } from '../../src/data/quadri.js';
 
-test('five heroes with complete select-screen data', () => {
-  assert.equal(CH.length, 5);
+test('every hero has complete select-screen data', () => {
+  assert.equal(CH.length, 8);
   for (const c of CH) {
     for (const k of ['name', 'short', 'wep', 'ally', 'tip']) assert.ok(c[k], `${c.name} missing ${k}`);
+    if (c.name != 'ANZU') assert.ok(c.dif, `${c.name} needs a comic flaw (dif)`);
     assert.ok(Array.isArray(c.ds) && c.ds.length >= 3, `${c.name} needs varied descriptions`);
     assert.ok(c.spd > 0 || (c.F && c.F.every(f => f.spd > 0)), `${c.name} speed`);
   }
@@ -46,4 +47,48 @@ test('seven levels, each with name, tagline, boss, perk and rank', () => {
 test('barley mockery has enough variety', () => {
   assert.ok(ORZOQ.length >= 4);
   assert.equal(new Set(ORZOQ).size, ORZOQ.length, 'duplicate lines');
+});
+
+test('roster: seven heroes, Anzu not selectable', () => {
+  assert.ok(!HORD.includes(0));
+  assert.deepEqual(
+    HORD.map(i => CH[i].name),
+    ['BOLT', 'AUGUST', 'ANGRY MAN', 'MARTINA', 'OPS', 'SORA RITA', 'STAGISTI'],
+  );
+});
+
+test('new heroes: F abilities have cooldowns, allies are wired', () => {
+  const by = n => CH.find(c => c.name == n);
+  assert.equal(by('MARTINA').fKey.act, 'freeze');
+  assert.equal(by('SORA RITA').fKey.act, 'leap');
+  assert.equal(by('OPS').fKey, undefined, "Ops' rollback is passive");
+  for (const c of CH) if (c.fKey) assert.ok(c.fKey.cd > 0 && c.fKey.n && c.fKey.btn);
+  assert.deepEqual(ALLY_OF.slice(5), ['kanban', 'rack', 'centralino']);
+});
+
+test('select cards are centred and tap hit-testing maps back to the card', () => {
+  HORD.forEach((_, n) => assert.equal(SEL.at(SEL.x(n)), n));
+  assert.equal(SEL.x(0) + SEL.x(HORD.length - 1), 480);
+  assert.ok(SEL.x(0) - SEL.w / 2 >= 0 && SEL.x(HORD.length - 1) + SEL.w / 2 <= 480, 'cards fit on screen');
+  assert.ok(SEL.pitch > SEL.w, 'cards must not overlap');
+});
+
+test('contract boss has its own dialogue and clauses', () => {
+  assert.equal(CONTRATTO.id, 'contratto');
+  assert.ok(CAVQ.length >= 8 && CLAUSOLE.length >= 8);
+});
+
+test('pause menu offers resume, restart, music and main menu without overlapping entries', async () => {
+  const { PAUSE_ITEMS, pauseItemRect, GO_MENU } = await import('../../src/data/pause.js');
+  assert.deepEqual(
+    PAUSE_ITEMS.map(i => i.id),
+    ['resume', 'restart', 'music', 'menu'],
+  );
+  for (let k = 1; k < PAUSE_ITEMS.length; k++) {
+    const a = pauseItemRect(k - 1),
+      b = pauseItemRect(k);
+    assert.ok(a.y + a.h <= b.y, 'entries must not overlap');
+    assert.ok(b.x + b.w <= 480 && b.y + b.h <= 270, 'entries must stay on screen');
+  }
+  assert.ok(GO_MENU.x >= 0 && GO_MENU.x + GO_MENU.w <= 480);
 });

@@ -527,6 +527,11 @@ export function startLevel() {
     G.pks.push({ type: 'snow', x: sx, y: GY - 30, t: 0 });
   }
   G.P.bombs = Math.max(G.P.bombs, 3);
+  G.freezeT = 0;
+  G.rewT = 0;
+  G.P.rbUsed = false;
+  G.P.hist = [];
+  G.P.leapT = 0;
   G.bul = [];
   G.ebul = [];
   G.parts = [];

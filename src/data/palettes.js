@@ -124,6 +124,47 @@ export const PAL_HR = {
   pants2: '#1e2134',
   shoe: '#1a1a22',
 };
+export const PAL_MA = {
+  skin: '#f4c9a6',
+  shirt: '#e8505b',
+  shirt2: '#c23646',
+  sleeve: '#ec5e68',
+  sleeve2: '#b8303f',
+  pants: '#26305e',
+  pants2: '#1c2450',
+  shoe: '#1a1a22',
+};
+export const PAL_OP = {
+  skin: '#e8b48e',
+  shirt: '#2c3140',
+  shirt2: '#1c2030',
+  sleeve: '#333949',
+  sleeve2: '#1a1e2c',
+  pants: '#3a5a8a',
+  pants2: '#2c476e',
+  shoe: '#f4f7ff',
+  sole: '#3cff7a',
+};
+export const PAL_RI = {
+  skin: '#efc3a6',
+  shirt: '#8a4fb0',
+  shirt2: '#6a3690',
+  sleeve: '#9358ba',
+  sleeve2: '#5e2e84',
+  pants: '#4a3a5a',
+  pants2: '#3a2c4a',
+  shoe: '#5a2a3a',
+};
+export const PAL_CV = {
+  skin: '#f0c8a8',
+  shirt: '#4a4f66',
+  shirt2: '#353a4e',
+  sleeve: '#4a4f66',
+  sleeve2: '#30344a',
+  pants: '#3a3e52',
+  pants2: '#2c2f40',
+  shoe: '#1a1a22',
+};
 export const PAL_AS = {
   skin: '#eab89a',
   shirt: '#8a6a4a',

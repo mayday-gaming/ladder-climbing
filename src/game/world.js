@@ -20,6 +20,21 @@ export function updBullets() {
         b.vy = clamp(b.vy, -2.2, 2.2);
       } else b.vy *= 0.95;
     }
+    if (b.boom) {
+      // Sora Rita's handset: flies out, then the cord reels it back in
+      b.t++;
+      const p = G.P,
+        px = p.x + p.w / 2,
+        py = p.y + 10;
+      if (b.t > 18) {
+        const a = Math.atan2(py - b.y, px - b.x),
+          sp2 = Math.min(7, 2 + (b.t - 18) * 0.25);
+        b.vx += (Math.cos(a) * sp2 - b.vx) * 0.2;
+        b.vy += (Math.sin(a) * sp2 - b.vy) * 0.2;
+        if (Math.hypot(px - b.x, py - b.y) < 10) b.life = 0;
+      } else b.vx *= 0.94;
+      if (b.t > 18 && b.hit.length && b.t % 12 == 0) b.hit = [];
+    }
     if (b.g) b.vy += b.g;
     b.x += b.vx;
     b.y += b.vy;
@@ -44,7 +59,7 @@ export function updBullets() {
         if (b.bn == 2) Snd.sfx('tick');
       } else b.life = 0;
     }
-    if (b.y > H || (b.bn == null && b.y > GY + 3 && b.vy >= 0)) b.life = 0;
+    if (b.y > H || (b.bn == null && !b.boom && b.y > GY + 3 && b.vy >= 0)) b.life = 0;
     if (G.frame % 2 == 0 && b.k != 'duck' && b.k != 'kit' && b.k != 'jarg')
       G.parts.push({
         x: b.x,
@@ -64,13 +79,19 @@ export function updBullets() {
             slideP: '#5fe6d6',
             paper: '#ffffff',
             cmd: '#3cff7a',
+            postit: '#ffe95c',
+            container: '#3a7bff',
+            phone: '#c9a2ff',
+            pkt: '#3cff7a',
+            kcard: '#ffd500',
+            ring: '#c9a2ff',
           }[b.k] || C.cyan,
         s: Math.min(b.r, 5) * 0.7,
         g: 0,
       });
     const bb = { x: b.x - b.r, y: b.y - b.r, w: b.r * 2, h: b.r * 2 };
     for (const s of G.LV.plats) {
-      if (!s.ow && s.k != 'g' && ov(bb, s)) {
+      if (!s.ow && s.k != 'g' && !b.boom && ov(bb, s)) {
         b.life = 0;
         puff(b.x, b.y, 4, C.cyan, 1.5, 10);
         break;
@@ -80,6 +101,7 @@ export function updBullets() {
     for (const e of G.ens) {
       if (e.act && !e.gone && ov(bb, e) && b.hit.indexOf(e) < 0) {
         dmgEnemy(e, b.dmg);
+        if (b.slow) e.slowT = Math.max(e.slowT || 0, 120);
         if (b.pierce) b.hit.push(e);
         else {
           b.life = 0;
@@ -114,10 +136,15 @@ export function updBullets() {
         b.life = 0;
       }
     }
-    if (b.x < G.cam.x - 20 || b.x > G.cam.x + W + 20) b.life = 0;
+    if (!b.boom && (b.x < G.cam.x - 20 || b.x > G.cam.x + W + 20)) b.life = 0;
   }
   G.bul = G.bul.filter(b => b.life > 0);
+  const frozen = G.freezeT > 0 && G.state == 'play';
   for (const b of G.ebul) {
+    if (frozen) {
+      if (!G.P.dead && G.P.inv <= 0 && ov(G.P, b)) b.life = 0;
+      continue;
+    }
     b.vy += b.g;
     b.x += b.vx;
     b.y += b.vy;
