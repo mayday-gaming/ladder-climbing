@@ -1,7 +1,7 @@
 /** @file Fixed 60 Hz update loop with render interpolation. */
-import { HORD, TCOST } from '../data/heroes.js';
+import { HORD, SEL, TCOST } from '../data/heroes.js';
 import { ORD, S_SEL } from '../data/levels.js';
-import { COLLOQUIO } from '../data/quadri.js';
+import { COLLOQUIO, CONTRATTO } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { purgeL } from '../engine/canvas.js';
 import { C, GY, W } from '../engine/config.js';
@@ -124,19 +124,19 @@ function step() {
     case 'select':
       Snd.play('title', { tr: 3, bpm: S_SEL });
       {
-        const hi2 = HORD.indexOf(G.selCh);
+        const n = HORD.length,
+          hi2 = Math.max(0, HORD.indexOf(G.selCh));
         if (edges.left) {
-          G.selCh = HORD[(hi2 + 4) % 5];
+          G.selCh = HORD[(hi2 + n - 1) % n];
           Snd.sfx('blip');
         }
         if (edges.right) {
-          G.selCh = HORD[(hi2 + 1) % 5];
+          G.selCh = HORD[(hi2 + 1) % n];
           Snd.sfx('blip');
         }
       }
       if (G.st > 15 && edges.press) {
-        if (edges.tap && edges.tap.y > 26 && edges.tap.y < 190)
-          G.selCh = HORD[clamp(Math.floor((edges.tap.x - 6) / 93.6), 0, 4)];
+        if (edges.tap && edges.tap.y > 26 && edges.tap.y < 190) G.selCh = HORD[SEL.at(edges.tap.x)];
         Snd.sfx('power');
         setState('howto');
       }
@@ -299,9 +299,13 @@ function step() {
                 : 1000
               : q.id == 'asdrubale'
                 ? Math.max(0, (q.asd.hp <= 0 ? 7000 : 2500) - q.hits * 500)
-                : Math.max(0, 4000 - q.hits * 800);
+                : q.id == 'contratto'
+                  ? Math.max(0, (q.cav.hp <= 0 ? 6000 : 2000) - q.hits * 400)
+                  : Math.max(0, 4000 - q.hits * 800);
           G.score += q.bonus;
-          Snd.jingle(q.hits < 5 || q.found || (q.asd && q.asd.hp <= 0) ? 'promo' : 'over');
+          Snd.jingle(
+            q.hits < 5 || q.found || (q.asd && q.asd.hp <= 0) || (q.cav && q.cav.hp <= 0) ? 'promo' : 'over',
+          );
         }
       } else {
         updPlayer(false);
@@ -310,9 +314,10 @@ function step() {
         if (q.t > 170 || (edges.press && q.t > 50)) {
           saveHi();
           if (q.id == 'primo') startQuadro(COLLOQUIO);
+          else if (q.id == 'colloquio') startQuadro(CONTRATTO);
           else if (q.id == 'asdrubale') startQuadro();
           else {
-            if (q.id == 'colloquio') G.P.contract = 0;
+            if (q.id == 'contratto') G.P.contract = 0;
             startLevel();
           }
         }

@@ -124,6 +124,16 @@ export const PAL_HR = {
   pants2: '#1e2134',
   shoe: '#1a1a22',
 };
+export const PAL_CV = {
+  skin: '#f0c8a8',
+  shirt: '#4a4f66',
+  shirt2: '#353a4e',
+  sleeve: '#4a4f66',
+  sleeve2: '#30344a',
+  pants: '#3a3e52',
+  pants2: '#2c2f40',
+  shoe: '#1a1a22',
+};
 export const PAL_AS = {
   skin: '#eab89a',
   shirt: '#8a6a4a',

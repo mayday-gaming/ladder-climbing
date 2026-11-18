@@ -92,7 +92,7 @@ CH.push(
     desc: 'Gian Daniele e Giammario',
     ds: [
       'Due stagisti, zero ferie, mille sogni.',
-      'Prima il colloquio, poi la scalata.',
+      'Colloquio, contratto, poi la scalata.',
       'Portano il caffè. Anche in faccia ai boss.',
       "Il badge è giallo. L'entusiasmo pure.",
     ],
@@ -123,7 +123,18 @@ CH.push(
     ],
   },
 );
-export const HORD = [0, 1, 3, 2, 4];
+/**
+ * Playable roster, in select-screen order. Anzu (index 0) stays in CH because
+ * its art is reused (Anzu-bis ally, debug), but it is no longer selectable.
+ */
+export const HORD = [1, 3, 2, 4];
+/** Select-screen card geometry shared by the renderer and tap hit-testing. */
+export const SEL = {
+  w: 104,
+  pitch: 116,
+  x: n => 240 + (n - (HORD.length - 1) / 2) * SEL.pitch,
+  at: x => Math.max(0, Math.min(HORD.length - 1, Math.round((x - SEL.x(0)) / SEL.pitch))),
+};
 export const SWEARS = ['#@*%!', '$%&#!', '@#!!', '*%$#!', '#!@?!', '%&@#!', '@*#&!', '#$%!!'];
 export const TCOST = 10,
   TSAY = [

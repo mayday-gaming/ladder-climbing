@@ -1,5 +1,5 @@
 /** @file Player and enemy projectile renderers. */
-import { TX, ci, ctx, el, fs, glow, hexA, lgr, ln, pth, rect, rgr, rr } from '../engine/canvas.js';
+import { TX, ci, ctx, el, fs, glow, hexA, lgr, ln, pth, rect, rgr, rr, tw } from '../engine/canvas.js';
 import { FB, OL, P2 } from '../engine/config.js';
 import { G } from '../game/state.js';
 import { V, ix, iy } from './interp.js';
@@ -163,6 +163,24 @@ export function drawEBul(b) {
       ci(2, -1.4, 1.6, '#1a1f38', OL, 0.3);
       for (let i = 0; i < 3; i++)
         ci(-2.4 + i * 2.4, 3.4, 0.5, (G.frame >> 3) % 3 == i ? '#3cff7a' : '#ff4d5e');
+      break;
+    case 'clausola': {
+      ctx.rotate(Math.sin(t * 0.25 + cx) * 0.5);
+      rr(-6, -7, 12, 14, 0.8, '#fffaf0', OL, 0.6);
+      rect(-6, -7, 12, 3, '#1b3fa0');
+      TX('§', 0, 1, 7, '#b8143a', { w: 700 });
+      ci(3.2, 4.4, 1.6, '#d0102a', OL, 0.3);
+      ctx.restore();
+      if (b.txt) {
+        const w = tw(b.txt, 3.4, { b: 1, w: 900 }) + 5;
+        rr(cx - w / 2, cy - 15, w, 6, 3, 'rgba(255,255,255,.92)', OL, 0.4);
+        TX(b.txt, cx, cy - 12, 3.4, '#9c1030', { b: 1, w: 900 });
+      }
+      return;
+    }
+    case 'ink':
+      el(0, 0, 1.6, 2.2, '#1b2a8a', OL, 0.3);
+      ci(-0.5, -0.8, 0.5, 'rgba(255,255,255,.6)');
       break;
     case 'cv':
       ctx.rotate(Math.sin(t * 0.12 * (b.sw || 1) + cx) * 0.35);
