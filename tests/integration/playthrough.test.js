@@ -11,7 +11,7 @@ const HEROES = {
   2: 'Angry Man',
   3: 'August',
   4: 'Stagisti',
-  5: 'Martina',
+  5: 'Iolanda',
   6: 'Ops',
   7: 'Sora Rita',
 };

@@ -128,11 +128,11 @@ CH.push(
   },
 );
 
-/* ---- new heroes: indices 5 (Martina), 6 (Ops), 7 (Sora Rita) ---- */
+/* ---- new heroes: indices 5 (Iolanda), 6 (Ops), 7 (Sora Rita) ---- */
 CH.push(
   {
-    name: 'MARTINA',
-    short: 'MARTINA',
+    name: 'IOLANDA',
+    short: 'IOLANDA',
     desc: 'Project Manager con auricolare',
     ds: [
       'Ha un Gantt anche per le ferie.',

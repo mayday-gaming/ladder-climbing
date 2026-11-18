@@ -6,7 +6,7 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 
 ### Aggiunto
 
-- Tre nuovi eroi: **Martina** la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
+- Tre nuovi eroi: **Iolanda** la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
 - Prologo degli stagisti in tre atti con boss finale: il **Dott. Cavillo** dell'Ufficio Contratti (clausole, salti col timbro, stordimento, carica con la penna).
 - Menu della **pausa caffè** rifatto: riprendi, ricomincia il livello, musica on/off e ritorno al menu principale (con conferma); ritorno al menu anche dal game over.
 

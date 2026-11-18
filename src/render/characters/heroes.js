@@ -1,4 +1,4 @@
-/** @file Hero renderers (Anzu, Bolt, August the fox, Angry Man, interns, Martina, Ops, Sora Rita). */
+/** @file Hero renderers (Anzu, Bolt, August the fox, Angry Man, interns, Iolanda, Ops, Sora Rita). */
 import { PAL_C, PAL_G, PAL_GD, PAL_GM, PAL_MA, PAL_OP, PAL_RI, PAL_T } from '../../data/palettes.js';
 import {
   TX,
@@ -942,7 +942,7 @@ export function heroDraw(ch, x, y, p, r, sc) {
   if (ch == 2) drawChapel(x, y, p, r, sc);
   else if (ch == 3) drawGiugno(x, y, p, r, sc);
   else if (ch == 4) drawStag(x, y, p, r, sc);
-  else if (ch == 5) drawMartina(x, y, p, r, sc);
+  else if (ch == 5) drawIolanda(x, y, p, r, sc);
   else if (ch == 6) drawOps(x, y, p, r, sc);
   else if (ch == 7) drawRita(x, y, p, r, sc);
   else drawTuono(x, y, p, r, sc);
@@ -992,7 +992,7 @@ function groundY(p, x) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Martina, Ops, Sora Rita                                            */
+/* Iolanda, Ops, Sora Rita                                            */
 /* ------------------------------------------------------------------ */
 const rigOf = (p, r, sc, pal, extra) =>
   Object.assign(
@@ -1010,16 +1010,20 @@ const rigOf = (p, r, sc, pal, extra) =>
     },
     extra,
   );
-function lashEye(x, y, r, bl) {
-  eye(x, y, r, bl);
+function lashEye(x, y, r, bl, col) {
+  eye(x, y, r, bl, col);
+  if (!bl && col) {
+    ci(x, y + r * 0.1, r * 0.45, '#0e1430');
+    ci(x + r * 0.35, y - r * 0.35, r * 0.34, '#fff');
+  }
   if (!bl) {
     ln(x - r * 0.6, y - r * 1.05, x + r * 1.3, y - r * 1.25, OL, 0.55);
     ln(x + r * 1.1, y - r * 1.1, x + r * 1.9, y - r * 1.8, OL, 0.45);
   }
 }
 
-/** Martina, the Project Manager: auburn ponytail, headset, coral blazer, pencil skirt, tablet. */
-export function drawMartina(x, y, p, r, sc) {
+/** Iolanda, the Project Manager: big curly blonde hair, blue eyes, headset, coral blazer, pencil skirt, tablet. */
+export function drawIolanda(x, y, p, r, sc) {
   const over = p.overT > 0,
     sway = Math.sin(V.TT * 0.12 + (r.ph || 0)) * 1.4 + (p.onGround ? 0 : -p.vy * 0.25);
   human(
@@ -1054,62 +1058,65 @@ export function drawMartina(x, y, p, r, sc) {
         }
       },
       head: (hx, hy) => {
-        // ponytail behind the head
-        crv(
-          [
-            hx - 3.6,
-            hy - 6,
-            hx - 8,
-            hy - 7 + sway * 0.3,
-            hx - 10,
-            hy - 1 + sway,
-            hx - 8.4,
-            hy + 3 + sway,
-            hx - 6.6,
-            hy - 1,
-            hx - 4.6,
-            hy - 3.6,
-          ],
-          lgr(0, hy - 7, 0, hy + 3, '#c4602e', '#7e3018'),
-          OL,
-          0.6,
-        );
-        ci(hx - 4.4, hy - 5.4, 1.2, '#e8505b', OL, 0.4);
+        // very curly blonde mane behind the head, bouncing a little as she moves
+        const bob = (k2, i) => Math.sin(V.TT * 0.14 + i * 1.7) * 0.35 + sway * 0.12 * k2;
+        const curl = (cx, cy, r2, i, lit) =>
+          ci(
+            hx + cx,
+            hy + cy + bob(cy > 0 ? 1 : 0.4, i),
+            r2,
+            rgr(
+              hx + cx - r2 * 0.4,
+              hy + cy - r2 * 0.4,
+              0.3,
+              r2,
+              lit ? '#fff1a8' : '#ffe27a',
+              lit ? '#e8b632' : '#c9921c',
+            ),
+            OL,
+            0.5,
+          );
+        const back = [
+          [-6.6, -5.6, 2.6],
+          [-3.6, -8.6, 2.8],
+          [0, -9.4, 2.8],
+          [3.6, -8.8, 2.6],
+          [6.4, -6.2, 2.4],
+          [-8, -2, 2.6],
+          [-8.2, 1.8, 2.5],
+          [-7.2, 5.4, 2.4],
+          [-5, 7.6, 2.2],
+          [7, -2.6, 2.1],
+          [-9.4, 4, 2],
+        ];
+        back.forEach(([cx, cy, r2], i) => curl(cx, cy, r2, i, false));
         headBase(hx, hy, PAL_MA.skin, 5, 5.6);
-        // side-swept fringe
-        crv(
-          [
-            hx - 5.2,
-            hy + 0.6,
-            hx - 5.8,
-            hy - 4.6,
-            hx - 1.6,
-            hy - 7,
-            hx + 3.4,
-            hy - 6.6,
-            hx + 5.6,
-            hy - 3.4,
-            hx + 3.4,
-            hy - 4.2,
-            hx + 0.4,
-            hy - 3,
-            hx - 2.4,
-            hy - 3.8,
-            hx - 3.8,
-            hy - 1,
-            hx - 4,
-            hy + 2,
-          ],
-          lgr(0, hy - 7, 0, hy, '#d06a36', '#8e3a1c'),
-          OL,
-          0.6,
-        );
-        ln(hx - 1.6, hy - 6, hx + 2.6, hy - 5.6, 'rgba(255,220,180,.5)', 0.6);
+        // fringe of ringlets over the forehead and temple
+        const front = [
+          [-4.6, -4.6, 2],
+          [-2, -6.4, 2.1],
+          [1, -6.6, 2],
+          [3.8, -5.6, 1.8],
+          [-5.4, -1.4, 1.8],
+          [-4.6, 2.2, 1.6],
+        ];
+        front.forEach(([cx, cy, r2], i) => curl(cx, cy, r2, i + 20, true));
+        for (const [cx, cy] of [
+          [-2, -6.4],
+          [1, -6.6],
+          [-4.6, -4.6],
+        ]) {
+          ctx.beginPath();
+          ctx.arc(hx + cx + 0.3, hy + cy + 0.2, 1, 0.4, 4.4);
+          ctx.strokeStyle = 'rgba(160,110,20,.55)';
+          ctx.lineWidth = 0.35;
+          ctx.stroke();
+        }
         const bl = blinkOn(5);
-        lashEye(hx + 1.4, hy - 0.5, 0.7, bl);
-        lashEye(hx + 4.6, hy - 0.5, 0.6, bl);
-        ln(hx - 0.2, hy - 2.6, hx + 2.6, hy - 3, '#7e3018', 0.6);
-        ln(hx + 3.6, hy - 3, hx + 5.6, hy - 2.6, '#7e3018', 0.6);
+        lashEye(hx + 1.4, hy - 0.5, 0.78, bl, '#2a7fe8');
+        lashEye(hx + 4.6, hy - 0.5, 0.68, bl, '#2a7fe8');
+        ln(hx - 0.2, hy - 2.7, hx + 2.6, hy - 3.1, '#b8862a', 0.6);
+        ln(hx + 3.6, hy - 3.1, hx + 5.6, hy - 2.7, '#b8862a', 0.6);
         noseP(hx, hy, PAL_MA.skin, 3.4);
         ci(hx + 0.4, hy + 2.2, 1.1, 'rgba(255,120,120,.25)');
         if (over) {

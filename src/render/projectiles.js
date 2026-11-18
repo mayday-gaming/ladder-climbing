@@ -363,7 +363,7 @@ export function drawBombs() {
   }
 }
 
-/** Projectiles of Martina, Ops, Sora Rita and their allies. Returns true when handled. */
+/** Projectiles of Iolanda, Ops, Sora Rita and their allies. Returns true when handled. */
 function drawNewBul(b, x, y, d, t) {
   switch (b.k) {
     case 'postit':

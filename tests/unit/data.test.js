@@ -53,13 +53,13 @@ test('roster: seven heroes, Anzu not selectable', () => {
   assert.ok(!HORD.includes(0));
   assert.deepEqual(
     HORD.map(i => CH[i].name),
-    ['BOLT', 'AUGUST', 'ANGRY MAN', 'MARTINA', 'OPS', 'SORA RITA', 'STAGISTI'],
+    ['BOLT', 'AUGUST', 'ANGRY MAN', 'IOLANDA', 'OPS', 'SORA RITA', 'STAGISTI'],
   );
 });
 
 test('new heroes: F abilities have cooldowns, allies are wired', () => {
   const by = n => CH.find(c => c.name == n);
-  assert.equal(by('MARTINA').fKey.act, 'freeze');
+  assert.equal(by('IOLANDA').fKey.act, 'freeze');
   assert.equal(by('SORA RITA').fKey.act, 'leap');
   assert.equal(by('OPS').fKey, undefined, "Ops' rollback is passive");
   for (const c of CH) if (c.fKey) assert.ok(c.fKey.cd > 0 && c.fKey.n && c.fKey.btn);

@@ -355,7 +355,7 @@ function shoot() {
 
   if (isAngry(p)) p.cd = Math.max(5, Math.round(p.cd * 0.7));
 }
-/** Weapons of Martina (post-it), Ops (container) and Sora Rita (cornetta). */
+/** Weapons of Iolanda (post-it), Ops (container) and Sora Rita (cornetta). */
 function shootNew(p, a, x, y) {
   const ch = p.ch,
     mk = o => G.bul.push(Object.assign({ x, y: y - 1, r: 5, pierce: a >= 4, hit: [], t: 0 }, o));
@@ -399,7 +399,7 @@ function shootNew(p, a, x, y) {
   p.shootT = 8;
   if (isAngry(p)) p.cd = Math.max(5, Math.round(p.cd * 0.7));
 }
-/** F key for heroes with an active ability (Martina, Sora Rita). */
+/** F key for heroes with an active ability (Iolanda, Sora Rita). */
 function useAbility(p) {
   const fk = CH[p.ch].fKey;
   if (!fk || p.abCd > 0) {

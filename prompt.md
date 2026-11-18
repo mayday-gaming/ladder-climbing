@@ -159,3 +159,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 37
 
 > Pubblicalo su master
+
+## 38
+
+> la pm deve avere capelli riccissimi e biondi ed occchi azzurri e si chiama Iolanda. Inoltre puoi fare uno score di  tutti  quelli che ci giocano? tanto poi è pubblicato su github pages si salvano?
