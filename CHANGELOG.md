@@ -6,6 +6,8 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 
 ### Aggiunto
 
+- Prologo degli stagisti in tre atti con boss finale: il **Dott. Cavillo** dell'Ufficio Contratti (clausole, salti col timbro, stordimento, carica con la penna).
+
 - June diventa **August**, una volpe: orecchie a punta, muso, guance bianche e lunga coda animata.
 - Pipeline di build con esbuild: sorgenti in `src/`, `index.html` generato come file unico.
 - Test unitari, di integrità dati, playthrough headless per tutti e 5 gli eroi ed e2e in Chromium.
@@ -21,6 +23,8 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 - Font estratti in `assets/fonts/` e incorporati in fase di build.
 
 ### Rimosso
+
+- **Anzu** non è più selezionabile: restano Bolt, August, Angry Man e gli Stagisti.
 
 - Codice morto (helper e variabili mai usati).
 

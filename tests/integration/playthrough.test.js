@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const run = promisify(execFile);
 const runner = fileURLToPath(new URL('../helpers/run-hero.js', import.meta.url));
-const HEROES = { 0: 'Anzu', 1: 'Bolt', 2: 'Angry Man', 3: 'August', 4: 'Stagisti' };
+const HEROES = { 1: 'Bolt', 2: 'Angry Man', 3: 'August', 4: 'Stagisti' };
 
 // Each hero runs in its own process: modules hold game state, so isolation
 // matters, and parallel processes keep the suite fast.
@@ -32,7 +32,8 @@ for (const [h, name] of Object.entries(HEROES)) {
   });
 }
 
-test('interns open with the HR interview (quadro) before level 1', async () => {
+test('interns play the three-act prologue ending with the contract boss', async () => {
   const r = await reports[4];
-  assert.ok(r.pre.length > 1, 'expected quadro states before first level: ' + r.pre);
+  assert.deepEqual(r.preIds, ['primo', 'colloquio', 'contratto']);
+  assert.ok(r.cavMaxHp > 0, 'Dott. Cavillo should spawn with hit points');
 });

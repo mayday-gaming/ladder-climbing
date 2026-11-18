@@ -28,7 +28,7 @@ export const G = {
   tposts: [],
   bombs: [],
   snowFx: [],
-  selCh: 0,
+  selCh: 1,
   aiFace: 0,
   evt: null,
   evtCD: 900,

@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CH } from '../../src/data/heroes.js';
+import { CH, HORD, SEL } from '../../src/data/heroes.js';
 import { ALLY, ANAME, ALLY_OF, CUT, CONS, FLOAT } from '../../src/data/allies.js';
 import { ORD, LNAME, LTAG, BOSS, PERK, ROLES } from '../../src/data/levels.js';
-import { ORZOQ } from '../../src/data/quadri.js';
+import { CAVQ, CLAUSOLE, CONTRATTO, ORZOQ } from '../../src/data/quadri.js';
 
 test('five heroes with complete select-screen data', () => {
   assert.equal(CH.length, 5);
@@ -46,4 +46,24 @@ test('seven levels, each with name, tagline, boss, perk and rank', () => {
 test('barley mockery has enough variety', () => {
   assert.ok(ORZOQ.length >= 4);
   assert.equal(new Set(ORZOQ).size, ORZOQ.length, 'duplicate lines');
+});
+
+test('Anzu is no longer selectable; roster is Bolt, August, Angry Man, interns', () => {
+  assert.deepEqual(HORD, [1, 3, 2, 4]);
+  assert.ok(!HORD.includes(0));
+  assert.deepEqual(
+    HORD.map(i => CH[i].name),
+    ['BOLT', 'AUGUST', 'ANGRY MAN', 'STAGISTI'],
+  );
+});
+
+test('select cards are centred and tap hit-testing maps back to the card', () => {
+  HORD.forEach((_, n) => assert.equal(SEL.at(SEL.x(n)), n));
+  assert.equal(SEL.x(0) + SEL.x(HORD.length - 1), 480);
+  assert.ok(SEL.pitch > SEL.w, 'cards must not overlap');
+});
+
+test('contract boss has its own dialogue and clauses', () => {
+  assert.equal(CONTRATTO.id, 'contratto');
+  assert.ok(CAVQ.length >= 8 && CLAUSOLE.length >= 8);
 });

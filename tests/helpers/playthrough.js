@@ -6,7 +6,7 @@
  * Returns a JSON-serialisable report; never throws on gameplay outcomes.
  */
 export function playthrough(g, hero) {
-  const report = { hero, pre: [], levels: [], nan: null, end: null };
+  const report = { hero, pre: [], preIds: [], cavMaxHp: 0, levels: [], nan: null, end: null };
   const bad = o => o && (!Number.isFinite(o.x) || !Number.isFinite(o.y));
   const u = g.update;
   let n = 0;
@@ -24,6 +24,8 @@ export function playthrough(g, hero) {
   const clearQuadro = st => {
     while (g.s.state === 'quadro') {
       st.push(g.s.Q.id);
+      if (st === report.pre) report.preIds.push(g.s.Q.id);
+      if (g.s.Q.cav) report.cavMaxHp = g.s.Q.cav.max;
       for (let i = 0; i < 3300 && g.s.Q.ph !== 2; i++) {
         k.r = i % 160 < 80 ? 1 : 0;
         k.l = k.r ? 0 : 1;
@@ -33,7 +35,8 @@ export function playthrough(g, hero) {
         if (i % 300 === 0) g.draw();
       }
       k.r = k.l = k.f = 0;
-      for (let i = 0; i < 12000 && g.s.state === 'quadro'; i++) {
+      const id = g.s.Q.id;
+      for (let i = 0; i < 12000 && g.s.state === 'quadro' && g.s.Q.id === id; i++) {
         if (i % 20 === 0) g.inp.tap();
         update();
       }

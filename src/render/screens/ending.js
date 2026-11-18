@@ -88,7 +88,7 @@ export function drawEnding() {
   TX(
     G.P && G.P.ch == 4
       ? 'TIBERIO E LUIGI: ASSUNTI E AL LIVELLO SUPER'
-      : (G.P ? CH[G.P.ch].name : 'ANZU') + ' È AL LIVELLO SUPER',
+      : (G.P ? CH[G.P.ch].name : "L'EROE") + ' È AL LIVELLO SUPER',
     W / 2,
     38,
     8.4,

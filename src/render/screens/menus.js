@@ -1,6 +1,6 @@
 /** @file Boot, title and hero-select screens. */
 import { ALLY_OF, CONS, FLOAT } from '../../data/allies.js';
-import { CH, HORD } from '../../data/heroes.js';
+import { CH, HORD, SEL } from '../../data/heroes.js';
 import {
   TX,
   bl,
@@ -230,11 +230,6 @@ export function drawPresent() {
   heroAt(1, 0, rx + 50, GY, 1.45, { run: 1, ph: ph + 2.6, vx: 2 });
   shadow(rx - 26, GY, 7, 0.3);
   heroAt(4, 0, rx - 26, GY, 1.4, { run: 1, ph: ph + 0.7, vx: 2 });
-  heroAt(0, 0, rx + 82, GY - 22 + Math.sin(V.TT * 0.1) * 4, 1.5, {
-    onGround: false,
-    vy: -1,
-    flap: G.frame % 16 < 8 ? 6 : 0,
-  });
   if ((G.frame >> 4) % 2 && u > 20)
     TX(touchy() ? 'TOCCA PER SALTARE' : 'INVIO PER SALTARE', W - 8, H - 9, 4.8, '#ffe95c', {
       a: 'right',
@@ -248,21 +243,14 @@ export function drawTitle() {
   drawPlat({ x: 250, y: GY - 18, w: 62, h: 18, k: 'car' }, 0);
   drawPlat({ x: 330, y: GY - 18, w: 54, h: 18, k: 'car' }, 0);
   const sh = i => ((V.TT + i * 60) % 180 < 10 ? 9 : 0);
-  shadow(104, GY, 7, 0.3);
-  heroAt(0, 0, 104, GY - 4 - Math.abs(Math.sin(V.TT * 0.08)) * 3, 1.2, {
-    onGround: false,
-    vy: -1,
-    flap: G.frame % 20 < 10 ? 6 : 0,
-    shootT: sh(0),
-  });
-  shadow(138, GY, 7, 0.3);
-  heroAt(1, 0, 138, GY, 1.2, { shootT: sh(1) });
-  shadow(166, GY, 7, 0.3);
-  heroAt(3, 0, 166, GY, 1.2, { shootT: sh(3) });
-  shadow(198, GY, 8, 0.3);
-  heroAt(2, 0, 198, GY, 1.2, { shootT: sh(2) });
-  shadow(228, GY, 7, 0.3);
-  heroAt(4, (G.frame >> 8) % 2, 228, GY, 1.2, { shootT: sh(4) });
+  shadow(118, GY, 7, 0.3);
+  heroAt(1, 0, 118, GY, 1.2, { shootT: sh(1) });
+  shadow(150, GY, 7, 0.3);
+  heroAt(3, 0, 150, GY, 1.2, { shootT: sh(3) });
+  shadow(184, GY, 8, 0.3);
+  heroAt(2, 0, 184, GY, 1.2, { shootT: sh(2) });
+  shadow(216, GY, 7, 0.3);
+  heroAt(4, (G.frame >> 8) % 2, 216, GY, 1.2, { shootT: sh(4) });
   bl(vignette(), 0, 0);
   const bob = Math.sin(V.TT * 0.04) * 2.5,
     rk = Math.sin(V.TT * 0.025) * 0.03;
@@ -287,18 +275,11 @@ export function drawTitle() {
   pth([112, -6, 124, 0, 112, 6], '#1b3fa0', OL, 0.8);
   TX('LADDER CLIMBING', 0, 0.8, 11, '#ffe95c', { w: 700, sk: '#0a1436', sw: 1.8 });
   ctx.restore();
-  TX(
-    'Anzu · Bolt · August · Angry Man · gli Stagisti · sei boss · eventi folli',
-    W / 2,
-    133,
-    6.4,
-    '#e6ecff',
-    {
-      b: 1,
-      w: 800,
-      sh: true,
-    },
-  );
+  TX('Bolt · August · Angry Man · gli Stagisti · otto boss · eventi folli', W / 2, 133, 6.4, '#e6ecff', {
+    b: 1,
+    w: 800,
+    sh: true,
+  });
   const pk = 1 + 0.06 * Math.sin(V.TT * 0.12);
   ctx.save();
   ctx.translate(W / 2, 160);
@@ -355,15 +336,15 @@ export function drawSelect() {
     sw: 3,
     sh: true,
   });
-  const CW = 88,
+  const CW = SEL.w,
     CHH = 162;
-  for (let n = 0; n < 5; n++) {
+  for (let n = 0; n < HORD.length; n++) {
     const i = HORD[n],
       c = CH[i],
       sel = i == G.selCh;
     selA[i] += ((sel ? 1 : 0) - selA[i]) * 0.18;
     const q = selA[i],
-      cx = 50 + n * 95,
+      cx = SEL.x(n),
       y0 = 26,
       s2 = 0.97 + q * 0.04;
     ctx.save();

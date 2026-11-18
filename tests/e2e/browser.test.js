@@ -31,7 +31,7 @@ test(
       await page.waitForTimeout(900);
       await page.keyboard.press('Enter');
       await page.waitForTimeout(400);
-      const report = await page.evaluate(`(${playthrough})(window.__g, 3)`);
+      const report = await page.evaluate(`(${playthrough})(window.__g, 4)`);
       assert.deepEqual(errors, []);
       assert.equal(report.nan, null);
       assert.equal(report.end.state, 'ending');

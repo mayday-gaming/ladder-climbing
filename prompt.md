@@ -139,3 +139,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 32
 
 > Quando mi fai vedere sinergia alleato etc fammele vedere delle animazioni carine.. alleato anche legato ovviamente a quello del personaggio
+
+## 33
+
+> gli stagisti hanno un quadro completo con un boss alla fine. Scegli tu e fai tu. Poi toglimi ANZU dai personaggi
