@@ -1,6 +1,6 @@
 {
   "name": "big-company-ladder-climbing",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "BIG COMPANY — Ladder Climbing: arcade platformer in a single HTML file (canvas 2D, zero runtime deps).",
   "private": true,
   "type": "module",

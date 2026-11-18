@@ -155,3 +155,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 36
 
 > Aggiungimi che posso ritornare al menu principale. Migliora anche hud della pausa caffè (menu pausa)
+
+## 37
+
+> Pubblicalo su master
