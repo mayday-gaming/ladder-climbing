@@ -77,3 +77,18 @@ test('contract boss has its own dialogue and clauses', () => {
   assert.equal(CONTRATTO.id, 'contratto');
   assert.ok(CAVQ.length >= 8 && CLAUSOLE.length >= 8);
 });
+
+test('pause menu offers resume, restart, music and main menu without overlapping entries', async () => {
+  const { PAUSE_ITEMS, pauseItemRect, GO_MENU } = await import('../../src/data/pause.js');
+  assert.deepEqual(
+    PAUSE_ITEMS.map(i => i.id),
+    ['resume', 'restart', 'music', 'menu'],
+  );
+  for (let k = 1; k < PAUSE_ITEMS.length; k++) {
+    const a = pauseItemRect(k - 1),
+      b = pauseItemRect(k);
+    assert.ok(a.y + a.h <= b.y, 'entries must not overlap');
+    assert.ok(b.x + b.w <= 480 && b.y + b.h <= 270, 'entries must stay on screen');
+  }
+  assert.ok(GO_MENU.x >= 0 && GO_MENU.x + GO_MENU.w <= 480);
+});

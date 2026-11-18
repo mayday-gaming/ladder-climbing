@@ -6,6 +6,8 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 
 ### Aggiunto
 
+- Menu della **pausa caffè** rifatto: riprendi, ricomincia il livello, musica on/off e ritorno al menu principale (con conferma); ritorno al menu anche dal game over.
+
 - Tre nuovi eroi: **Martina** la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
 - Schermata di scelta ridisegnata per sette eroi: striscia di ritratti e pannello di dettaglio con arma, abilità, alleato e difetto.
 

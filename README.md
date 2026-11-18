@@ -48,6 +48,10 @@ Quando chiami l'alleato il gioco si ferma per due secondi e parte un'animazione 
 
 All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi il menu con la musica. Dopo aver scelto l'eroe compare **Come si gioca**: una schermata animata con i comandi (tastiera o touch, in base al dispositivo) in cui l'eroe scelto mostra a turno ogni mossa con una mini-animazione: corsa con scie, salto che schiaccia un nemico, il colpo della sua arma, la Sinergia che si carica ed esplode, la telefonata che fa arrivare il **suo** alleato, il ticket che fa saltare tutto, il cambio degli stagisti e la pausa caffè. L'HUD prende il colore del piano in cui ti trovi, mostra il ritratto dell'eroe (che si agita, si arrabbia o lampeggia di rosso quando è all'ultimo cuore) e si fa trasparente quando ci passi sotto tu o il boss. Ogni evento aziendale casuale (pioggia di buoni pasto, disco pausa pranzo, bug in produzione…) viene annunciato da una schermata a tutto schermo. Angry Man diventa sempre più rosso e furioso man mano che perde cuori.
 
+### Pausa caffè e menu principale
+
+Con **P / ESC** (o il pulsante ❚❚) si apre la **pausa caffè**: a sinistra il tuo eroe che si beve un caffè con livello, punteggio, vite e buoni; a destra le voci **Riprendi**, **Ricomincia il livello**, **Musica** (on/off) e **Torna al menu principale**. Si sceglie con ↑ ↓ e INVIO o toccando la voce; ricominciare e tornare al menu chiedono una seconda conferma. Anche dalla schermata "LICENZIATO!" si torna al menu con ESC o col pulsante dedicato.
+
 ### A cosa serve la Sinergia
 
 La barra **Sinergia** si riempie colpendo e sconfiggendo nemici, colpendo il boss e raccogliendo buoni pasto. Quando è piena premi **C** (o il pulsante SINERGIA): cancelli tutti i colpi nemici a schermo, fai 6 danni a ogni nemico visibile e un colpo grosso al boss, più l'effetto speciale del tuo eroe (pioggia di tazzine, Gantt che rallenta tutti, deploy di container, attesa con la musichetta…). È la mossa da tenere per i momenti difficili, soprattutto contro i boss.

@@ -151,3 +151,7 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 35
 
 > falli tutti. Ma a che serve la sinergia?
+
+## 36
+
+> Aggiungimi che posso ritornare al menu principale. Migliora anche hud della pausa caffè (menu pausa)
