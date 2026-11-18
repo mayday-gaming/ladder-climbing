@@ -1,11 +1,12 @@
 /** @file Fixed 60 Hz update loop with render interpolation. */
 import { HORD, SEL, TCOST } from '../data/heroes.js';
 import { ORD, S_SEL } from '../data/levels.js';
+import { GO_MENU, PAUSE_ITEMS, pauseItemRect } from '../data/pause.js';
 import { COLLOQUIO, CONTRATTO } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { purgeL } from '../engine/canvas.js';
 import { C, GY, W } from '../engine/config.js';
-import { bN, bS, bT, edges, inp, key, tch } from '../engine/input.js';
+import { bN, bS, bT, edges, inp, key, tch, toggleMute } from '../engine/input.js';
 import { clamp, rnd } from '../engine/math.js';
 import { updTib } from './allies.js';
 import { mkBoss, updBoss } from './boss.js';
@@ -56,8 +57,10 @@ export function update() {
   if (G.state == 'play' && !G.paused && G.tib && G.tib.type == 'claudio' && G.P && !G.P.dead) claudioAI();
   if (edges.pause && (G.state == 'play' || G.paused)) {
     G.paused = !G.paused;
+    G.pSel = 0;
+    G.pConfirm = 0;
     Snd.sfx('blip');
-  }
+  } else if (G.paused) pauseMenu();
   if (!G.paused) {
     if (G.ban && (G.state != 'play' || ++G.ban.t >= (G.ban.k ? 84 : 96))) G.ban = null;
     if (G.evc) {
@@ -93,8 +96,63 @@ export function update() {
     edges.left =
     edges.right =
     edges.swap =
+    edges.up =
+    edges.down =
       false;
   edges.tap = null;
+}
+/** Coffee-break menu: resume, restart level, music, back to the main menu (with confirmation). */
+function pauseMenu() {
+  const n = PAUSE_ITEMS.length;
+  if (G.pConfirm > 0) G.pConfirm--;
+  if (edges.up || edges.left) {
+    G.pSel = (G.pSel + n - 1) % n;
+    G.pConfirm = 0;
+    Snd.sfx('blip');
+  }
+  if (edges.down || edges.right) {
+    G.pSel = (G.pSel + 1) % n;
+    G.pConfirm = 0;
+    Snd.sfx('blip');
+  }
+  let pick = edges.press ? G.pSel : -1;
+  if (edges.tap) {
+    const hit = PAUSE_ITEMS.findIndex((_, k) => {
+      const r = pauseItemRect(k);
+      return edges.tap.x > r.x && edges.tap.x < r.x + r.w && edges.tap.y > r.y && edges.tap.y < r.y + r.h;
+    });
+    if (hit >= 0) {
+      if (hit != G.pSel) G.pConfirm = 0;
+      G.pSel = pick = hit;
+    } else pick = -1;
+  }
+  if (pick < 0) return;
+  const id = PAUSE_ITEMS[pick].id;
+  if (id == 'resume') {
+    G.paused = false;
+    Snd.sfx('power');
+  } else if (id == 'music') {
+    toggleMute();
+    Snd.sfx('blip');
+  } else if (id == 'restart' || id == 'menu') {
+    if (G.pConfirm <= 0) {
+      G.pConfirm = 180;
+      Snd.sfx('blip');
+      return;
+    }
+    G.paused = false;
+    G.pConfirm = 0;
+    G.ban = G.cut = G.evc = null;
+    if (id == 'restart') {
+      Snd.sfx('power');
+      startLevel();
+    } else {
+      saveHi();
+      G.score = 0;
+      Snd.sfx('power');
+      setState('title');
+    }
+  }
 }
 function step() {
   switch (G.state) {
@@ -338,7 +396,20 @@ function step() {
     }
     case 'gameover':
       updFx();
-      if (edges.press && G.st > 60) {
+      if (
+        G.st > 60 &&
+        (edges.pause ||
+          (edges.tap &&
+            edges.tap.x > GO_MENU.x &&
+            edges.tap.x < GO_MENU.x + GO_MENU.w &&
+            edges.tap.y > GO_MENU.y &&
+            edges.tap.y < GO_MENU.y + GO_MENU.h))
+      ) {
+        saveHi();
+        G.score = 0;
+        Snd.sfx('power');
+        setState('title');
+      } else if (edges.press && G.st > 60) {
         G.score = 0;
         G.lives = 3;
         G.nextLife = 30000;

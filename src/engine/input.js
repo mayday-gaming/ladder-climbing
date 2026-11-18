@@ -15,6 +15,8 @@ export const edges = {
   left: false,
   right: false,
   swap: false,
+  up: false,
+  down: false,
   tap: null,
 };
 export const key = {},
@@ -94,7 +96,7 @@ function bind(el, dn, up) {
     }),
   );
 }
-function toggleMute() {
+export function toggleMute() {
   bM.style.opacity = Snd.toggle() ? '.35' : '1';
 }
 export function touchy() {
@@ -118,6 +120,8 @@ export function setupInput() {
       }
       key[k] = 1;
     }
+    if (e.key == 'ArrowUp' || e.key == 'w' || e.key == 'W') edges.up = true;
+    if (e.key == 'ArrowDown' || e.key == 's' || e.key == 'S') edges.down = true;
     if (e.repeat) return;
     if (e.key == 'Enter' || e.key == ' ' || k == 'j' || k == 'f') edges.press = true;
     if (e.key == 'p' || e.key == 'P' || e.key == 'Escape') edges.pause = true;

@@ -1,6 +1,8 @@
 /** @file Boot, title and hero-select screens. */
 import { ALLY_OF, FLOAT } from '../../data/allies.js';
 import { CH, HORD, SEL } from '../../data/heroes.js';
+import { LNAME, ORD } from '../../data/levels.js';
+import { GO_MENU, PAUSE_ITEMS, pauseItemRect } from '../../data/pause.js';
 import {
   TX,
   bl,
@@ -20,10 +22,11 @@ import {
   tw,
 } from '../../engine/canvas.js';
 import { GY, H, OL, W } from '../../engine/config.js';
+import { Snd } from '../../engine/audio.js';
 import { touchy } from '../../engine/input.js';
 import { E, clamp } from '../../engine/math.js';
 import { G } from '../../game/state.js';
-import { drawAllyBody } from '../characters/allies.js';
+import { bubble, drawAllyBody } from '../characters/allies.js';
 import { drawAnzuV, heroDraw } from '../characters/heroes.js';
 import { bars, stamp } from '../hud.js';
 import { V } from '../interp.js';
@@ -47,44 +50,172 @@ export function drawGameOver() {
       '#9ff6ff',
       { b: 1, w: 900 },
     );
+  if (G.st > 60) {
+    const r = GO_MENU;
+    rr(r.x, r.y, r.w, r.h, r.h / 2, 'rgba(20,32,90,.85)', 'rgba(255,255,255,.4)', 0.7);
+    TX(
+      touchy() ? '⌂ MENU PRINCIPALE' : '⌂ MENU PRINCIPALE (ESC)',
+      r.x + r.w / 2,
+      r.y + r.h / 2 + 0.3,
+      5.4,
+      '#ffffff',
+      {
+        b: 1,
+        w: 900,
+      },
+    );
+  }
   ctx.globalAlpha = 1;
 }
 export function drawPause() {
-  rect(0, 0, W, H, 'rgba(2,6,30,.72)');
-  glass(W / 2 - 130, 60, 260, 130, 12, 0.85);
-  const cx = W / 2,
-    cy = 96;
-  el(cx, cy + 8, 14, 3, '#e6ebf6', OL, 0.6);
+  const t = V.TT,
+    tch = touchy();
+  rect(0, 0, W, H, 'rgba(2,6,30,.78)');
+  ctx.save();
+  ctx.globalAlpha = 0.05;
+  const o = (t * 0.3) % 40;
+  for (let x = -H; x < W + 40; x += 40)
+    pth([x + o, 0, x + o + 14, 0, x + o + 14 - H, H, x + o - H, H], '#ffd500');
+  ctx.restore();
+  // title
+  coffeeCup(W / 2 - 92, 30, 0.9);
+  TX('PAUSA CAFFÈ', W / 2 + 8, 30, 17, lgr(0, 20, 0, 40, '#fff6a0', '#ffc400'), {
+    w: 700,
+    sk: '#0a1436',
+    sw: 3,
+    sh: true,
+  });
+  // left card: the hero on a coffee break + run stats
+  glass(24, 66, 176, 168, 12, 0.7);
+  rr(24, 66, 176, 168, 12, null, 'rgba(255,213,0,.35)', 0.8);
+  const p = G.P;
+  if (p) {
+    glow(80, 150, 46, '#ffd500', 0.1);
+    el(80, 170, 22, 3.5, 'rgba(0,0,0,.4)');
+    heroAt(p.ch, p.form || 0, 78, 170, 2.2, { face: 1, hp: p.hp, maxHp: p.maxHp, caf: p.caf });
+    coffeeCup(112, 118, 0.55);
+    const lines = [
+      'Il capo non ti vede.',
+      'Macchinetta: 0,60 €.',
+      'Hai 5 minuti. Forse 4.',
+      'Il ticket può aspettare.',
+      'Zucchero? No, grazie.',
+      'Si parla del fantacalcio.',
+    ];
+    bubble(lines[((t / 240) | 0) % lines.length], 120, 96, '#fff7cf', 92);
+    const stat = (lb, v, y) => {
+      TX(lb, 38, y, 4.4, '#8fa3dc', { a: 'left', b: 1, w: 900 });
+      TX(v, 186, y, 5.6, '#ffffff', { a: 'right', b: 1, w: 900 });
+    };
+    rr(34, 182, 156, 44, 7, 'rgba(255,255,255,.06)');
+    stat('LIVELLO', LNAME[ORD[G.lvl]] ? LNAME[ORD[G.lvl]].split('·')[1].trim() : '—', 190);
+    stat('PUNTEGGIO', String(G.score).padStart(7, '0'), 201);
+    stat('VITE · BUONI · TICKET', G.lives + ' · ' + p.coins + ' · ' + p.bombs, 212);
+    stat('EROE', CH[p.ch].name, 223);
+  }
+  // menu entries
+  PAUSE_ITEMS.forEach((it, k) => {
+    const r = pauseItemRect(k),
+      sel = k == G.pSel,
+      conf = sel && G.pConfirm > 0 && (it.id == 'menu' || it.id == 'restart'),
+      sc = sel ? 1.04 + 0.01 * Math.sin(t * 0.2) : 1;
+    ctx.save();
+    ctx.translate(r.x + r.w / 2, r.y + r.h / 2);
+    ctx.scale(sc, sc);
+    ctx.translate(-r.w / 2, -r.h / 2);
+    if (sel) glow(r.w / 2, r.h / 2, 90, conf ? '#ff3b4a' : '#ffd500', 0.14);
+    rr(0, 1.6, r.w, r.h, r.h / 2, 'rgba(0,0,0,.35)');
+    rr(
+      0,
+      0,
+      r.w,
+      r.h,
+      r.h / 2,
+      sel
+        ? conf
+          ? lgr(0, 0, 0, r.h, '#ff6a7a', '#c0102a')
+          : lgr(0, 0, 0, r.h, '#fff07a', '#ffc400')
+        : 'rgba(20,32,90,.78)',
+      sel ? OL : 'rgba(255,255,255,.18)',
+      0.8,
+    );
+    const ink = sel ? (conf ? '#ffffff' : '#2a1600') : '#ffffff';
+    ci(r.h / 2 + 1, r.h / 2, r.h / 2 - 3.6, sel ? 'rgba(255,255,255,.45)' : 'rgba(255,255,255,.1)');
+    TX(it.icon, r.h / 2 + 1, r.h / 2 + 0.4, 8, ink, { w: 700 });
+    const label = conf
+      ? it.id == 'menu'
+        ? 'SICURO? CONFERMA DI NUOVO'
+        : 'SICURO? CONFERMA DI NUOVO'
+      : it.label;
+    TX(label, r.h + 4, r.h / 2 - 3.2, 6.4, ink, { a: 'left', w: 700 });
+    TX(
+      conf ? it.sub + '!' : it.sub,
+      r.h + 4,
+      r.h / 2 + 5,
+      4.2,
+      sel ? (conf ? '#ffe0e4' : '#5a3a00') : '#9fb4ff',
+      {
+        a: 'left',
+        b: 1,
+        w: 800,
+      },
+    );
+    if (it.id == 'music') {
+      const on = !Snd.muted;
+      rr(r.w - 34, r.h / 2 - 5, 26, 10, 5, on ? '#3cc46a' : '#5a6386', OL, 0.5);
+      ci(on ? r.w - 13 : r.w - 29, r.h / 2, 3.6, '#ffffff', OL, 0.4);
+      TX(on ? 'ON' : 'OFF', on ? r.w - 25 : r.w - 17, r.h / 2 + 0.3, 3.8, '#ffffff', { b: 1, w: 900 });
+    }
+    if (sel && !tch) {
+      const bx = -8 - Math.abs(Math.sin(t * 0.15)) * 3;
+      pth([bx, r.h / 2 - 4, bx + 6, r.h / 2, bx, r.h / 2 + 4], '#ffd500', OL, 0.6);
+    }
+    ctx.restore();
+  });
+  if ((G.frame >> 5) % 2 || tch)
+    TX(
+      tch
+        ? 'Tocca una voce · ❚❚ per riprendere'
+        : '↑ ↓ scegli · INVIO conferma · P / ESC riprendi · M musica',
+      W / 2 + 100,
+      H - 14,
+      5.2,
+      '#cfe0ff',
+      { b: 1, w: 800 },
+    );
+}
+function coffeeCup(cx, cy, k) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(k, k);
+  el(0, 12, 16, 3.4, '#e6ebf6', OL, 0.8);
   ctx.beginPath();
-  ctx.moveTo(cx - 10, cy - 6);
-  ctx.lineTo(cx + 10, cy - 6);
-  ctx.lineTo(cx + 8, cy + 6);
-  ctx.quadraticCurveTo(cx, cy + 9, cx - 8, cy + 6);
+  ctx.moveTo(-11, -6);
+  ctx.lineTo(11, -6);
+  ctx.lineTo(9, 7);
+  ctx.quadraticCurveTo(0, 11, -9, 7);
   ctx.closePath();
-  fs('#ffffff', OL, 0.8);
-  el(cx, cy - 6, 9.4, 2, '#6a3418');
+  fs(lgr(0, -6, 0, 10, '#ffffff', '#d4dbef'), OL, 0.9);
+  rect(-10, -1, 20, 2.4, '#ffd500');
+  el(0, -6, 10.4, 2.2, '#6a3418');
+  el(-2, -6.6, 4, 0.8, 'rgba(255,220,180,.5)');
   ctx.beginPath();
-  ctx.arc(cx + 11, cy - 1, 3.6, -1.3, 1.3);
+  ctx.arc(12, 0, 4, -1.3, 1.3);
   ctx.strokeStyle = OL;
-  ctx.lineWidth = 1.6;
+  ctx.lineWidth = 1.8;
   ctx.stroke();
   for (let i = 0; i < 3; i++) {
-    const q = (V.TT * 0.01 + i / 3) % 1;
-    ctx.globalAlpha = 0.7 * (1 - q);
+    const q = (V.TT * 0.012 + i / 3) % 1;
+    ctx.globalAlpha = 0.75 * (1 - q);
     ctx.beginPath();
-    ctx.moveTo(cx - 5 + i * 5, cy - 9 - q * 14);
-    ctx.quadraticCurveTo(cx - 2 + i * 5, cy - 13 - q * 14, cx - 5 + i * 5, cy - 17 - q * 14);
+    ctx.moveTo(-5 + i * 5, -9 - q * 16);
+    ctx.quadraticCurveTo(-1 + i * 5, -14 - q * 16, -5 + i * 5, -19 - q * 16);
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
   }
   ctx.globalAlpha = 1;
-  TX('PAUSA CAFFÈ', W / 2, 126, 18, '#ffe95c', { w: 700, sk: '#0a1436', sw: 3 });
-  TX('← → muovi · Z salta · X spara · B ticket incident · C Sinergia', W / 2, 150, 5.8, '#dfe7ff', {
-    b: 1,
-    w: 800,
-  });
-  TX('V alleato · F cambio (Stagisti) · M musica · P riprendi', W / 2, 162, 5.8, '#dfe7ff', { b: 1, w: 800 });
+  ctx.restore();
 }
 export function scenery0(drift) {
   const sv = G.LV;
