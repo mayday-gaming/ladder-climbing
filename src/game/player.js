@@ -1,11 +1,11 @@
 /** @file Player physics, weapons, specials, caffeine/anger mechanics. */
-import { SWEARS } from '../data/heroes.js';
+import { CH, SWEARS } from '../data/heroes.js';
 import { ORD, STG } from '../data/levels.js';
 import { STOMPW } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { C, GY, H, P2, W } from '../engine/config.js';
 import { bB, edges, inp, touchy } from '../engine/input.js';
-import { clamp, ov, sgn } from '../engine/math.js';
+import { clamp, ov, rnd, sgn } from '../engine/math.js';
 import { buyTib } from './allies.js';
 import { dmgBoss } from './boss.js';
 import { dmgEnemy } from './enemies.js';
@@ -55,6 +55,14 @@ export function mkPlayer(ch) {
     hired: ch != 4,
     consT: 0,
     consType: null,
+    abCd: 0,
+    overT: 0,
+    offT: 0,
+    hitLog: [],
+    rbUsed: false,
+    hist: [],
+    onCallT: 1500 + ((Math.random() * 600) | 0),
+    leapT: 0,
   };
 }
 function moveBody(e) {
@@ -96,6 +104,8 @@ export function hurt() {
     G.Q.hits++;
     if (p.hp < 1) p.hp = 1;
   }
+  if (p.ch == 7) ritaHit(p);
+  if (p.hp <= 0 && rollback(p)) return;
   p.inv = 95;
   p.vy = -3.6;
   p.vx = -p.face * 2.4;
@@ -104,6 +114,36 @@ export function hurt() {
   Snd.sfx('hurt');
   puff(p.x + 6, p.y + 10, 10, [C.white, C.yel], 2.5);
   if (p.hp <= 0) die();
+}
+/** Sora Rita takes offence when hit twice within six seconds: no shooting for a while. */
+function ritaHit(p) {
+  p.hitLog = p.hitLog.filter(t => G.frame - t < 360);
+  p.hitLog.push(G.frame);
+  if (p.hitLog.length >= 2 && !(p.offT > 0)) {
+    p.offT = 200;
+    p.hitLog = [];
+    Snd.sfx('panic');
+    G.pops.push({ x: p.x - 30, y: p.y - 20, txt: 'Hmpf! Io non parlo più.', life: 90, c: '#c9a2ff' });
+  }
+}
+/** Ops: once per level, dying rewinds about three seconds instead. */
+function rollback(p) {
+  if (p.ch != 6 || p.rbUsed || G.state != 'play' || !p.hist.length) return false;
+  const s = p.hist[0];
+  p.rbUsed = true;
+  p.x = s.x;
+  p.y = s.y;
+  p.vx = p.vy = 0;
+  p.hp = Math.max(2, Math.ceil(p.maxHp / 2));
+  p.inv = 130;
+  p.hist = [];
+  G.rewT = 50;
+  G.ebul = [];
+  G.flash = 8;
+  Snd.sfx('tele');
+  say('ROLLBACK!');
+  G.pops.push({ x: p.x - 30, y: p.y - 22, txt: 'git revert HEAD~3s', life: 90, c: '#3cff7a' });
+  return true;
 }
 function die() {
   endEvt(false);
@@ -207,6 +247,9 @@ function shoot() {
     }
     p.cd = a == 1 ? 16 : a == 4 ? 11 : 13;
     Snd.sfx('pi');
+  } else if (ch >= 5 && ch <= 7 && !(p.consT > 0)) {
+    shootNew(p, a, x, y);
+    return;
   } else if (p.consT > 0) {
     const tb = p.consType == 'tib',
       v = (tb ? 5.6 : 6.6) * p.face,
@@ -311,6 +354,100 @@ function shoot() {
   p.shootT = 8;
 
   if (isAngry(p)) p.cd = Math.max(5, Math.round(p.cd * 0.7));
+}
+/** Weapons of Martina (post-it), Ops (container) and Sora Rita (cornetta). */
+function shootNew(p, a, x, y) {
+  const ch = p.ch,
+    mk = o => G.bul.push(Object.assign({ x, y: y - 1, r: 5, pierce: a >= 4, hit: [], t: 0 }, o));
+  if (ch == 5) {
+    const v = 5.6 * p.face,
+      n = (vy, dmg) => mk({ vx: v, vy, dmg, life: 70, k: 'postit', slow: 1, rot: Math.random() * 6 });
+    if (a == 1) n(0, 1);
+    else if (a == 2) n(0, 2);
+    else {
+      n(0, 2);
+      n(-1, 1);
+      n(1, 1);
+    }
+    p.cd = a == 1 ? 14 : a == 4 ? 9 : 11;
+    Snd.sfx('throw');
+  } else if (ch == 6) {
+    const n = (vx, vy, dmg) =>
+      mk({ vx: vx * p.face, vy, dmg, r: 6, life: 120, k: 'container', g: 0.22, bn: a >= 2 ? 3 : 2 });
+    if (a == 1) n(3.6, -3.4, 2);
+    else if (a == 2) n(3.8, -3.4, 3);
+    else {
+      n(3.8, -3.4, 3);
+      n(2.6, -4.6, 2);
+      if (a >= 3) n(5, -2.4, 2);
+    }
+    p.cd = a == 1 ? 18 : a == 4 ? 12 : 15;
+    Snd.sfx('throw');
+  } else {
+    if (G.bul.some(b => b.k == 'phone' && b.life > 0) && a < 3) return;
+    const n = (vy, dmg) =>
+      mk({ vx: 5.8 * p.face, vy, dmg, r: 6, life: 90, k: 'phone', boom: 1, pierce: true, ox: x, oy: y });
+    if (a == 1) n(0, 2);
+    else if (a == 2) n(0, 3);
+    else {
+      n(-0.5, 3);
+      n(0.5, 2);
+    }
+    p.cd = a >= 4 ? 16 : 22;
+    Snd.sfx('beep2');
+  }
+  p.shootT = 8;
+  if (isAngry(p)) p.cd = Math.max(5, Math.round(p.cd * 0.7));
+}
+/** F key for heroes with an active ability (Martina, Sora Rita). */
+function useAbility(p) {
+  const fk = CH[p.ch].fKey;
+  if (!fk || p.abCd > 0) {
+    if (fk) Snd.sfx('blip');
+    return;
+  }
+  p.abCd = fk.cd;
+  if (fk.act == 'freeze') {
+    G.freezeT = 90;
+    G.freezeKind = 'meeting';
+    G.flash = 6;
+    Snd.sfx('tick');
+    say('RIUNIONE LAMPO!');
+    G.pops.push({ x: p.x - 30, y: p.y - 22, txt: '«Un minuto solo…»', life: 70, c: '#ffd500' });
+  } else if (fk.act == 'leap') {
+    p.leapT = 34;
+    p.vy = -5.4;
+    p.onGround = false;
+    p.inv = Math.max(p.inv, 20);
+    Snd.sfx('djump');
+    puff(p.x + 6, p.y + p.h, 10, ['#c9a2ff', C.white], 1.8, 18);
+    G.pops.push({ x: p.x - 16, y: p.y - 18, txt: 'Scorciatoia!', life: 50, c: '#c9a2ff' });
+  }
+}
+/** Ops' pager: every so often it rings and drops him somewhere else on screen. */
+function onCall(p) {
+  if (p.ch != 6 || G.state != 'play' || p.dead) return;
+  p.onCallT--;
+  if (p.onCallT == 90) {
+    Snd.sfx('siren');
+    G.pops.push({ x: p.x - 30, y: p.y - 22, txt: 'BIP BIP! Reperibilità!', life: 80, c: '#ff8090' });
+  }
+  if (p.onCallT > 0) return;
+  p.onCallT = 1500 + ((Math.random() * 900) | 0);
+  const lo = G.bossOn ? G.LV.ax + 20 : G.cam.x + 30,
+    hi = G.bossOn ? G.LV.ax + 440 : G.cam.x + W - 50,
+    spots = G.LV.plats.filter(q => q.w >= 24 && q.x + q.w > lo && q.x < hi && q.y > 60 && q.k != 'spring');
+  if (!spots.length) return;
+  const q = spots[(Math.random() * spots.length) | 0],
+    nx = clamp(rnd(Math.max(q.x + 4, lo), Math.min(q.x + q.w - 16, hi)), lo, hi);
+  puff(p.x + 6, p.y + 12, 16, ['#3cff7a', C.white], 2.4, 22);
+  p.x = nx;
+  p.y = q.y - p.h - 2;
+  p.vx = p.vy = 0;
+  p.inv = Math.max(p.inv, 40);
+  puff(p.x + 6, p.y + 12, 16, ['#3cff7a', C.white], 2.4, 22);
+  Snd.sfx('tele');
+  say('TICKET URGENTE! Teletrasporto in sala macchine.');
 }
 function throwBomb() {
   const p = G.P;
@@ -468,6 +605,9 @@ function special() {
               '#@*%! TOTALE!',
               'π TOTALE!',
               p.form ? 'STORMO DI CARTA!' : 'PAUSA CAFFÈ TOTALE!',
+              'GANTT TOTALE!',
+              'DEPLOY IN PRODUZIONE!',
+              'LE PASSO IL DOTTORE!',
             ][p.ch],
       sub: 'S I N E R G I A',
     };
@@ -492,6 +632,28 @@ function special() {
       });
     }
   }
+  if (p.ch == 5) for (const e of G.ens) e.slowT = 360;
+  if (p.ch == 6)
+    for (let k = 0; k < 16; k++)
+      G.bul.push({
+        x: G.cam.x + 14 + k * 29 + rnd(-6, 6),
+        y: -20 - k * 14,
+        vx: rnd(-0.4, 0.4),
+        vy: 2.4,
+        g: 0.2,
+        r: 7,
+        dmg: 3,
+        pierce: true,
+        hit: [],
+        life: 160,
+        k: 'container',
+        bn: 1,
+        t: 0,
+      });
+  if (p.ch == 7) {
+    G.freezeT = 240;
+    G.freezeKind = 'hold';
+  }
   G.ebul = [];
   for (const e of G.ens) if (e.act && e.x > G.cam.x - 20 && e.x < G.cam.x + W + 20) dmgEnemy(e, 6);
   if (G.boss && G.bossOn && !G.boss.dead) dmgBoss(14 + p.aura * 3, true);
@@ -513,7 +675,21 @@ export function updPlayer(ctrl) {
     }
     return;
   }
-  const ax = ctrl ? (inp.right ? 1 : 0) - (inp.left ? 1 : 0) : 0;
+  let ax = ctrl ? (inp.right ? 1 : 0) - (inp.left ? 1 : 0) : 0;
+  if (p.overT > 0) {
+    p.overT--;
+    ax = -ax;
+    if (p.overT == 0)
+      G.pops.push({ x: p.x - 30, y: p.y - 18, txt: 'Agenda liberata. Respiro.', life: 70, c: C.pale });
+  }
+  if (p.offT > 0 && --p.offT == 0)
+    G.pops.push({ x: p.x - 24, y: p.y - 18, txt: 'Va bene, ti richiamo io.', life: 70, c: '#c9a2ff' });
+  if (p.abCd > 0) p.abCd--;
+  if (p.ch == 6 && G.state == 'play' && G.frame % 10 == 0 && p.onGround) {
+    p.hist.push({ x: p.x, y: p.y });
+    if (p.hist.length > 18) p.hist.shift();
+  }
+  onCall(p);
   if (ax) {
     p.vx += ax * 0.36;
     p.face = ax;
@@ -531,11 +707,16 @@ export function updPlayer(ctrl) {
     }
   }
   const ms = cf(p).spd * (p.slowT > 0 ? 0.45 : 1) * (p.panicT > 0 ? 1.45 : 1);
-  p.vx = clamp(p.vx, -ms, ms);
+  if (p.leapT > 0) {
+    p.leapT--;
+    p.vx = p.face * 4.6;
+    if (p.leapT % 3 == 0) puff(p.x + 6, p.y + 14, 2, ['#c9a2ff'], 0.6, 14);
+    if (p.onGround && p.leapT < 28) p.leapT = 0;
+  } else p.vx = clamp(p.vx, -ms, ms);
   if (Math.abs(p.vx) < 0.05) p.vx = 0;
   p.vy = Math.min(p.vy + 0.32, 7);
   if (ctrl) {
-    if (!inp.jump && p.vy < -2.2 && p.inv < 80 && !(p.spr > 0)) p.vy = -2.2;
+    if (!inp.jump && p.vy < -2.2 && p.inv < 80 && !(p.spr > 0) && !(p.leapT > 0)) p.vy = -2.2;
     if (p.spr > 0) p.spr--;
     if (edges.jump) p.jbuf = 8;
     else if (p.jbuf > 0) p.jbuf--;
@@ -589,10 +770,16 @@ export function updPlayer(ctrl) {
     }
     if (p.swcd > 0) p.swcd--;
     if (edges.swap && p.ch == 4 && p.swcd <= 0 && !(p.consT > 0)) swapForm();
+    if (edges.swap && CH[p.ch].fKey && !(p.consT > 0)) useAbility(p);
     if (p.bcd > 0) p.bcd--;
     if (edges.bomb && p.bcd <= 0) throwBomb();
     if (p.cd > 0) p.cd--;
-    if (inp.fire && p.cd <= 0) shoot();
+    if (inp.fire && p.cd <= 0) {
+      if (p.offT > 0) {
+        if (G.frame % 40 == 0)
+          G.pops.push({ x: p.x - 10, y: p.y - 16, txt: 'Hmpf!', life: 30, c: '#c9a2ff' });
+      } else shoot();
+    }
     if (p.sp >= 100 && !p.spFull) {
       p.spFull = true;
       if (!G.ban || G.ban.k != 1)
@@ -651,6 +838,7 @@ export function updPlayer(ctrl) {
     p.inv = 60;
     G.pops.push({ x: p.x - 10, y: p.y - 14, txt: 'Riprovo!', life: 50, c: C.cyan });
   }
+  if (p.y > H + 40 && p.hp <= 1 && rollback(p)) return;
   if (p.y > H + 40) {
     p.hp--;
     p.combo = 0;

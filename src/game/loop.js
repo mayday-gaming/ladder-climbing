@@ -136,9 +136,17 @@ function step() {
         }
       }
       if (G.st > 15 && edges.press) {
-        if (edges.tap && edges.tap.y > 26 && edges.tap.y < 190) G.selCh = HORD[SEL.at(edges.tap.x)];
-        Snd.sfx('power');
-        setState('howto');
+        const tp = edges.tap,
+          onCard = tp && tp.y > SEL.y - 4 && tp.y < SEL.y + SEL.h + 4,
+          picked = onCard ? HORD[SEL.at(tp.x)] : G.selCh;
+        if (picked != G.selCh) {
+          // first tap on a card selects it, a second tap (or Enter) starts
+          G.selCh = picked;
+          Snd.sfx('blip');
+        } else {
+          Snd.sfx('power');
+          setState('howto');
+        }
       }
       break;
     case 'howto':
@@ -154,6 +162,8 @@ function step() {
       break;
     case 'play':
       G.lvTime++;
+      if (G.freezeT > 0) G.freezeT--;
+      if (G.rewT > 0) G.rewT--;
       updPlats();
       updCP();
       updPlayer(true);
@@ -161,6 +171,8 @@ function step() {
       if (G.bossOn && G.boss && G.state == 'play') {
         if (G.evt && G.evt.id == 'disco') {
           G.boss.face = (G.frame >> 4) % 2 ? 1 : -1;
+          if (G.boss.flash > 0) G.boss.flash--;
+        } else if (G.freezeT > 0) {
           if (G.boss.flash > 0) G.boss.flash--;
         } else updBoss();
       }

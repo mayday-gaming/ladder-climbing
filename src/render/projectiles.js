@@ -212,6 +212,7 @@ export function drawBul(b) {
     y = iy(b),
     d = b.vx >= 0 ? 1 : -1,
     t = V.TT;
+  if (drawNewBul(b, x, y, d, t)) return;
   if (b.k == 'aura' || !b.k) {
     const c = b.pierce ? '#ffe95c' : '#66f0ff';
     ctx.globalCompositeOperation = 'lighter';
@@ -360,4 +361,86 @@ export function drawBombs() {
     ci(f.x, f.y, f.r, null, hexA('#ffffff', 1 - k), 3 * (1 - k) + 0.3);
     ci(f.x, f.y, f.r * 0.75, null, hexA('#ff4d5e', (1 - k) * 0.8), 2);
   }
+}
+
+/** Projectiles of Martina, Ops, Sora Rita and their allies. Returns true when handled. */
+function drawNewBul(b, x, y, d, t) {
+  switch (b.k) {
+    case 'postit':
+    case 'kcard': {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((b.rot || 0) + t * 0.25 * d);
+      const s = b.k == 'kcard' ? 0.9 : b.pierce ? 1.25 : 1,
+        c = b.k == 'kcard' ? '#7fd6ff' : b.pierce ? '#ff8a96' : '#ffe95c';
+      rr(-4 * s, -4 * s, 8 * s, 8 * s, 0.4, c, OL, 0.5);
+      rect(-4 * s, -4 * s, 8 * s, 1.8 * s, 'rgba(0,0,0,.12)');
+      for (let i = 0; i < 2; i++) rect(-2.6 * s, -0.6 * s + i * 1.8 * s, 5.2 * s, 0.4, 'rgba(30,40,90,.5)');
+      ctx.restore();
+      return true;
+    }
+    case 'container': {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(Math.sin(b.t * 0.2 + x) * 0.15 + (b.vy || 0) * 0.04);
+      const c = b.pierce ? '#ff9a3a' : '#3a7bff',
+        c2 = b.pierce ? '#c05a10' : '#1b3fa0';
+      rr(-6.4, -4.2, 12.8, 8.4, 0.6, lgr(0, -4, 0, 4, c, c2), OL, 0.6);
+      for (let i = 0; i < 5; i++) ln(-4.6 + i * 2.3, -3.4, -4.6 + i * 2.3, 3.4, 'rgba(0,0,0,.25)', 0.5);
+      rect(-6.4, -4.2, 12.8, 1, 'rgba(255,255,255,.3)');
+      ctx.restore();
+      return true;
+    }
+    case 'phone': {
+      const p = G.P;
+      if (p) {
+        // curly cord back to Sora Rita's hand
+        const hx = ix(p) + p.w / 2 + p.face * 5,
+          hy = iy(p) + 11,
+          n = 14;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const u = i / n,
+            px = hx + (x - hx) * u,
+            py = hy + (y - hy) * u + Math.sin(u * Math.PI) * 6,
+            cu = Math.sin(u * 40 + t * 0.4) * 1.2;
+          if (i) ctx.lineTo(px, py + cu);
+          else ctx.moveTo(px, py);
+        }
+        ctx.strokeStyle = '#1a1a22';
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(t * 0.35 * d);
+      rr(-1.6, -6, 3.2, 12, 1.4, '#1a1a22', OL, 0.5);
+      el(0, -6, 2.8, 1.8, '#1a1a22', OL, 0.4);
+      el(0, 6, 2.8, 1.8, '#1a1a22', OL, 0.4);
+      ln(-0.6, -4, -0.6, 4, 'rgba(255,255,255,.3)', 0.5);
+      ctx.restore();
+      if (b.t % 20 < 10) TX('DRIIN', x, y - 10, 3.4, '#c9a2ff', { b: 1, w: 900 });
+      return true;
+    }
+    case 'pkt':
+      glow(x, y, 8, '#3cff7a', 0.6);
+      rr(x - 4, y - 3, 8, 6, 0.8, '#0b0f1a', '#3cff7a', 0.6);
+      TX((b.t >> 2) % 2 ? '01' : '10', x, y + 0.2, 3.2, '#3cff7a', { w: 700 });
+      b.t++;
+      return true;
+    case 'ring':
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(x - d * i * 2.5, y, 3 + i * 2, -0.9, 0.9);
+        ctx.strokeStyle = hexA('#c9a2ff', 0.9 - i * 0.25);
+        ctx.lineWidth = 1.2;
+        if (d < 0) {
+          ctx.beginPath();
+          ctx.arc(x - d * i * 2.5, y, 3 + i * 2, Math.PI - 0.9, Math.PI + 0.9);
+        }
+        ctx.stroke();
+      }
+      return true;
+  }
+  return false;
 }

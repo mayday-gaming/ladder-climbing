@@ -7,6 +7,7 @@ import { touchy } from '../engine/input.js';
 import { E, clamp } from '../engine/math.js';
 import { allyOf, cf, rankOf } from '../game/progression.js';
 import { mult } from '../game/session.js';
+import { CH } from '../data/heroes.js';
 import { ORD } from '../data/levels.js';
 import { G } from '../game/state.js';
 import { V } from './interp.js';
@@ -147,6 +148,7 @@ export function drawHUD() {
       for (let i = 0; i < 3; i++) ci(76 + i * 5, 49, 1.6, i < p.caf ? '#ffb020' : 'rgba(255,255,255,.2)');
     TX(lb, pn ? 63 : 54, 49.3, 4, '#ffffff', { b: 1, w: 900 });
   }
+  heroStatus(p);
   if (p.consT > 0) {
     const k = p.consT / 900;
     rr(34, 45, 70, 8, 4, 'rgba(3,8,34,.8)', 'rgba(95,230,214,.5)', 0.5);
@@ -234,6 +236,7 @@ export function drawHUD() {
   }
   if (p.ch == 4 && !tch2)
     TX('[F] cambio', W - 6, 46.5, 4.4, 'rgba(255,154,166,.9)', { a: 'right', b: 1, w: 800 });
+  if (CH[p.ch].fKey) abilityChip(p, tch2);
   ctx.globalAlpha = 1;
   if (G.boss && G.bossOn && G.state != 'bossintro' && !G.boss.dead) {
     const b = G.boss,
@@ -318,4 +321,51 @@ export function stamp(txt, x, y, k, col, rot) {
   TX(txt, 0, 1, 26, col, { w: 700 });
   ctx.restore();
   ctx.globalAlpha = 1;
+}
+
+/** Status pill for the new heroes' quirks (overbooking, offended, on-call, rollback). */
+function heroStatus(p) {
+  let lb = null,
+    col = null,
+    k = 1;
+  if (p.ch == 5 && p.overT > 0) {
+    lb = 'OVERBOOKING ' + Math.ceil(p.overT / 60) + 's';
+    col = '#e8505b';
+    k = p.overT / 180;
+  } else if (p.ch == 7 && p.offT > 0) {
+    lb = 'OFFESA ' + Math.ceil(p.offT / 60) + 's';
+    col = '#8a4fb0';
+    k = p.offT / 200;
+  } else if (p.ch == 6 && p.onCallT < 300 && G.state == 'play') {
+    lb = 'REPERIBILITÀ ' + Math.ceil(p.onCallT / 60) + 's';
+    col = (G.frame >> 3) % 2 ? '#ff3b4a' : '#b8143a';
+    k = p.onCallT / 300;
+  }
+  if (p.ch == 6) {
+    const ok = !p.rbUsed;
+    rr(98, 33, 30, 9, 4.5, ok ? 'rgba(60,255,122,.9)' : 'rgba(80,90,120,.7)', OL, 0.5);
+    TX(ok ? '◀◀ 1' : '◀◀ 0', 113, 37.7, 4.4, ok ? '#06301a' : '#c9d2f0', { b: 1, w: 900 });
+  }
+  if (!lb) return;
+  rr(34, 45, 72, 8, 4, 'rgba(3,8,34,.85)', col, 0.6);
+  rr(34.8, 45.8, 70.4 * clamp(k, 0, 1), 6.4, 3.2, col);
+  TX(lb, 70, 49.3, 4, '#ffffff', { b: 1, w: 900 });
+}
+/** F-ability chip with a cooldown sweep. */
+function abilityChip(p, tch) {
+  const fk = CH[p.ch].fKey,
+    k = 1 - p.abCd / fk.cd,
+    x = W - 116,
+    y = 48,
+    ready = p.abCd <= 0;
+  ci(x, y, 5.4, 'rgba(3,8,34,.85)', ready ? '#ffd500' : 'rgba(160,190,255,.3)', 0.7);
+  if (!ready) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.arc(x, y, 4.6, -Math.PI / 2, -Math.PI / 2 + k * Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,213,0,.45)';
+    ctx.fill();
+  } else glow(x, y, 9, '#ffd500', 0.3 + 0.15 * Math.sin(V.TT * 0.2));
+  TX('F', x, y + 0.3, 5, ready ? '#ffe95c' : '#9fb4ff', { w: 700 });
+  TX((tch ? '' : '') + fk.n, x + 8, y + 0.3, 4.2, ready ? '#ffffff' : '#8fa3dc', { a: 'left', b: 1, w: 900 });
 }

@@ -70,6 +70,24 @@ export function controlsFor(ch) {
       act: 'bomb',
     },
   ];
+  if (c.fKey)
+    rows.push({
+      k: ['F'],
+      alt: 'E',
+      t: [c.fKey.act === 'freeze' ? '⏱' : '↗', '#c89600'],
+      n: c.fKey.n,
+      s: c.fKey.s,
+      act: c.fKey.act,
+    });
+  if (ch === 6)
+    rows.push({
+      k: ['AUTO'],
+      alt: '1 volta per livello',
+      t: ['◀◀', '#18a858'],
+      n: 'ROLLBACK',
+      s: 'Invece di morire torni indietro',
+      act: 'rewind',
+    });
   if (ch === 4)
     rows.push({
       k: ['F'],
@@ -203,6 +221,24 @@ function shot(ch, form, x, y, t) {
   } else if (ch === 3) {
     glow(x, y, 9, '#66f0ff', 0.6);
     TX('π', x, y, 11, '#9ff6ff', { sk: '#0a2a6a', sw: 1.8 });
+  } else if (ch === 5) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(t * 0.25);
+    rr(-4, -4, 8, 8, 0.4, '#ffe95c', OL, 0.5);
+    ctx.restore();
+  } else if (ch === 6) {
+    rr(x - 6, y - 4, 12, 8, 0.6, lgr(0, y - 4, 0, y + 4, '#3a7bff', '#1b3fa0'), OL, 0.6);
+    for (let i = 0; i < 4; i++) ln(x - 4 + i * 2.6, y - 3, x - 4 + i * 2.6, y + 3, 'rgba(0,0,0,.25)', 0.5);
+  } else if (ch === 7) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(t * 0.35);
+    rr(-1.6, -6, 3.2, 12, 1.4, '#1a1a22', OL, 0.5);
+    el(0, -6, 2.8, 1.8, '#1a1a22');
+    el(0, 6, 2.8, 1.8, '#1a1a22');
+    ctx.restore();
+    TX('DRIIN', x, y - 10, 3.6, '#c9a2ff', { b: 1, w: 900 });
   } else if (form === 0) {
     ctx.save();
     ctx.translate(x, y);
@@ -430,6 +466,33 @@ function demoFront(act, ph, ch, form, pressed, cyc) {
       ring(CX + 10, 96, clamp(k * 1.3, 0, 1), 70, '#ffe95c', 3);
       stampTxt('RISOLTO!', CX, 72, k, lgr(0, -8, 0, 8, '#ffb0b8', '#ff3b4a'));
     }
+  } else if (act === 'freeze') {
+    const frozen = ph > 0.25 && ph < 0.9,
+      ex = CX + 40 - (frozen ? 0.25 * 30 : ph * 30) + (ph >= 0.9 ? (ph - 0.9) * 30 : 0);
+    enemyBlob(ex, FY, ph, false);
+    if (frozen) {
+      ctx.globalAlpha = 0.25;
+      rect(10, 40, 122, 196, '#2f6bff');
+      ctx.globalAlpha = 1;
+      const k = (ph - 0.25) / 0.65;
+      ci(CX, FY - 74, 11, '#ffffff', OL, 0.8);
+      ln(CX, FY - 74, CX, FY - 81, OL, 1);
+      ln(CX, FY - 74, CX + Math.cos(k * 12) * 6, FY - 74 + Math.sin(k * 12) * 6, '#e8505b', 0.9);
+      TX('zZ', ex + 4 + Math.sin(t * 0.1) * 2, FY - 20 - (t % 30) / 3, 6, '#ffd500', {
+        w: 700,
+        sk: OL,
+        sw: 0.8,
+      });
+      stampTxt('RIUNIONE!', CX, FY - 96, Math.min(0.5, k), lgr(0, -8, 0, 8, '#fff6a0', '#ffc400'));
+    }
+  } else if (act === 'rewind') {
+    if (ph > 0.3 && ph < 0.75) {
+      ctx.globalAlpha = 0.35;
+      for (let y = 40; y < 236; y += 3) rect(10, y, 122, 1, '#000000');
+      ctx.globalAlpha = 1;
+      TX('◀◀', CX, FY - 80, 12, '#3cff7a', { w: 700, sk: '#000000', sw: 2 });
+    }
+    if (ph < 0.3) burst(CX + 20, FY - 20, ph / 0.3, 6, 20, '#ff3b4a');
   } else if (act === 'swap') {
     const k = clamp((ph - 0.15) / 0.35, 0, 1);
     if (ph > 0.15 && ph < 0.7) {
@@ -532,8 +595,28 @@ export function drawControls() {
   ctx.clip();
   demoBack(act, ph, ch, pressed);
   const shake = act === 'bomb' && ph > 0.42 && ph < 0.6 ? Math.sin(V.TT * 3) * 1.5 : 0;
-  const jx = act === 'jump' ? -16 + E.io(ph) * 30 : act === 'ally' ? -16 * E.io(clamp(ph * 3, 0, 1)) : 0;
-  heroAt(ch, form, 71 + shake + jx, 186 - jump * 30, 2.1, o);
+  const leap = act === 'leap' ? Math.sin(clamp(ph / 0.7, 0, 1) * Math.PI) : 0,
+    jx =
+      act === 'jump'
+        ? -16 + E.io(ph) * 30
+        : act === 'ally'
+          ? -16 * E.io(clamp(ph * 3, 0, 1))
+          : act === 'leap'
+            ? -40 + E.io(clamp(ph / 0.7, 0, 1)) * 80
+            : act === 'rewind'
+              ? ph < 0.3
+                ? 20
+                : 20 - E.io(clamp((ph - 0.3) / 0.45, 0, 1)) * 34
+              : 0;
+  if (act === 'leap' && ph < 0.7)
+    for (let i = 1; i < 5; i++) {
+      ctx.globalAlpha = 0.18;
+      heroAt(ch, form, 71 + jx - i * 9, 186 - leap * 34 + i * 2, 2.1, o);
+      ctx.globalAlpha = 1;
+    }
+  if (act === 'rewind' && ph < 0.3) ctx.globalAlpha = (V.TT >> 2) % 2 ? 0.4 : 1;
+  heroAt(ch, form, 71 + shake + jx, 186 - jump * 30 - leap * 34, 2.1, o);
+  ctx.globalAlpha = 1;
   demoFront(act, ph, ch, form, pressed, cyc);
   ctx.restore();
   TX(c.name, 71, 204, 9, '#ffffff', { w: 700, sk: '#0a1436', sw: 2 });

@@ -1,5 +1,5 @@
-/** @file Hero renderers (Anzu, Bolt, August the fox, Angry Man, interns). */
-import { PAL_C, PAL_G, PAL_GD, PAL_GM, PAL_T } from '../../data/palettes.js';
+/** @file Hero renderers (Anzu, Bolt, August the fox, Angry Man, interns, Martina, Ops, Sora Rita). */
+import { PAL_C, PAL_G, PAL_GD, PAL_GM, PAL_MA, PAL_OP, PAL_RI, PAL_T } from '../../data/palettes.js';
 import {
   TX,
   ci,
@@ -942,6 +942,9 @@ export function heroDraw(ch, x, y, p, r, sc) {
   if (ch == 2) drawChapel(x, y, p, r, sc);
   else if (ch == 3) drawGiugno(x, y, p, r, sc);
   else if (ch == 4) drawStag(x, y, p, r, sc);
+  else if (ch == 5) drawMartina(x, y, p, r, sc);
+  else if (ch == 6) drawOps(x, y, p, r, sc);
+  else if (ch == 7) drawRita(x, y, p, r, sc);
   else drawTuono(x, y, p, r, sc);
 }
 export function drawPlayer(p) {
@@ -986,4 +989,379 @@ function groundY(p, x) {
     if (x >= s.x && x <= s.x + s.w && s.y >= fy - 2 && s.y < best) best = s.y;
   }
   return best > H ? H + 40 : best;
+}
+
+/* ------------------------------------------------------------------ */
+/* Martina, Ops, Sora Rita                                            */
+/* ------------------------------------------------------------------ */
+const rigOf = (p, r, sc, pal, extra) =>
+  Object.assign(
+    {
+      face: p.face,
+      run: p.onGround ? Math.min(1, Math.abs(p.vx) / 2) : 0,
+      air: !p.onGround,
+      vy: p.vy,
+      shoot: p.shootT,
+      land: r.land,
+      ph: r.ph,
+      sc,
+      pal,
+      rot: p.dead ? p.dead * 0.15 : 0,
+    },
+    extra,
+  );
+function lashEye(x, y, r, bl) {
+  eye(x, y, r, bl);
+  if (!bl) {
+    ln(x - r * 0.6, y - r * 1.05, x + r * 1.3, y - r * 1.25, OL, 0.55);
+    ln(x + r * 1.1, y - r * 1.1, x + r * 1.9, y - r * 1.8, OL, 0.45);
+  }
+}
+
+/** Martina, the Project Manager: auburn ponytail, headset, coral blazer, pencil skirt, tablet. */
+export function drawMartina(x, y, p, r, sc) {
+  const over = p.overT > 0,
+    sway = Math.sin(V.TT * 0.12 + (r.ph || 0)) * 1.4 + (p.onGround ? 0 : -p.vy * 0.25);
+  human(
+    x,
+    y,
+    rigOf(p, r, sc, PAL_MA, {
+      torso: (a, b) => {
+        pth([-2.4, a - 1.4, 0, a + 3, 0.2, a - 1.4], '#ffffff', OL, 0.5);
+        pth([2.4, a - 1.4, 0, a + 3, -0.2, a - 1.4], '#f4f7ff', OL, 0.5);
+        ln(-2.6, a - 1.2, -0.6, a + 5.2, '#a82a38', 0.6);
+        ln(2.6, a - 1.2, 0.6, a + 5.2, '#a82a38', 0.6);
+        ln(-1.6, a - 1, 1.2, a + 4.4, '#2f6bff', 0.45);
+        rr(0.4, a + 4, 2.6, 3.2, 0.5, '#ffffff', OL, 0.35);
+        rect(0.7, a + 4.4, 2, 0.8, '#2f6bff');
+        // pencil skirt
+        pth(
+          [-5.2, b - 1.6, 5.2, b - 1.6, 5.8, b + 5.4, -5.8, b + 5.4],
+          lgr(0, b, 0, b + 5, '#2c3870', '#1c2450'),
+          OL,
+          0.7,
+        );
+        ln(1.6, b + 2.4, 1.8, b + 5.2, 'rgba(255,255,255,.18)', 0.5);
+      },
+      hand: (hx, hy) => {
+        if (p.shootT > 0) {
+          rr(hx - 1, hy - 3, 5, 5, 0.4, '#ffe95c', OL, 0.5);
+          rect(hx - 1, hy - 3, 5, 1.2, '#f5c400');
+        } else {
+          rr(hx - 1.4, hy - 5, 7, 9, 1, '#1b2350', OL, 0.5);
+          rr(hx - 0.6, hy - 4.2, 5.4, 7.2, 0.5, lgr(0, hy - 4, 0, hy + 3, '#7fd6ff', '#2f6bff'));
+          for (let i = 0; i < 3; i++) rect(hx, hy - 3 + i * 2, 1.2 + i * 1.1, 0.9, '#ffd500');
+        }
+      },
+      head: (hx, hy) => {
+        // ponytail behind the head
+        crv(
+          [
+            hx - 3.6,
+            hy - 6,
+            hx - 8,
+            hy - 7 + sway * 0.3,
+            hx - 10,
+            hy - 1 + sway,
+            hx - 8.4,
+            hy + 3 + sway,
+            hx - 6.6,
+            hy - 1,
+            hx - 4.6,
+            hy - 3.6,
+          ],
+          lgr(0, hy - 7, 0, hy + 3, '#c4602e', '#7e3018'),
+          OL,
+          0.6,
+        );
+        ci(hx - 4.4, hy - 5.4, 1.2, '#e8505b', OL, 0.4);
+        headBase(hx, hy, PAL_MA.skin, 5, 5.6);
+        // side-swept fringe
+        crv(
+          [
+            hx - 5.2,
+            hy + 0.6,
+            hx - 5.8,
+            hy - 4.6,
+            hx - 1.6,
+            hy - 7,
+            hx + 3.4,
+            hy - 6.6,
+            hx + 5.6,
+            hy - 3.4,
+            hx + 3.4,
+            hy - 4.2,
+            hx + 0.4,
+            hy - 3,
+            hx - 2.4,
+            hy - 3.8,
+            hx - 3.8,
+            hy - 1,
+            hx - 4,
+            hy + 2,
+          ],
+          lgr(0, hy - 7, 0, hy, '#d06a36', '#8e3a1c'),
+          OL,
+          0.6,
+        );
+        ln(hx - 1.6, hy - 6, hx + 2.6, hy - 5.6, 'rgba(255,220,180,.5)', 0.6);
+        const bl = blinkOn(5);
+        lashEye(hx + 1.4, hy - 0.5, 0.7, bl);
+        lashEye(hx + 4.6, hy - 0.5, 0.6, bl);
+        ln(hx - 0.2, hy - 2.6, hx + 2.6, hy - 3, '#7e3018', 0.6);
+        ln(hx + 3.6, hy - 3, hx + 5.6, hy - 2.6, '#7e3018', 0.6);
+        noseP(hx, hy, PAL_MA.skin, 3.4);
+        ci(hx + 0.4, hy + 2.2, 1.1, 'rgba(255,120,120,.25)');
+        if (over) {
+          el(hx + 3.4, hy + 4.2, 1.2, 1, '#7a1f2a', OL, 0.4);
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(hx + 2.2, hy + 3.6);
+          ctx.quadraticCurveTo(hx + 3.4, hy + 4.6, hx + 4.8, hy + 3.5);
+          ctx.strokeStyle = '#c23646';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+        // headset band + mic
+        ctx.beginPath();
+        ctx.arc(hx - 0.4, hy - 1, 6, Math.PI * 1.05, Math.PI * 1.75);
+        ctx.strokeStyle = '#1a1a22';
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+        el(hx - 4.8, hy + 0.6, 1.4, 2, '#1a1a22', OL, 0.4);
+        crv([hx - 4.4, hy + 2, hx - 1, hy + 5, hx + 2.4, hy + 4.8], null, '#1a1a22', 0.6);
+        ci(hx + 2.4, hy + 4.8, 0.7, '#3cff7a');
+        if (over) {
+          for (let i = 0; i < 3; i++) {
+            const an = V.TT * 0.15 + (i * P2) / 3;
+            rr(hx + Math.cos(an) * 8 - 1.5, hy - 9 + Math.sin(an) * 2 - 1.5, 3, 3, 0.3, '#ffe95c', OL, 0.3);
+          }
+        }
+        if (p.angry) angerFx(hx, hy, 5, 5.6);
+      },
+    }),
+  );
+}
+
+/** Ops, the on-call sysadmin: messy hair, stubble, dark circles, hoodie, headphones, pager. */
+export function drawOps(x, y, p, r, sc) {
+  const ring = p.onCallT != null && p.onCallT < 90 && G.state == 'play';
+  human(
+    x,
+    y,
+    rigOf(p, r, sc, PAL_OP, {
+      torso: (a, b) => {
+        // hood folded behind the neck and drawstrings
+        el(0, a - 0.6, 5.4, 2.2, '#22273a', OL, 0.6);
+        ln(-1.4, a + 0.4, -1.6, a + 5, '#c9d2f0', 0.45);
+        ln(1.4, a + 0.4, 1.6, a + 5, '#c9d2f0', 0.45);
+        // tiny terminal prompt on the hoodie
+        rr(-2.8, a + 5.4, 5.6, 3.2, 0.6, '#0b0f1a', '#3cff7a', 0.3);
+        TX('>_', 0, a + 7.1, 2.2, '#3cff7a', { w: 700 });
+        // pager on the belt
+        rect(-5, b - 1.3, 10, 1.3, '#14141a');
+        rr(2.6, b - 3.4, 3.2, 2.6, 0.4, '#1a1a22', OL, 0.35);
+        ci(4.2, b - 2.6, 0.55, ring && (G.frame >> 3) % 2 ? '#ff3b4a' : '#3cff7a');
+        // headphones around the neck
+        ctx.beginPath();
+        ctx.arc(0, a - 1.2, 4.6, 0.15, Math.PI - 0.15);
+        ctx.strokeStyle = '#14141a';
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+        el(-4.4, a - 0.2, 1.3, 1.7, '#3cff7a', OL, 0.4);
+        el(4.4, a - 0.2, 1.3, 1.7, '#3cff7a', OL, 0.4);
+      },
+      hand: (hx, hy) => {
+        if (p.shootT > 0) {
+          rr(hx - 1.4, hy - 3, 6, 4.4, 0.4, '#3a7bff', OL, 0.5);
+          for (let i = 0; i < 3; i++) rect(hx - 0.6 + i * 1.8, hy - 2.4, 0.6, 3.2, '#1b3fa0');
+        } else {
+          rr(hx - 1, hy - 3.6, 4.2, 5, 0.8, '#f4f7ff', OL, 0.45);
+          TX('☕', hx + 1.1, hy - 1.1, 2.6, '#5a3216');
+        }
+      },
+      head: (hx, hy) => {
+        headBase(hx, hy, PAL_OP.skin, 5.2, 5.6);
+        // messy spiky hair
+        pth(
+          [
+            hx - 5.6,
+            hy + 0.6,
+            hx - 6.6,
+            hy - 3,
+            hx - 5,
+            hy - 4.4,
+            hx - 6,
+            hy - 7,
+            hx - 2.6,
+            hy - 6.2,
+            hx - 1.8,
+            hy - 8.8,
+            hx + 0.8,
+            hy - 6.6,
+            hx + 3.6,
+            hy - 8.4,
+            hx + 3.8,
+            hy - 5.8,
+            hx + 6.8,
+            hy - 5.8,
+            hx + 5.2,
+            hy - 3.4,
+            hx + 2,
+            hy - 4.2,
+            hx - 1,
+            hy - 3.6,
+            hx - 3.4,
+            hy - 2.8,
+            hx - 4,
+            hy + 0.6,
+          ],
+          lgr(0, hy - 8, 0, hy, '#4a3424', '#22160e'),
+          OL,
+          0.6,
+        );
+        // stubble
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(hx, hy, 5.2, 5.6, 0, 0, P2);
+        ctx.clip();
+        rect(hx - 6, hy + 2, 12, 5, 'rgba(60,40,30,.22)');
+        for (let i = 0; i < 9; i++)
+          ci(hx - 2 + (i % 5) * 1.6, hy + 3 + ((i / 5) | 0) * 1.4, 0.18, 'rgba(40,25,15,.6)');
+        ctx.restore();
+        const bl = blinkOn(7) || (G.frame % 400 < 30 && !ring);
+        // dark circles
+        for (const [ex, w2] of [
+          [1.4, 1.2],
+          [4.6, 1],
+        ]) {
+          ctx.beginPath();
+          ctx.arc(hx + ex, hy + 0.1, w2, 0.2, Math.PI - 0.2);
+          ctx.strokeStyle = 'rgba(110,60,140,.55)';
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+        eye(hx + 1.4, hy - 0.6, ring ? 0.85 : 0.62, bl);
+        eye(hx + 4.6, hy - 0.6, ring ? 0.75 : 0.54, bl);
+        ln(hx - 0.2, hy - 2.6, hx + 2.6, hy - (ring ? 3.4 : 2.4), '#22160e', 0.7);
+        ln(hx + 3.6, hy - (ring ? 3.4 : 2.4), hx + 5.8, hy - 2.6, '#22160e', 0.7);
+        noseP(hx, hy, PAL_OP.skin);
+        if (ring) el(hx + 3.4, hy + 4, 1.3, 1.2, '#7a1f2a', OL, 0.4);
+        else ln(hx + 2.2, hy + 4, hx + 4.6, hy + 3.8, OL, 0.55);
+        if (ring) {
+          TX('!', hx + 1, hy - 12 - Math.abs(Math.sin(V.TT * 0.3)) * 2, 6, '#ff3b4a', {
+            w: 700,
+            sk: OL,
+            sw: 1,
+          });
+        }
+        if (p.angry) angerFx(hx, hy, 5.2, 5.6);
+      },
+    }),
+  );
+}
+
+/** Sora Rita, the historic switchboard operator: lilac perm, cat-eye glasses, pearls, cardigan. */
+export function drawRita(x, y, p, r, sc) {
+  const off = p.offT > 0;
+  human(
+    x,
+    y,
+    rigOf(p, r, sc, PAL_RI, {
+      bulk: 1.08,
+      armF: off ? [-0.9, 1.9] : undefined,
+      armB: off ? [0.9, -1.9] : undefined,
+      torso: (a, b) => {
+        pth([-2.2, a - 1.4, 0, a + 1.6, 0, a - 1.4], '#fff4f8', OL, 0.45);
+        pth([2.2, a - 1.4, 0, a + 1.6, 0, a - 1.4], '#ffe6f0', OL, 0.45);
+        for (let i = 0; i < 7; i++)
+          ci(-2.6 + i * 0.87, a + 0.6 + Math.sin((i / 6) * Math.PI) * 1.4, 0.5, '#fffaf0', OL, 0.2);
+        for (let i = 0; i < 3; i++) ci(0.2, a + 3.4 + i * 1.8, 0.45, '#ffd500', OL, 0.2);
+        // calf-length skirt
+        pth(
+          [-5.4, b - 1.6, 5.4, b - 1.6, 6.6, b + 7, -6.6, b + 7],
+          lgr(0, b, 0, b + 7, '#5a2e6a', '#3e1e4c'),
+          OL,
+          0.7,
+        );
+        for (let i = -1; i <= 1; i++) ln(i * 2.6, b, i * 3.2, b + 6.6, 'rgba(255,255,255,.12)', 0.5);
+      },
+      hand: (hx, hy) => {
+        if (off) return;
+        if (p.shootT > 0) {
+          crv([hx, hy, hx - 2, hy + 3, hx + 1, hy + 4, hx - 1, hy + 6], null, '#1a1a22', 0.5);
+        } else {
+          // the handset, ready to throw
+          rr(hx - 1, hy - 4.4, 2.4, 7.6, 1.1, '#1a1a22', OL, 0.4);
+          el(hx + 0.2, hy - 4.4, 1.8, 1.1, '#1a1a22');
+          el(hx + 0.2, hy + 3.2, 1.8, 1.1, '#1a1a22');
+        }
+      },
+      head: (hx, hy) => {
+        // voluminous perm behind the head
+        const curls = [
+          [-5.6, -4.6, 2.4],
+          [-3, -7.4, 2.6],
+          [0.4, -8.2, 2.6],
+          [3.6, -7.4, 2.4],
+          [-6.6, -1.2, 2.2],
+          [-5.6, 2, 1.9],
+          [5.6, -5.2, 2],
+        ];
+        for (const [cx, cy, rr2] of curls)
+          ci(hx + cx, hy + cy, rr2, lgr(0, hy + cy - rr2, 0, hy + cy + rr2, '#d8d0ec', '#9a90b8'), OL, 0.55);
+        headBase(hx, hy, PAL_RI.skin, 5.1, 5.6);
+        for (const [cx, cy, rr2] of [
+          [-2.8, -5.6, 1.8],
+          [0.4, -6.2, 1.9],
+          [3.4, -5.4, 1.6],
+        ])
+          ci(hx + cx, hy + cy, rr2, lgr(0, hy + cy - rr2, 0, hy + cy + rr2, '#e8e2f6', '#b0a6cc'), OL, 0.5);
+        const bl = blinkOn(3) || off;
+        eye(hx + 1.4, hy - 0.5, 0.62, bl);
+        eye(hx + 4.6, hy - 0.5, 0.55, bl);
+        // cat-eye glasses with chain
+        const F = '#6a1a4a';
+        pth(
+          [hx - 0.6, hy - 1.6, hx + 2.8, hy - 2, hx + 3, hy + 0.4, hx - 0.2, hy + 0.6],
+          'rgba(255,220,240,.22)',
+          F,
+          0.6,
+        );
+        pth(
+          [hx + 3.6, hy - 2, hx + 6.6, hy - 2.6, hx + 6.2, hy + 0.4, hx + 3.6, hy + 0.4],
+          'rgba(255,220,240,.22)',
+          F,
+          0.6,
+        );
+        ln(hx - 0.6, hy - 1.6, hx - 4.4, hy - 0.8, F, 0.6);
+        ctx.beginPath();
+        ctx.moveTo(hx - 4.2, hy - 0.6);
+        ctx.quadraticCurveTo(hx - 4.6, hy + 6, hx - 1, hy + 8.6);
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+        noseP(hx, hy + (off ? -0.6 : 0), PAL_RI.skin, 3.6);
+        ci(hx + 0.4, hy + 2.4, 1.2, 'rgba(255,90,130,.3)');
+        if (off) {
+          ln(hx + 2.4, hy + 4, hx + 4.8, hy + 4.4, OL, 0.6);
+          for (let i = 0; i < 3; i++) {
+            const k = (V.TT * 0.02 + i / 3) % 1;
+            ctx.globalAlpha = 1 - k;
+            ci(hx - 6 - k * 6, hy - 10 - k * 6, 1.6 + k * 1.6, '#cfd6ea');
+            ctx.globalAlpha = 1;
+          }
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(hx + 2.2, hy + 3.6);
+          ctx.quadraticCurveTo(hx + 3.4, hy + 4.6, hx + 4.8, hy + 3.6);
+          ctx.strokeStyle = '#b8143a';
+          ctx.lineWidth = 0.9;
+          ctx.stroke();
+        }
+        ci(hx - 4.6, hy + 1.6, 0.6, '#fffaf0', OL, 0.25);
+        if (p.angry) angerFx(hx, hy, 5.1, 5.6);
+      },
+    }),
+  );
 }
