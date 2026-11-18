@@ -143,3 +143,11 @@ Allegata la foto della sede usata come riferimento per il primo piano: [`assets/
 ## 33
 
 > gli stagisti hanno un quadro completo con un boss alla fine. Scegli tu e fai tu. Poi toglimi ANZU dai personaggi
+
+## 34
+
+> facciamo un nuovo personaggio da scegliere come lo costruiamo?
+
+## 35
+
+> falli tutti. Ma a che serve la sinergia?

@@ -6,6 +6,9 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), vers
 
 ### Aggiunto
 
+- Tre nuovi eroi: **Martina** la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
+- Schermata di scelta ridisegnata per sette eroi: striscia di ritratti e pannello di dettaglio con arma, abilità, alleato e difetto.
+
 - Prologo degli stagisti in tre atti con boss finale: il **Dott. Cavillo** dell'Ufficio Contratti (clausole, salti col timbro, stordimento, carica con la penna).
 
 - June diventa **August**, una volpe: orecchie a punta, muso, guance bianche e lunga coda animata.
