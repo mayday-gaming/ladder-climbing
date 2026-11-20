@@ -52,6 +52,10 @@ All'avvio c'è una schermata d'ingresso e una breve presentazione animata, poi i
 
 Con **P / ESC** (o il pulsante ❚❚) si apre la **pausa caffè**: a sinistra il tuo eroe che si beve un caffè con livello, punteggio, vite e buoni; a destra le voci **Riprendi**, **Ricomincia il livello**, **Musica** (on/off) e **Torna al menu principale**. Si sceglie con ↑ ↓ e INVIO o toccando la voce; ricominciare e tornare al menu chiedono una seconda conferma. Anche dalla schermata "LICENZIATO!" si torna al menu con ESC o col pulsante dedicato.
 
+### Classifica
+
+Se il tuo punteggio entra nei primi 10 (al game over o alla fine del gioco) compare **NUOVO RECORD!**: scrivi il nome con la tastiera o con la tastiera a schermo e finisci in **Classifica**, che si apre anche dal titolo (tasto **C** o pulsante 🏆). La classifica è salvata **nel browser di questo dispositivo**: GitHub Pages è hosting statico e non ha un database, quindi per una classifica condivisa fra tutti i giocatori serve un servizio esterno (per esempio Supabase); la logica in `src/game/scores.js` è già separata per poterlo collegare.
+
 ### A cosa serve la Sinergia
 
 La barra **Sinergia** si riempie colpendo e sconfiggendo nemici, colpendo il boss e raccogliendo buoni pasto. Quando è piena premi **C** (o il pulsante SINERGIA): cancelli tutti i colpi nemici a schermo, fai 6 danni a ogni nemico visibile e un colpo grosso al boss, più l'effetto speciale del tuo eroe (pioggia di tazzine, Gantt che rallenta tutti, deploy di container, attesa con la musichetta…). È la mossa da tenere per i momenti difficili, soprattutto contro i boss.

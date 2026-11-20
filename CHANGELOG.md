@@ -2,11 +2,21 @@
 
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/), versioni [SemVer](https://semver.org/lang/it/).
 
+## [Non rilasciato]
+
+### Aggiunto
+
+- **Classifica** dei primi 10 con nome del giocatore, eroe, livello raggiunto e punti, salvata sul dispositivo; schermata "NUOVO RECORD!" con tastiera a schermo; pulsante Classifica sul titolo.
+
+### Modificato
+
+- La Project Manager si chiama **Iolanda**: capelli biondi riccissimi e occhi azzurri.
+
 ## [1.2.0] — 2026-11-18
 
 ### Aggiunto
 
-- Tre nuovi eroi: **Iolanda** la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
+- Tre nuovi eroi: **Martina** (oggi Iolanda) la Project Manager, **Ops** il sistemista e **Sora Rita** la centralinista, ognuno con arma, Sinergia, abilità, difetto comico e alleato proprio (Lavagna Kanban, Rack, Centralino).
 - Prologo degli stagisti in tre atti con boss finale: il **Dott. Cavillo** dell'Ufficio Contratti (clausole, salti col timbro, stordimento, carica con la penna).
 - Menu della **pausa caffè** rifatto: riprendi, ricomincia il livello, musica on/off e ritorno al menu principale (con conferma); ritorno al menu anche dal game over.
 
