@@ -12,6 +12,7 @@ import { startQuadro } from './quadri.js';
 import { G } from './state.js';
 
 export function newGame() {
+  G.recorded = false;
   G.asdDone = false;
   G.qOrd = [0, 1, 2, 3, 4];
   for (let k = 4; k > 0; k--) {

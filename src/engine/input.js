@@ -17,6 +17,9 @@ export const edges = {
   swap: false,
   up: false,
   down: false,
+  enter: false,
+  back: false,
+  char: null,
   tap: null,
 };
 export const key = {},
@@ -120,6 +123,9 @@ export function setupInput() {
       }
       key[k] = 1;
     }
+    if (e.key == 'Enter') edges.enter = true;
+    if (e.key == 'Backspace') edges.back = true;
+    if (e.key.length == 1 && /[a-zA-Z0-9 ]/.test(e.key)) edges.char = e.key.toUpperCase();
     if (e.key == 'ArrowUp' || e.key == 'w' || e.key == 'W') edges.up = true;
     if (e.key == 'ArrowDown' || e.key == 's' || e.key == 'S') edges.down = true;
     if (e.repeat) return;

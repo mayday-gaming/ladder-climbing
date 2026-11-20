@@ -2,6 +2,8 @@
 import { HORD, SEL, TCOST } from '../data/heroes.js';
 import { ORD, S_SEL } from '../data/levels.js';
 import { GO_MENU, PAUSE_ITEMS, pauseItemRect } from '../data/pause.js';
+import { KEYS, TITLE_BOARD, keyAt } from '../data/scoreui.js';
+import { NAME_LEN, cleanName, insertScore, loadName, qualifies, saveBoard, saveName } from './scores.js';
 import { COLLOQUIO, CONTRATTO } from '../data/quadri.js';
 import { Snd } from '../engine/audio.js';
 import { purgeL } from '../engine/canvas.js';
@@ -98,7 +100,10 @@ export function update() {
     edges.swap =
     edges.up =
     edges.down =
+    edges.enter =
+    edges.back =
       false;
+  edges.char = null;
   edges.tap = null;
 }
 /** Coffee-break menu: resume, restart level, music, back to the main menu (with confirmation). */
@@ -173,7 +178,21 @@ function step() {
       break;
     case 'title':
       Snd.play('title');
-      if (edges.press && G.st > 20) {
+      if (
+        G.st > 20 &&
+        (edges.special ||
+          (edges.tap &&
+            edges.tap.x > TITLE_BOARD.x &&
+            edges.tap.x < TITLE_BOARD.x + TITLE_BOARD.w &&
+            edges.tap.y > TITLE_BOARD.y &&
+            edges.tap.y < TITLE_BOARD.y + TITLE_BOARD.h))
+      ) {
+        Snd.init();
+        Snd.sfx('blip');
+        G.lastRank = -1;
+        G.boardAfter = 'title';
+        setState('board');
+      } else if (edges.press && G.st > 20) {
         Snd.init();
         Snd.sfx('power');
         setState('select');
@@ -396,6 +415,10 @@ function step() {
     }
     case 'gameover':
       updFx();
+      if (G.st == 70 && !G.recorded && qualifies(G.board, G.score)) {
+        askName('gameover');
+        break;
+      }
       if (
         G.st > 60 &&
         (edges.pause ||
@@ -410,6 +433,7 @@ function step() {
         Snd.sfx('power');
         setState('title');
       } else if (edges.press && G.st > 60) {
+        G.recorded = false;
         G.score = 0;
         G.lives = 3;
         G.nextLife = 30000;
@@ -423,10 +447,70 @@ function step() {
       if (G.st % 8 == 0)
         puff(rnd(40, 440) + G.cam.x, rnd(20, 120), 8, [C.yel, C.cyan, C.white, C.bright], 2.5, 40, 0.04);
       if (edges.press && G.st > 180) {
-        setState('title');
+        if (!G.recorded && qualifies(G.board, G.score)) askName('title');
+        else {
+          G.lastRank = -1;
+          G.boardAfter = 'title';
+          setState('board');
+        }
+      }
+      break;
+    case 'name':
+      Snd.play('title', { tr: 3, bpm: S_SEL });
+      nameEntry();
+      break;
+    case 'board':
+      Snd.play('title', { tr: 3, bpm: S_SEL });
+      if (G.st > 30 && (edges.press || edges.pause || edges.tap)) {
+        Snd.sfx('blip');
+        if (G.boardAfter == 'gameover') {
+          G.st = 61;
+          G.state = 'gameover';
+        } else setState('title');
       }
       break;
   }
+}
+/** Switch to the name-entry screen for a score that made the leaderboard. */
+function askName(after) {
+  G.boardAfter = after;
+  G.nameBuf = loadName();
+  Snd.sfx('power');
+  setState('name');
+}
+function nameEntry() {
+  if (G.st < 20) return;
+  let k = edges.char;
+  if (edges.tap) {
+    const i = keyAt(edges.tap.x, edges.tap.y);
+    if (i >= 0) k = KEYS[i];
+  }
+  if (edges.back) k = '⌫';
+  if (edges.enter) k = 'OK';
+  if (!k) return;
+  if (k == 'OK') {
+    const n = cleanName(G.nameBuf),
+      entry = {
+        n,
+        s: G.score,
+        h: G.P ? G.P.ch : 1,
+        l: G.boardAfter == 'title' ? 'FINE' : G.lvl + 1,
+        d: new Date().toISOString(),
+      },
+      r = insertScore(G.board, entry);
+    G.board = r.list;
+    G.lastRank = r.rank;
+    G.recorded = true;
+    saveBoard(G.board);
+    saveName(n);
+    saveHi();
+    Snd.sfx('power');
+    setState('board');
+    return;
+  }
+  if (k == '⌫') G.nameBuf = G.nameBuf.slice(0, -1);
+  else if (G.nameBuf.length < NAME_LEN) G.nameBuf += k == '␣' ? ' ' : k;
+  Snd.sfx('blip');
 }
 let last = 0,
   acc = 0;

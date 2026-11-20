@@ -89,6 +89,16 @@ export function installDebugHook() {
     set(o) {
       Object.assign(G.P, o);
     },
+    /** Patch top-level game state (score, lives…) — tests only. */
+    setG(o) {
+      Object.assign(G, o);
+    },
+    state(st) {
+      setState(st);
+    },
+    get board() {
+      return G.board;
+    },
     killBoss() {
       if (G.boss) dmgBoss(9999, true);
     },

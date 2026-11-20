@@ -1,6 +1,13 @@
 /** @file Shared mutable game state (G), state machine and high-score persistence. */
 /** Mutable game state shared across modules. */
+import { loadBoard } from './scores.js';
+
 export const G = {
+  board: [],
+  lastRank: -1,
+  recorded: false,
+  boardAfter: 'title',
+  nameBuf: '',
   pSel: 0,
   pConfirm: 0,
   freezeT: 0,
@@ -70,4 +77,6 @@ export function loadHi() {
   try {
     G.hi = +localStorage.getItem('anzu_hi') || 0;
   } catch (e) {}
+  G.board = loadBoard();
+  if (G.board.length) G.hi = Math.max(G.hi, G.board[0].s);
 }

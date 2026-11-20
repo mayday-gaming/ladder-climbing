@@ -12,6 +12,7 @@ import { drawBossIntro, drawIntro } from './screens/intro.js';
 import { drawBoot, drawGameOver, drawPause, drawPresent, drawSelect, drawTitle } from './screens/menus.js';
 import { drawBan, drawCut, drawEvc, drawTally } from './screens/overlays.js';
 import { drawControls } from './screens/controls.js';
+import { drawBoard, drawNameEntry, drawTitleBoardButton } from './screens/scores.js';
 import { drawQuadro } from './screens/quadro.js';
 import { drawEvtFx, drawWorld } from './world.js';
 
@@ -19,7 +20,9 @@ let transF = -999;
 function drawTrans() {
   if (G.state !== V.lastState) {
     if (
-      ['select', 'howto', 'intro', 'ending', 'title', 'gameover', 'quadro'].includes(G.state) &&
+      ['select', 'howto', 'intro', 'ending', 'title', 'gameover', 'quadro', 'name', 'board'].includes(
+        G.state,
+      ) &&
       V.lastState !== ''
     )
       transF = V.TT;
@@ -49,10 +52,14 @@ export function draw() {
   V.camX = G.cam._x == null ? G.cam.x : lerp(G.cam._x, G.cam.x, V.A);
   if (G.state == 'boot') drawBoot();
   else if (G.state == 'present') drawPresent();
-  else if (G.state == 'title') drawTitle();
-  else if (G.state == 'select') drawSelect();
+  else if (G.state == 'title') {
+    drawTitle();
+    drawTitleBoardButton();
+  } else if (G.state == 'select') drawSelect();
   else if (G.state == 'howto') drawControls();
   else if (G.state == 'ending') drawEnding();
+  else if (G.state == 'name') drawNameEntry();
+  else if (G.state == 'board') drawBoard();
   else {
     if (G.evt && G.evt.id == 'flip' && G.state == 'play') {
       const k = Math.min(G.evt.t, G.evt.dur - G.evt.t, 20) / 20,
